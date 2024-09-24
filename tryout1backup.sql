@@ -1,0 +1,2016 @@
+--
+-- PostgreSQL database dump
+--
+
+-- Dumped from database version 14.13 (Ubuntu 14.13-0ubuntu0.22.04.1)
+-- Dumped by pg_dump version 14.13 (Ubuntu 14.13-0ubuntu0.22.04.1)
+
+SET statement_timeout = 0;
+SET lock_timeout = 0;
+SET idle_in_transaction_session_timeout = 0;
+SET client_encoding = 'UTF8';
+SET standard_conforming_strings = on;
+SELECT pg_catalog.set_config('search_path', '', false);
+SET check_function_bodies = false;
+SET xmloption = content;
+SET client_min_messages = warning;
+SET row_security = off;
+
+SET default_tablespace = '';
+
+SET default_table_access_method = heap;
+
+--
+-- Name: cache; Type: TABLE; Schema: public; Owner: nusajar_fagaihhve
+--
+
+CREATE TABLE public.cache (
+    key character varying(255) NOT NULL,
+    value text NOT NULL,
+    expiration integer NOT NULL
+);
+
+
+ALTER TABLE public.cache OWNER TO nusajar_fagaihhve;
+
+--
+-- Name: cache_locks; Type: TABLE; Schema: public; Owner: nusajar_fagaihhve
+--
+
+CREATE TABLE public.cache_locks (
+    key character varying(255) NOT NULL,
+    owner character varying(255) NOT NULL,
+    expiration integer NOT NULL
+);
+
+
+ALTER TABLE public.cache_locks OWNER TO nusajar_fagaihhve;
+
+--
+-- Name: migrations; Type: TABLE; Schema: public; Owner: nusajar_fagaihhve
+--
+
+CREATE TABLE public.migrations (
+    id integer NOT NULL,
+    migration character varying(255) NOT NULL,
+    batch integer NOT NULL
+);
+
+
+ALTER TABLE public.migrations OWNER TO nusajar_fagaihhve;
+
+--
+-- Name: migrations_id_seq; Type: SEQUENCE; Schema: public; Owner: nusajar_fagaihhve
+--
+
+CREATE SEQUENCE public.migrations_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.migrations_id_seq OWNER TO nusajar_fagaihhve;
+
+--
+-- Name: migrations_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: nusajar_fagaihhve
+--
+
+ALTER SEQUENCE public.migrations_id_seq OWNED BY public.migrations.id;
+
+
+--
+-- Name: password_reset_tokens; Type: TABLE; Schema: public; Owner: nusajar_fagaihhve
+--
+
+CREATE TABLE public.password_reset_tokens (
+    email character varying(255) NOT NULL,
+    token character varying(255) NOT NULL,
+    created_at timestamp(0) without time zone
+);
+
+
+ALTER TABLE public.password_reset_tokens OWNER TO nusajar_fagaihhve;
+
+--
+-- Name: personal_access_tokens; Type: TABLE; Schema: public; Owner: nusajar_fagaihhve
+--
+
+CREATE TABLE public.personal_access_tokens (
+    id bigint NOT NULL,
+    tokenable_type character varying(255) NOT NULL,
+    tokenable_id bigint NOT NULL,
+    name character varying(255) NOT NULL,
+    token character varying(64) NOT NULL,
+    abilities text,
+    last_used_at timestamp(0) without time zone,
+    expires_at timestamp(0) without time zone,
+    created_at timestamp(0) without time zone,
+    updated_at timestamp(0) without time zone
+);
+
+
+ALTER TABLE public.personal_access_tokens OWNER TO nusajar_fagaihhve;
+
+--
+-- Name: personal_access_tokens_id_seq; Type: SEQUENCE; Schema: public; Owner: nusajar_fagaihhve
+--
+
+CREATE SEQUENCE public.personal_access_tokens_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.personal_access_tokens_id_seq OWNER TO nusajar_fagaihhve;
+
+--
+-- Name: personal_access_tokens_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: nusajar_fagaihhve
+--
+
+ALTER SEQUENCE public.personal_access_tokens_id_seq OWNED BY public.personal_access_tokens.id;
+
+
+--
+-- Name: sessions; Type: TABLE; Schema: public; Owner: nusajar_fagaihhve
+--
+
+CREATE TABLE public.sessions (
+    id character varying(255) NOT NULL,
+    user_id bigint,
+    ip_address character varying(45),
+    user_agent text,
+    payload text NOT NULL,
+    last_activity integer NOT NULL
+);
+
+
+ALTER TABLE public.sessions OWNER TO nusajar_fagaihhve;
+
+--
+-- Name: share_tryouts; Type: TABLE; Schema: public; Owner: nusajar_fagaihhve
+--
+
+CREATE TABLE public.share_tryouts (
+    id bigint NOT NULL,
+    user_id bigint NOT NULL,
+    tryout_id uuid NOT NULL,
+    post_screenshot character varying(255),
+    status character varying(255) NOT NULL,
+    created_at timestamp(0) without time zone,
+    updated_at timestamp(0) without time zone
+);
+
+
+ALTER TABLE public.share_tryouts OWNER TO nusajar_fagaihhve;
+
+--
+-- Name: share_tryouts_id_seq; Type: SEQUENCE; Schema: public; Owner: nusajar_fagaihhve
+--
+
+CREATE SEQUENCE public.share_tryouts_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.share_tryouts_id_seq OWNER TO nusajar_fagaihhve;
+
+--
+-- Name: share_tryouts_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: nusajar_fagaihhve
+--
+
+ALTER SEQUENCE public.share_tryouts_id_seq OWNED BY public.share_tryouts.id;
+
+
+--
+-- Name: subtest_question_answers; Type: TABLE; Schema: public; Owner: nusajar_fagaihhve
+--
+
+CREATE TABLE public.subtest_question_answers (
+    id uuid NOT NULL,
+    answer character varying(255),
+    subtest_question_id uuid NOT NULL,
+    created_at timestamp(0) without time zone,
+    updated_at timestamp(0) without time zone
+);
+
+
+ALTER TABLE public.subtest_question_answers OWNER TO nusajar_fagaihhve;
+
+--
+-- Name: subtest_questions; Type: TABLE; Schema: public; Owner: nusajar_fagaihhve
+--
+
+CREATE TABLE public.subtest_questions (
+    id uuid NOT NULL,
+    question_photo character varying(255),
+    question text NOT NULL,
+    answer_type character varying(255) NOT NULL,
+    correct_answer text NOT NULL,
+    link_pembahasan text,
+    subtest_id uuid NOT NULL,
+    tryout_id uuid NOT NULL,
+    weight double precision DEFAULT '0'::double precision NOT NULL,
+    created_at timestamp(0) without time zone,
+    updated_at timestamp(0) without time zone,
+    CONSTRAINT subtest_questions_answer_type_check CHECK (((answer_type)::text = ANY ((ARRAY['multiple choices'::character varying, 'essay'::character varying])::text[])))
+);
+
+
+ALTER TABLE public.subtest_questions OWNER TO nusajar_fagaihhve;
+
+--
+-- Name: subtests; Type: TABLE; Schema: public; Owner: nusajar_fagaihhve
+--
+
+CREATE TABLE public.subtests (
+    id uuid NOT NULL,
+    subtest_name character varying(255) NOT NULL,
+    subtest_slug character varying(255) NOT NULL,
+    subtest_category character varying(255) NOT NULL,
+    duration integer NOT NULL,
+    created_at timestamp(0) without time zone,
+    updated_at timestamp(0) without time zone
+);
+
+
+ALTER TABLE public.subtests OWNER TO nusajar_fagaihhve;
+
+--
+-- Name: tryout_subtests; Type: TABLE; Schema: public; Owner: nusajar_fagaihhve
+--
+
+CREATE TABLE public.tryout_subtests (
+    id uuid NOT NULL,
+    tryout_id uuid NOT NULL,
+    subtest_id uuid NOT NULL,
+    link_pembahasan_text text,
+    created_at timestamp(0) without time zone,
+    updated_at timestamp(0) without time zone
+);
+
+
+ALTER TABLE public.tryout_subtests OWNER TO nusajar_fagaihhve;
+
+--
+-- Name: tryouts; Type: TABLE; Schema: public; Owner: nusajar_fagaihhve
+--
+
+CREATE TABLE public.tryouts (
+    id uuid NOT NULL,
+    tryout_name character varying(255) NOT NULL,
+    tryout_slug character varying(255) NOT NULL,
+    tryout_image character varying(255) NOT NULL,
+    tryout_poster character varying(255) NOT NULL,
+    kode character varying(255) NOT NULL,
+    status character varying(255) NOT NULL,
+    created_at timestamp(0) without time zone,
+    updated_at timestamp(0) without time zone,
+    CONSTRAINT tryouts_status_check CHECK (((status)::text = ANY ((ARRAY['development'::character varying, 'launched'::character varying, 'closed'::character varying])::text[])))
+);
+
+
+ALTER TABLE public.tryouts OWNER TO nusajar_fagaihhve;
+
+--
+-- Name: user_answers; Type: TABLE; Schema: public; Owner: nusajar_fagaihhve
+--
+
+CREATE TABLE public.user_answers (
+    id uuid NOT NULL,
+    user_id bigint NOT NULL,
+    subtest_question_id uuid NOT NULL,
+    subtest_question_answer_id uuid,
+    essay_answer character varying(255),
+    created_at timestamp(0) without time zone,
+    updated_at timestamp(0) without time zone
+);
+
+
+ALTER TABLE public.user_answers OWNER TO nusajar_fagaihhve;
+
+--
+-- Name: user_results; Type: TABLE; Schema: public; Owner: nusajar_fagaihhve
+--
+
+CREATE TABLE public.user_results (
+    id bigint NOT NULL,
+    user_id bigint NOT NULL,
+    tryout_id uuid NOT NULL,
+    subtest_id uuid NOT NULL,
+    score integer NOT NULL,
+    created_at timestamp(0) without time zone,
+    updated_at timestamp(0) without time zone
+);
+
+
+ALTER TABLE public.user_results OWNER TO nusajar_fagaihhve;
+
+--
+-- Name: user_results_id_seq; Type: SEQUENCE; Schema: public; Owner: nusajar_fagaihhve
+--
+
+CREATE SEQUENCE public.user_results_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.user_results_id_seq OWNER TO nusajar_fagaihhve;
+
+--
+-- Name: user_results_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: nusajar_fagaihhve
+--
+
+ALTER SEQUENCE public.user_results_id_seq OWNED BY public.user_results.id;
+
+
+--
+-- Name: user_surveys; Type: TABLE; Schema: public; Owner: nusajar_fagaihhve
+--
+
+CREATE TABLE public.user_surveys (
+    id uuid NOT NULL,
+    user_id bigint NOT NULL,
+    tryout_id uuid NOT NULL,
+    message character varying(255) NOT NULL,
+    rating smallint NOT NULL,
+    created_at timestamp(0) without time zone,
+    updated_at timestamp(0) without time zone
+);
+
+
+ALTER TABLE public.user_surveys OWNER TO nusajar_fagaihhve;
+
+--
+-- Name: user_tryout_subtests; Type: TABLE; Schema: public; Owner: nusajar_fagaihhve
+--
+
+CREATE TABLE public.user_tryout_subtests (
+    id uuid NOT NULL,
+    tryout_id uuid NOT NULL,
+    subtest_id uuid NOT NULL,
+    user_id bigint NOT NULL,
+    status character varying(255) DEFAULT 'belum'::character varying NOT NULL,
+    created_at timestamp(0) without time zone,
+    updated_at timestamp(0) without time zone,
+    CONSTRAINT user_tryout_subtests_status_check CHECK (((status)::text = ANY ((ARRAY['selesai'::character varying, 'belum'::character varying, 'mulai'::character varying])::text[])))
+);
+
+
+ALTER TABLE public.user_tryout_subtests OWNER TO nusajar_fagaihhve;
+
+--
+-- Name: user_universities; Type: TABLE; Schema: public; Owner: nusajar_fagaihhve
+--
+
+CREATE TABLE public.user_universities (
+    id uuid NOT NULL,
+    user_id bigint NOT NULL,
+    university_name character varying(255) NOT NULL,
+    university_major character varying(255) NOT NULL,
+    created_at timestamp(0) without time zone,
+    updated_at timestamp(0) without time zone
+);
+
+
+ALTER TABLE public.user_universities OWNER TO nusajar_fagaihhve;
+
+--
+-- Name: users; Type: TABLE; Schema: public; Owner: nusajar_fagaihhve
+--
+
+CREATE TABLE public.users (
+    id bigint NOT NULL,
+    name character varying(255) NOT NULL,
+    email character varying(255) NOT NULL,
+    email_verified_at timestamp(0) without time zone,
+    password character varying(255),
+    phone character varying(255),
+    school character varying(255),
+    profile_photo character varying(255),
+    role character varying(255) NOT NULL,
+    ip_address character varying(45),
+    user_agent text,
+    is_logged_in boolean DEFAULT false NOT NULL,
+    remember_token character varying(100),
+    created_at timestamp(0) without time zone,
+    updated_at timestamp(0) without time zone,
+    deleted_at timestamp(0) without time zone
+);
+
+
+ALTER TABLE public.users OWNER TO nusajar_fagaihhve;
+
+--
+-- Name: users_id_seq; Type: SEQUENCE; Schema: public; Owner: nusajar_fagaihhve
+--
+
+CREATE SEQUENCE public.users_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.users_id_seq OWNER TO nusajar_fagaihhve;
+
+--
+-- Name: users_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: nusajar_fagaihhve
+--
+
+ALTER SEQUENCE public.users_id_seq OWNED BY public.users.id;
+
+
+--
+-- Name: migrations id; Type: DEFAULT; Schema: public; Owner: nusajar_fagaihhve
+--
+
+ALTER TABLE ONLY public.migrations ALTER COLUMN id SET DEFAULT nextval('public.migrations_id_seq'::regclass);
+
+
+--
+-- Name: personal_access_tokens id; Type: DEFAULT; Schema: public; Owner: nusajar_fagaihhve
+--
+
+ALTER TABLE ONLY public.personal_access_tokens ALTER COLUMN id SET DEFAULT nextval('public.personal_access_tokens_id_seq'::regclass);
+
+
+--
+-- Name: share_tryouts id; Type: DEFAULT; Schema: public; Owner: nusajar_fagaihhve
+--
+
+ALTER TABLE ONLY public.share_tryouts ALTER COLUMN id SET DEFAULT nextval('public.share_tryouts_id_seq'::regclass);
+
+
+--
+-- Name: user_results id; Type: DEFAULT; Schema: public; Owner: nusajar_fagaihhve
+--
+
+ALTER TABLE ONLY public.user_results ALTER COLUMN id SET DEFAULT nextval('public.user_results_id_seq'::regclass);
+
+
+--
+-- Name: users id; Type: DEFAULT; Schema: public; Owner: nusajar_fagaihhve
+--
+
+ALTER TABLE ONLY public.users ALTER COLUMN id SET DEFAULT nextval('public.users_id_seq'::regclass);
+
+
+--
+-- Data for Name: cache; Type: TABLE DATA; Schema: public; Owner: nusajar_fagaihhve
+--
+
+COPY public.cache (key, value, expiration) FROM stdin;
+mentor1@gmail.com|140.213.169.1:timer	i:1727085146;	1727085146
+mentor1@gmail.com|140.213.169.1	i:1;	1727085146
+mentor@gmail.com|140.213.169.1:timer	i:1727085171;	1727085171
+mentor@gmail.com|140.213.169.1	i:1;	1727085171
+mentor5@gmail.com|149.113.44.162:timer	i:1727104334;	1727104334
+mentor5@gmail.com|149.113.44.162	i:2;	1727104334
+\.
+
+
+--
+-- Data for Name: cache_locks; Type: TABLE DATA; Schema: public; Owner: nusajar_fagaihhve
+--
+
+COPY public.cache_locks (key, owner, expiration) FROM stdin;
+\.
+
+
+--
+-- Data for Name: migrations; Type: TABLE DATA; Schema: public; Owner: nusajar_fagaihhve
+--
+
+COPY public.migrations (id, migration, batch) FROM stdin;
+1	0001_01_01_000000_create_users_table	1
+2	0001_01_01_000001_create_cache_table	1
+3	2024_07_06_115458_create_tryouts_table	1
+4	2024_07_06_115530_create_subtests_table	1
+5	2024_07_06_115531_create_tryout_subtests_table	1
+6	2024_07_06_115656_create_subtest_questions_table	1
+7	2024_07_06_123058_create_subtest_question_answers_table	1
+8	2024_07_06_172856_create_share_tryouts_table	1
+9	2024_07_12_074116_create_user_answers_table	1
+10	2024_07_12_074345_create_user_results_table	1
+11	2024_07_20_003328_create_personal_access_tokens_table	1
+12	2024_07_23_100741_create_user_tryout_subtests_table	1
+13	2024_07_28_135647_create_user_universities_table	1
+14	2024_09_14_073622_create_user_surveys_table	1
+\.
+
+
+--
+-- Data for Name: password_reset_tokens; Type: TABLE DATA; Schema: public; Owner: nusajar_fagaihhve
+--
+
+COPY public.password_reset_tokens (email, token, created_at) FROM stdin;
+\.
+
+
+--
+-- Data for Name: personal_access_tokens; Type: TABLE DATA; Schema: public; Owner: nusajar_fagaihhve
+--
+
+COPY public.personal_access_tokens (id, tokenable_type, tokenable_id, name, token, abilities, last_used_at, expires_at, created_at, updated_at) FROM stdin;
+\.
+
+
+--
+-- Data for Name: sessions; Type: TABLE DATA; Schema: public; Owner: nusajar_fagaihhve
+--
+
+COPY public.sessions (id, user_id, ip_address, user_agent, payload, last_activity) FROM stdin;
+Bj60ptPUvsYUUSjduRVEPwfdlVidd6iUCWQ87P3n	\N	103.24.58.36	Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/129.0.0.0 Safari/537.36	YToyOntzOjY6Il90b2tlbiI7czo0MDoiRFl3d2RDMFd1bGlkUXl0SkJYbWp4elBHUE0xNHVVaUM5dEV3QmZJZiI7czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319fQ==	1727166337
+oE9uxcOl2qt0HGHpvw7JXzR3A6fxEqdTjtee4fnp	\N	149.50.103.48		YTozOntzOjY6Il90b2tlbiI7czo0MDoiNGVBdWRTZFRJUWxvdU9YSnI1RW1nRWFXWndRRUNPTFltZFczMlcybiI7czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6MjA6Imh0dHA6Ly8xNTcuMjQ1LjYyLjkwIjt9czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319fQ==	1727174368
+4oIxp57jtklxpJ6VXhywKUWuDejb1ONDbbBifqvD	\N	79.124.8.107	Mozilla/5.0	YTozOntzOjY6Il90b2tlbiI7czo0MDoiVktoaWVFWG9RT2tiMldhVmVtT3R0cGRvbmFFazVhM2ozOGtwM0VnMCI7czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6MjA6Imh0dHA6Ly8xNTcuMjQ1LjYyLjkwIjt9czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319fQ==	1727182785
+DCUrM7QCjr4MFy49uVgxvEtI3OI7sJbZBezjPRb6	\N	149.50.103.48		YTozOntzOjY6Il90b2tlbiI7czo0MDoiVjZTbHFqM1NzVXlleUUzN24xM2w3NXR2bTJjWVhDckRITkdTeUU4QiI7czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6MjE6Imh0dHA6Ly8xNTkuMjIzLjQyLjE0MSI7fXM6NjoiX2ZsYXNoIjthOjI6e3M6Mzoib2xkIjthOjA6e31zOjM6Im5ldyI7YTowOnt9fX0=	1727166538
+XnRCdKBhsfTD6wyFOUz7szhXeWuJo16yYNZ9ytCs	\N	185.191.126.213		YTozOntzOjY6Il90b2tlbiI7czo0MDoiQ1VBemV5dVRJd2Z3M05kSTNYZlZOYzBxMVVUcDNJeUFLb0diZ2ZDcCI7czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6MjE6Imh0dHA6Ly8xNTkuMjIzLjQyLjE0MSI7fXM6NjoiX2ZsYXNoIjthOjI6e3M6Mzoib2xkIjthOjA6e31zOjM6Im5ldyI7YTowOnt9fX0=	1727175230
+xNiwYowyde5DUTa0I2Put0NMnXvXcopxzQZRz2JB	\N	185.191.126.213		YTozOntzOjY6Il90b2tlbiI7czo0MDoidm5Gc3RTcFJaeUJFdUEyUjNuR0lsc2sxWDNQa2YxeGtOM1BxRnl4QiI7czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6MjA6Imh0dHA6Ly8xNTcuMjQ1LjYyLjkwIjt9czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319fQ==	1727183013
+0qIBIpVP4xUBZujntEGffj5p6SGyziHXq4KfpTe1	\N	185.191.126.213		YTozOntzOjY6Il90b2tlbiI7czo0MDoidGpnQWhPWU43MTlJeEZkb0hjT0FhQThidUpNalRvZVR4a2hIeVVvZCI7czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6MjA6Imh0dHA6Ly8xNTcuMjQ1LjYyLjkwIjt9czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319fQ==	1727166954
+oVTjSNOMHLdCyikZYLNSvDPdcOyN2EnsmP4NXvcq	\N	143.110.222.166	Mozilla/5.0 (iPhone; CPU iPhone OS 16_1 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/16.1 Mobile/15E148 Safari/604.1	YTozOntzOjY6Il90b2tlbiI7czo0MDoiNEh2a25GbDc1c09xVVY3TDBkUm9CdlZxTkloQlpZcnl4UnNSd1dTNSI7czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6MjA6Imh0dHA6Ly8xNTcuMjQ1LjYyLjkwIjt9czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319fQ==	1727176279
+SXsNrvTpukHe3hIsffeH2l9D04EPPwY9XDRrFpdq	\N	95.214.55.138	Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/90.0.4430.85 Safari/537.36 Edg/90.0.818.46	YToyOntzOjY6Il90b2tlbiI7czo0MDoiUFZKM1FrWFlGbEYwQUI3QmVLNU51YWl2aUlTOTltejFMWW52YkFncSI7czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319fQ==	1727183152
+kbQNnlqoKBspib17uqdgTkfnuYN8XaDxOix3o4J4	\N	34.209.16.200	Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3	YTozOntzOjY6Il90b2tlbiI7czo0MDoiejNZbWczN0UwVFFsTXlnUnppM0dFeHpPRkdOeHlFQ2tKM3kxbGY2UyI7czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6MjE6Imh0dHA6Ly8xNTkuMjIzLjQyLjE0MSI7fXM6NjoiX2ZsYXNoIjthOjI6e3M6Mzoib2xkIjthOjA6e31zOjM6Im5ldyI7YTowOnt9fX0=	1727167000
+g7sdlnzTtPt6MN768ZENQ01Y1EVorFXFzxtym0Zk	\N	167.94.138.58		YTozOntzOjY6Il90b2tlbiI7czo0MDoicE1xalpzcFlMbnlsdVdhbnNiMGNMSHRBM2VoeEhoYmY3Yk1jYzRBTiI7czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6MjA6Imh0dHA6Ly8xNTcuMjQ1LjYyLjkwIjt9czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319fQ==	1727176349
+m0dHXy0a1vKrPHIxexV1nW8344ceamFIn6MKGvVW	\N	143.110.222.166	Mozilla/5.0 (iPhone; CPU iPhone OS 16_1 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/16.1 Mobile/15E148 Safari/604.1	YTozOntzOjY6Il90b2tlbiI7czo0MDoibWlBRVR4ZjhFVW1aZFNIdmZaSGZkaTZCbEFNcFZwSmxEWERrZG52RiI7czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6MjA6Imh0dHA6Ly8xNTcuMjQ1LjYyLjkwIjt9czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319fQ==	1727183235
+lbvxKURgqLSB5eoefKpBFEQp1xzKGXUvUecuDs9K	\N	149.50.103.48		YTozOntzOjY6Il90b2tlbiI7czo0MDoiWHhHcDFoOHFoZ2hUVWhKbG93NkpSU0gyNzNsSWZPNFIxM1FpRWlEUiI7czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6MjA6Imh0dHA6Ly8xNTcuMjQ1LjYyLjkwIjt9czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319fQ==	1727167327
+W4GUNKMTKscEGDmstfwJlL7HkyWSQNXyHvukIgzd	\N	167.94.138.58	Mozilla/5.0 (compatible; CensysInspect/1.1; +https://about.censys.io/)	YTozOntzOjY6Il90b2tlbiI7czo0MDoiNm1CY0JoczM0UDltSXJpdzRYaG5IWGFsT005elZReHhDdDRjb1RJbyI7czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6MjA6Imh0dHA6Ly8xNTcuMjQ1LjYyLjkwIjt9czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319fQ==	1727176353
+ycbrZ55OWwjMXSxQqjHnxFfuHVyc9Td9Dpyksise	\N	185.16.39.118	Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/90.0.4430.85 Safari/537.36 Edg/90.0.818.46	YToyOntzOjY6Il90b2tlbiI7czo0MDoiaFpSdVhVYnNFb1Vqd0Q2UW50SHJkN1NScHFQNHhhM1hJZmNETkdsaiI7czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319fQ==	1727183605
+JFrBFroRksfZ2FNFuGaAjVXuIbV2SqhxSqWjLypw	\N	199.45.154.143		YTozOntzOjY6Il90b2tlbiI7czo0MDoiYmd4Um5yUTBoZWIydTBEZkpJSkZIQ2xsd2NhMFBNb0kza3lWRVdyNyI7czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6MjA6Imh0dHA6Ly8xNTcuMjQ1LjYyLjkwIjt9czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319fQ==	1727167659
+VQiYxmMTlmUhmQuwADRd3id0COWrsAiBoxNBSmSZ	\N	143.110.222.166	Mozilla/5.0 (iPhone; CPU iPhone OS 16_1 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/16.1 Mobile/15E148 Safari/604.1	YTozOntzOjY6Il90b2tlbiI7czo0MDoieEhSN2d2cVdrczBjWG5SNzJpMlJiZVJncko5REdEWHozUlhYRXM4QyI7czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6MjE6Imh0dHA6Ly8xNTkuMjIzLjQyLjE0MSI7fXM6NjoiX2ZsYXNoIjthOjI6e3M6Mzoib2xkIjthOjA6e31zOjM6Im5ldyI7YTowOnt9fX0=	1727176393
+O1W5WcSmpcnKEmhLn1sl6GQNcRcbt9u9iksbo7UU	\N	149.50.103.48		YTozOntzOjY6Il90b2tlbiI7czo0MDoiVEs1ZTFIZ081SWw5VFlkaE05d2RZbTJSZjFYTDM3elY5aFV1QnF6WSI7czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6MjE6Imh0dHA6Ly8xNTkuMjIzLjQyLjE0MSI7fXM6NjoiX2ZsYXNoIjthOjI6e3M6Mzoib2xkIjthOjA6e31zOjM6Im5ldyI7YTowOnt9fX0=	1727183616
+YoK8gyavhu294a3dcb0MAfoqgfLpSw5INRDGQe54	\N	199.45.154.143	Mozilla/5.0 (compatible; CensysInspect/1.1; +https://about.censys.io/)	YTozOntzOjY6Il90b2tlbiI7czo0MDoiV2w3OHdXb25jZnJhaGdkTHBSWGN2OTUxMDNUZFpSaWN1T2d4UWdTbiI7czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6MjA6Imh0dHA6Ly8xNTcuMjQ1LjYyLjkwIjt9czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319fQ==	1727167662
+tyknbS7wCFCznPtE8kc1E49vFWhl2Io0OZ5q0IQb	\N	79.124.8.107	Mozilla/5.0	YTozOntzOjY6Il90b2tlbiI7czo0MDoib1gxVkhvczhFcHpXUHBEbGY4Q0NTeTFIUjVmUTcwSU52VVlkRmhSNiI7czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6MjE6Imh0dHA6Ly8xNTkuMjIzLjQyLjE0MSI7fXM6NjoiX2ZsYXNoIjthOjI6e3M6Mzoib2xkIjthOjA6e31zOjM6Im5ldyI7YTowOnt9fX0=	1727177098
+0fpna3tfxNmkeHbps39DDuyiOjgJvGAWIJqVKT4i	\N	149.50.103.48		YTozOntzOjY6Il90b2tlbiI7czo0MDoiOHNTRksxTVcwR21KREFLOE9SS3dDd0xoOGZ3S0V4OGxaSUVGVU5SaCI7czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6MjA6Imh0dHA6Ly8xNTcuMjQ1LjYyLjkwIjt9czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319fQ==	1727183856
+vQGaL782TtDjujfzdEGZoOCXoMPTKEuKxqr8VOU4	\N	92.249.48.213		YTozOntzOjY6Il90b2tlbiI7czo0MDoiOUczZ2xKQmFKN25zWFJIcDd2RldrY2s4SFlJZnNTTjlJS3FWbTZ3VyI7czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6MjA6Imh0dHA6Ly8xNTcuMjQ1LjYyLjkwIjt9czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319fQ==	1727167842
+stofncWfofgHTPhJK7pffWfXaN6Xty87ip9rwOvy	\N	185.191.126.213		YTozOntzOjY6Il90b2tlbiI7czo0MDoiVHNSb210NXdjYnhhQVRwM0p3aTRWZERadXdacEVocTk1azZKRWJzNiI7czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6MjA6Imh0dHA6Ly8xNTcuMjQ1LjYyLjkwIjt9czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319fQ==	1727177155
+BBpZLruZGlpW1yaZnBikMGKs7XBEMucRWhYWeBV4	\N	149.50.103.48		YTozOntzOjY6Il90b2tlbiI7czo0MDoiaEJzQzN6SVhQUWx4VzNtSUtoNjExc2VheDZHN3dMUEVzR0pWT2hKeCI7czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6MjE6Imh0dHA6Ly8xNTkuMjIzLjQyLjE0MSI7fXM6NjoiX2ZsYXNoIjthOjI6e3M6Mzoib2xkIjthOjA6e31zOjM6Im5ldyI7YTowOnt9fX0=	1727183946
+3VSZJtyooCFwTjcJCag7py9GdfdmGznkbL8x1M3z	\N	92.249.48.213		YTozOntzOjY6Il90b2tlbiI7czo0MDoiQjltdEgzZWpkTkNRNG1acmk1Q1VscFBOZXd5a3BnRndNVHBuRVEzbiI7czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6MjE6Imh0dHA6Ly8xNTkuMjIzLjQyLjE0MSI7fXM6NjoiX2ZsYXNoIjthOjI6e3M6Mzoib2xkIjthOjA6e31zOjM6Im5ldyI7YTowOnt9fX0=	1727167903
+KMa9fzrHrRkMxs7UCxtWo93L9WH2ZltXLCv1BOAC	\N	79.124.8.107	Mozilla/5.0	YTozOntzOjY6Il90b2tlbiI7czo0MDoiVDRscFFiWVh1azNyejNxdEk3NE5IRktMNURuYkoxbnNMSmRhMnVzVyI7czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6MjA6Imh0dHA6Ly8xNTcuMjQ1LjYyLjkwIjt9czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319fQ==	1727177722
+jgT7TMNIW5qukribyJ7HObzntCd6rtx4IgvcdKYU	\N	185.191.126.213		YTozOntzOjY6Il90b2tlbiI7czo0MDoic21VelBqNWYxWEU1RlBUc3hZNkptYVJYekdMTU4yM1JQQXE5NlkzTyI7czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6MjE6Imh0dHA6Ly8xNTkuMjIzLjQyLjE0MSI7fXM6NjoiX2ZsYXNoIjthOjI6e3M6Mzoib2xkIjthOjA6e31zOjM6Im5ldyI7YTowOnt9fX0=	1727184228
+65litPBigG1xZ0YL5kftrJvhHpi14od36PGwvx86	\N	150.109.16.20	Mozilla/5.0 (iPhone; CPU iPhone OS 13_2_3 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/13.0.3 Mobile/15E148 Safari/604.1	YTozOntzOjY6Il90b2tlbiI7czo0MDoiMkNrWWN5cTJ1enAxZVJsWm43Z2l5WEUxWWwwVTNLTmM4MXA3OExJaSI7czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6MjA6Imh0dHA6Ly8xNTcuMjQ1LjYyLjkwIjt9czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319fQ==	1727168990
+ODi6tIHgWJcWYwWMSR8yXDeeUvaRg1mqgn6WLF8q	\N	95.214.55.138	Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/90.0.4430.85 Safari/537.36 Edg/90.0.818.46	YToyOntzOjY6Il90b2tlbiI7czo0MDoiOGJKOHQwYmNvUTc3ak1FdU1BSFdka21ocVZtc1lDYzBvaXN4cHFlVyI7czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319fQ==	1727177952
+FtV5eKxGaWIyXp1enoMdCAxLBuzhJ4lW5nxXWP94	\N	143.110.222.166	Mozilla/5.0 (iPhone; CPU iPhone OS 16_1 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/16.1 Mobile/15E148 Safari/604.1	YTozOntzOjY6Il90b2tlbiI7czo0MDoibGRqQ3JHdjVrdWJLWDJxUkdENEgzZUZiODBWb0JNVmdZMGJHM3F6WiI7czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6MjA6Imh0dHA6Ly8xNTcuMjQ1LjYyLjkwIjt9czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319fQ==	1727169266
+m8C2CFoImEsjwkO9ws4VAKNA4ssjkenhF7taCnnQ	\N	178.211.139.188	Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/90.0.4430.85 Safari/537.36 Edg/90.0.818.46	YToyOntzOjY6Il90b2tlbiI7czo0MDoiT1JEMVZZZ0NjVjQ3TXVSMUhDRk1ERXl0Z1RMMVowT3hXdjV6SWE5UCI7czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319fQ==	1727177981
+1Tj1qotpon7tkPl3baCvDogkSmFzJojeczXCS2Js	\N	185.191.126.213		YTozOntzOjY6Il90b2tlbiI7czo0MDoiZnBPQ1I1c2NJVlRSaUg4UkVkZmVGd2tWYkNtUGdUODFSRTBIbW5LVyI7czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6MjE6Imh0dHA6Ly8xNTkuMjIzLjQyLjE0MSI7fXM6NjoiX2ZsYXNoIjthOjI6e3M6Mzoib2xkIjthOjA6e31zOjM6Im5ldyI7YTowOnt9fX0=	1727169283
+S7sMJKCLFBvJRz1D0tGfUU0Zl60cZhXbeXse12Xg	\N	178.211.139.188	Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/90.0.4430.85 Safari/537.36 Edg/90.0.818.46	YToyOntzOjY6Il90b2tlbiI7czo0MDoiU1k5OEJ3TW95RHdtZU5vQkZKbHFpdWtXcjNyWGF2Z0U3aDhMdlBSNiI7czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319fQ==	1727178023
+ZnhBQmzv90UfcERVCeASLD0KupRdGwSP5M6ZKkQc	\N	143.110.222.166	Mozilla/5.0 (iPhone; CPU iPhone OS 16_1 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/16.1 Mobile/15E148 Safari/604.1	YTozOntzOjY6Il90b2tlbiI7czo0MDoidkM1Z1I5THZiaHFhaTM3dU9rOGk3bDB5S2tKalhJSGRyaVl4MjRPbCI7czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6MjE6Imh0dHA6Ly8xNTkuMjIzLjQyLjE0MSI7fXM6NjoiX2ZsYXNoIjthOjI6e3M6Mzoib2xkIjthOjA6e31zOjM6Im5ldyI7YTowOnt9fX0=	1727169297
+WQpctqky3Sg5EJQqZ3DNvyIxNuvmCjeb7mRfvZFK	\N	149.50.103.48		YTozOntzOjY6Il90b2tlbiI7czo0MDoiMXR6TDQ1TTYzQ3lHWVVBRVhsVW5OeHhuSkV6aTJzZHU3TVJ1cDBQaSI7czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6MjA6Imh0dHA6Ly8xNTcuMjQ1LjYyLjkwIjt9czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319fQ==	1727178111
+vzVQiT9h7EtA7ER2eorBMSTG73NEBECez4eh2uox	\N	141.98.11.122	Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/90.0.4430.85 Safari/537.36 Edg/90.0.818.46	YToyOntzOjY6Il90b2tlbiI7czo0MDoiMVJyckZUSnMwMEJaOTBCVkZvS2k3VURrQVdGd1BOdUU4cU5MSlpQbiI7czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319fQ==	1727169458
+8pCTU7PnvzZRkLD1qUaAbPQUTfBV9ulCebr9X8d0	\N	143.110.222.166	Mozilla/5.0 (iPhone; CPU iPhone OS 16_1 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/16.1 Mobile/15E148 Safari/604.1	YTozOntzOjY6Il90b2tlbiI7czo0MDoieUxwREFJYXFMTmFLSkxBdGNSbFR0eHFBcHBUNzJLWjU1QTRudVNHYiI7czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6MjE6Imh0dHA6Ly8xNTkuMjIzLjQyLjE0MSI7fXM6NjoiX2ZsYXNoIjthOjI6e3M6Mzoib2xkIjthOjA6e31zOjM6Im5ldyI7YTowOnt9fX0=	1727180103
+MeR3S2sp7Y6u7L74dDwK9Dp8UvgXxOkbTugXXKjs	\N	185.191.126.213		YTozOntzOjY6Il90b2tlbiI7czo0MDoiaVdBTWxXSjBkaDVpT2lKMlJXcDFHVGxHbjJ2aEFodE81d2UzV0x5RiI7czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6MjA6Imh0dHA6Ly8xNTcuMjQ1LjYyLjkwIjt9czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319fQ==	1727170802
+UP0uk5Pf8ieueD7eQ51gLs5jYe7rBRofh4Q2Gyh8	\N	36.41.75.167	Mozilla/5.0 (iPhone; CPU iPhone OS 13_2_3 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/13.0.3 Mobile/15E148 Safari/604.1	YTozOntzOjY6Il90b2tlbiI7czo0MDoiWndQUVNyU0pKVHc2a1Z3eTlZVll3dFdkd0lGaEFTRzh2Q2RqTmNQdSI7czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6MjA6Imh0dHA6Ly8xNTcuMjQ1LjYyLjkwIjt9czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319fQ==	1727181131
+R6oVPM3tFJdLxReEslqRtAoVrx4ah55xwVfn4mH4	\N	149.50.103.48		YTozOntzOjY6Il90b2tlbiI7czo0MDoibnM0QW1rT2QzNnNzcHpjblZlZklWenBJa0E4dHRvVkN6Z2Z3d1pGTCI7czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6MjE6Imh0dHA6Ly8xNTkuMjIzLjQyLjE0MSI7fXM6NjoiX2ZsYXNoIjthOjI6e3M6Mzoib2xkIjthOjA6e31zOjM6Im5ldyI7YTowOnt9fX0=	1727171549
+pnA3ny1i1UUGZghQTEG5rfc5CDQJEwvw0xEzGNlo	\N	185.16.39.118	Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/90.0.4430.85 Safari/537.36 Edg/90.0.818.46	YToyOntzOjY6Il90b2tlbiI7czo0MDoiTjc2VUliRVlhanhBempJQmwxc214ZmJQRGdCcDJDOXFZZHZGQjJEUSI7czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319fQ==	1727181255
+FI84dXpFG6DpOwgdD5xXNP6ROO96bcHAYaF3R8L5	\N	147.135.23.106	Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:109.0) Gecko/20100101 Firefox/115.0	YTozOntzOjY6Il90b2tlbiI7czo0MDoiRnVXam1VczJLTlBVTGNQb3dhbUNxSldqbEh6SnN6dFVoQVpaQjN5WSI7czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6MjE6Imh0dHA6Ly8xNTkuMjIzLjQyLjE0MSI7fXM6NjoiX2ZsYXNoIjthOjI6e3M6Mzoib2xkIjthOjA6e31zOjM6Im5ldyI7YTowOnt9fX0=	1727171749
+EUC6xl3IlbRENXTlgC1BOiP2uz3DgIwP3rah5v1Q	\N	79.124.8.107	Mozilla/5.0	YTozOntzOjY6Il90b2tlbiI7czo0MDoiQW1SVHBEYzNpRG5xd1pHd2lvdG9jTmV5TXZTV21GcWlhRkd3V25YbiI7czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6MjE6Imh0dHA6Ly8xNTkuMjIzLjQyLjE0MSI7fXM6NjoiX2ZsYXNoIjthOjI6e3M6Mzoib2xkIjthOjA6e31zOjM6Im5ldyI7YTowOnt9fX0=	1727181539
+MoLQUzPqE4xYsU3346YRVac9tPUQazHg5dmlVRx6	\N	185.191.126.213		YTozOntzOjY6Il90b2tlbiI7czo0MDoiczVzOUJFdlZCMEw2TmF4TUlJd1VPSWVEN2c0dG9TbGJ1VHV6akcwYyI7czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6MjE6Imh0dHA6Ly8xNTkuMjIzLjQyLjE0MSI7fXM6NjoiX2ZsYXNoIjthOjI6e3M6Mzoib2xkIjthOjA6e31zOjM6Im5ldyI7YTowOnt9fX0=	1727171960
+HiXCIMi5Cp1yZFxYzpePIJ3FmBjStdrPx69eJ4kD	\N	104.28.215.132	Mozilla/5.0 (iPhone; CPU iPhone OS 17_5_1 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.5 Mobile/15E148 Safari/604.1	YTozOntzOjY6Il90b2tlbiI7czo0MDoiaXJ0RkFabk90dFJHMTlrWU5QV2xvUzFQZ2NtU2tjNmxIUWJNU21wUyI7czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6MjA6Imh0dHA6Ly8xNTcuMjQ1LjYyLjkwIjt9czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319fQ==	1727181639
+l2jNQpIG1klmMLyXyozewWIwam5eCXs5n8tMoZyA	\N	143.110.222.166	Mozilla/5.0 (iPhone; CPU iPhone OS 16_1 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/16.1 Mobile/15E148 Safari/604.1	YTozOntzOjY6Il90b2tlbiI7czo0MDoiNjlRYUJ3bmlWcFg3R3JFeG9TbXI3Y0didXVtVmw1VU8yTEJWYW41aSI7czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6MjE6Imh0dHA6Ly8xNTkuMjIzLjQyLjE0MSI7fXM6NjoiX2ZsYXNoIjthOjI6e3M6Mzoib2xkIjthOjA6e31zOjM6Im5ldyI7YTowOnt9fX0=	1727172123
+ubNRZneWTzesPeuJuElp5np4nfLd0wq3Odzvy2VU	\N	185.191.126.213		YTozOntzOjY6Il90b2tlbiI7czo0MDoiNWhtVkxnR2dIdWRHZFVXaWRUMlZmTEozd2t3SEJWVzZNYzZNRWZKUCI7czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6MjA6Imh0dHA6Ly8xNTcuMjQ1LjYyLjkwIjt9czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319fQ==	1727181685
+6IdpEh0K4NkdMpQCSKJ3F7Kjp65k92uvLxfWvVyL	\N	143.110.222.166	Mozilla/5.0 (iPhone; CPU iPhone OS 16_1 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/16.1 Mobile/15E148 Safari/604.1	YTozOntzOjY6Il90b2tlbiI7czo0MDoiMENpQmhzNlhMN2dDTml2WVowNlVPMG13NGZXaVhjdXJyUDF5S2FmNCI7czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6MjA6Imh0dHA6Ly8xNTcuMjQ1LjYyLjkwIjt9czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319fQ==	1727172483
+MQWdrgpwI0AVOuem2uT3zMxDXN1thbOQAU2vSbMN	\N	143.110.222.166	Mozilla/5.0 (iPhone; CPU iPhone OS 16_1 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/16.1 Mobile/15E148 Safari/604.1	YTozOntzOjY6Il90b2tlbiI7czo0MDoiYzJXZ0x3ZUlWT21xTDRURFd3akxlbXNKRDBNUnBsUVZUdDhMS3ZTQyI7czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6MjE6Imh0dHA6Ly8xNTkuMjIzLjQyLjE0MSI7fXM6NjoiX2ZsYXNoIjthOjI6e3M6Mzoib2xkIjthOjA6e31zOjM6Im5ldyI7YTowOnt9fX0=	1727165504
+dDc2Sh4ewzbvTNG8n0MJe3Pe3bUBOJ0fVtioj7jz	\N	43.159.141.180	Mozilla/5.0 (iPhone; CPU iPhone OS 13_2_3 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/13.0.3 Mobile/15E148 Safari/604.1	YTozOntzOjY6Il90b2tlbiI7czo0MDoiZVNtT3hva0xnWGRVSzlwaDVQNVhVaUNxbDM3OXpzcEE2N3dJWDlGTSI7czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6MjA6Imh0dHA6Ly8xNTcuMjQ1LjYyLjkwIjt9czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319fQ==	1727181833
+uXPR26rzBeA0N5o7ZnQ4LoVZCt8MaPsm99aUHWQ0	\N	34.34.132.221	python-requests/2.32.2	YTozOntzOjY6Il90b2tlbiI7czo0MDoiaDhzbWxsc0tCRUl2TXExUFVJYWM1SnpXamo0Y1FDcmc4dzZWeEE2RCI7czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6MjE6Imh0dHA6Ly8xNTkuMjIzLjQyLjE0MSI7fXM6NjoiX2ZsYXNoIjthOjI6e3M6Mzoib2xkIjthOjA6e31zOjM6Im5ldyI7YTowOnt9fX0=	1727172697
+8iTCyd5uUUdoK5SA8vfQ0ydHQUClcRPDiKBigTHk	\N	185.191.126.213		YTozOntzOjY6Il90b2tlbiI7czo0MDoiZXFLcjkyaHJ5TjE3MjdUdGc1S2E2VUNsTHkwQ3dENnJVR0IycU51WSI7czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6MjE6Imh0dHA6Ly8xNTkuMjIzLjQyLjE0MSI7fXM6NjoiX2ZsYXNoIjthOjI6e3M6Mzoib2xkIjthOjA6e31zOjM6Im5ldyI7YTowOnt9fX0=	1727182569
+zMyjZ9UhgO52teZtXtvX0F5hVYFTh9PeCzDiOIco	\N	141.98.11.122	Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/90.0.4430.85 Safari/537.36 Edg/90.0.818.46	YToyOntzOjY6Il90b2tlbiI7czo0MDoiRGNNbUM1SXZFWExIUnVYSVRXbld3NmpjaGtlUWtkTnZkVjVPNmRQUyI7czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319fQ==	1727174055
+RW1e3vqk3oJGxyY99YECKDa1l9zYOTESd4eBNh8c	\N	143.110.222.166	Mozilla/5.0 (iPhone; CPU iPhone OS 16_1 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/16.1 Mobile/15E148 Safari/604.1	YTozOntzOjY6Il90b2tlbiI7czo0MDoiRHFndFM5aHFNZnF0aDRCT1lKeWphSWtzRDVIOHNIclNaU0ZqelFyMSI7czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6MjE6Imh0dHA6Ly8xNTkuMjIzLjQyLjE0MSI7fXM6NjoiX2ZsYXNoIjthOjI6e3M6Mzoib2xkIjthOjA6e31zOjM6Im5ldyI7YTowOnt9fX0=	1727182569
+\.
+
+
+--
+-- Data for Name: share_tryouts; Type: TABLE DATA; Schema: public; Owner: nusajar_fagaihhve
+--
+
+COPY public.share_tryouts (id, user_id, tryout_id, post_screenshot, status, created_at, updated_at) FROM stdin;
+\.
+
+
+--
+-- Data for Name: subtest_question_answers; Type: TABLE DATA; Schema: public; Owner: nusajar_fagaihhve
+--
+
+COPY public.subtest_question_answers (id, answer, subtest_question_id, created_at, updated_at) FROM stdin;
+9d15338d-77ff-4590-8452-84b0222a4787	BODOH : SEKOLAH	9d15338d-768d-4ca1-92bf-710ed47bf1ce	2024-09-24 02:10:47	2024-09-24 02:10:47
+9d15338d-78d0-4dda-8402-a2e7d7edcf56	KENYANG : RUMAH MAKAN	9d15338d-768d-4ca1-92bf-710ed47bf1ce	2024-09-24 02:10:47	2024-09-24 02:10:47
+9d15338d-7982-417b-b3ba-605fa002f69a	MISKIN : BANK	9d15338d-768d-4ca1-92bf-710ed47bf1ce	2024-09-24 02:10:47	2024-09-24 02:10:47
+9d15338d-7a03-4c94-90e2-628a5edbc643	SEDIH : TAMAN	9d15338d-768d-4ca1-92bf-710ed47bf1ce	2024-09-24 02:10:47	2024-09-24 02:10:47
+9d15338d-7a88-47e8-8d4e-88dd456d978e	HUJAN : CUACA	9d15338d-768d-4ca1-92bf-710ed47bf1ce	2024-09-24 02:10:47	2024-09-24 02:10:47
+9d15340f-883c-46b2-8da9-bb442b0a5b30	20	9d15340f-86d8-4359-8209-ff0d6003b560	2024-09-24 02:12:13	2024-09-24 02:12:13
+9d15340f-8917-41fe-b8c1-0c158402c211	30	9d15340f-86d8-4359-8209-ff0d6003b560	2024-09-24 02:12:13	2024-09-24 02:12:13
+9d15340f-89bb-4303-977e-939376416612	50	9d15340f-86d8-4359-8209-ff0d6003b560	2024-09-24 02:12:13	2024-09-24 02:12:13
+9d15340f-8a56-4f5b-a1eb-fb42922d5ac8	70	9d15340f-86d8-4359-8209-ff0d6003b560	2024-09-24 02:12:13	2024-09-24 02:12:13
+9d15340f-8af0-4506-9bfc-58f7c1140985	90	9d15340f-86d8-4359-8209-ff0d6003b560	2024-09-24 02:12:13	2024-09-24 02:12:13
+9d15341b-fe49-4fe2-9e50-461a930a6def	Pernyataan (1) adalah penyebab dan pernyataan (2) adalah akibat	9d15341b-fd2a-40bc-a8fd-cbbf65eed3f7	2024-09-24 02:12:21	2024-09-24 02:12:21
+9d15341b-ff0b-4da5-9d52-9afc18722b98	Pernyataan (2) adalah penyebab dan pernyataan (1) adalah akibat	9d15341b-fd2a-40bc-a8fd-cbbf65eed3f7	2024-09-24 02:12:21	2024-09-24 02:12:21
+9d15341b-ffb3-42b5-a80f-06cba2031771	Pernyataan (1) dan (2) adalah penyebab, namun tidak saling berhubungan	9d15341b-fd2a-40bc-a8fd-cbbf65eed3f7	2024-09-24 02:12:21	2024-09-24 02:12:21
+9d15341c-0086-4b34-a287-4be568b00e36	Pernyataan (1) dan (2) adalah akibat dari dua penyebab yang tidak saling berhubungan	9d15341b-fd2a-40bc-a8fd-cbbf65eed3f7	2024-09-24 02:12:21	2024-09-24 02:12:21
+9d15341c-010a-42a9-a329-e078df5f2c64	Pernyataan (1) dan (2) adalah akibat dari suatu penyebab yang sama	9d15341b-fd2a-40bc-a8fd-cbbf65eed3f7	2024-09-24 02:12:21	2024-09-24 02:12:21
+9d15344b-0633-4c2c-84b4-a842aba6c399	76	9d15344b-04cb-4740-8b58-63dce25d887e	2024-09-24 02:12:52	2024-09-24 02:12:52
+9d15344b-071f-4200-a8c1-7fb50e914355	77 2/3	9d15344b-04cb-4740-8b58-63dce25d887e	2024-09-24 02:12:52	2024-09-24 02:12:52
+9d15344b-07b6-44f4-9916-5e630ca5d838	78 4/7	9d15344b-04cb-4740-8b58-63dce25d887e	2024-09-24 02:12:52	2024-09-24 02:12:52
+9d15344b-0841-4065-9dde-49b31d9462e0	80 7/8	9d15344b-04cb-4740-8b58-63dce25d887e	2024-09-24 02:12:52	2024-09-24 02:12:52
+9d15344b-08e0-4649-9ad4-e42b4e8e47b7	80 2/3	9d15344b-04cb-4740-8b58-63dce25d887e	2024-09-24 02:12:52	2024-09-24 02:12:52
+9d15348d-7154-4c72-ac6b-7d8a71b8728a	1	9d15348d-6ff3-4024-be52-470a89349a1e	2024-09-24 02:13:35	2024-09-24 02:13:35
+9d15348d-7221-4eb6-a0a9-5a98200f1b50	2	9d15348d-6ff3-4024-be52-470a89349a1e	2024-09-24 02:13:35	2024-09-24 02:13:35
+9d15348d-72b8-4289-96df-13296016df4a	3	9d15348d-6ff3-4024-be52-470a89349a1e	2024-09-24 02:13:35	2024-09-24 02:13:35
+9d15348d-7341-41df-bad4-730f8fae846d	4	9d15348d-6ff3-4024-be52-470a89349a1e	2024-09-24 02:13:35	2024-09-24 02:13:35
+9d15348d-73c3-4be8-92a7-e03e2f05e3f5	5	9d15348d-6ff3-4024-be52-470a89349a1e	2024-09-24 02:13:35	2024-09-24 02:13:35
+9d15349d-ad6b-4ef3-98e0-4246cd87e164	LABA-LABA : JARING	9d15349d-ac21-47c2-8c85-6a5a793fd0b6	2024-09-24 02:13:46	2024-09-24 02:13:46
+9d15349d-ae68-408a-8d9c-43a081931491	DOMBA : WOL	9d15349d-ac21-47c2-8c85-6a5a793fd0b6	2024-09-24 02:13:46	2024-09-24 02:13:46
+9d15349d-aefa-4890-a9d8-20690df78fe0	ULAT : KEPOMPONG	9d15349d-ac21-47c2-8c85-6a5a793fd0b6	2024-09-24 02:13:46	2024-09-24 02:13:46
+9d15349d-af96-4d38-9fa8-7337af5e193e	RUSA : ANTLER	9d15349d-ac21-47c2-8c85-6a5a793fd0b6	2024-09-24 02:13:46	2024-09-24 02:13:46
+9d15349d-b03e-4bd8-ac59-26fcfe133675	AYAM : TELUR	9d15349d-ac21-47c2-8c85-6a5a793fd0b6	2024-09-24 02:13:46	2024-09-24 02:13:46
+9d1534cb-aadb-4839-bf61-4c32ca4f75f8	12	9d1534cb-a9ae-4f12-9639-c4e1b63a295a	2024-09-24 02:14:16	2024-09-24 02:14:16
+9d1534cb-ab91-4dc0-9982-967f07f9f77a	10	9d1534cb-a9ae-4f12-9639-c4e1b63a295a	2024-09-24 02:14:16	2024-09-24 02:14:16
+9d1534cb-ac35-46a0-8963-ea1e0e3a8eca	8	9d1534cb-a9ae-4f12-9639-c4e1b63a295a	2024-09-24 02:14:16	2024-09-24 02:14:16
+9d1534cb-acd5-43b5-b993-16b64d257f7d	6	9d1534cb-a9ae-4f12-9639-c4e1b63a295a	2024-09-24 02:14:16	2024-09-24 02:14:16
+9d1534cb-ad55-4240-957e-9910c271b9cd	4	9d1534cb-a9ae-4f12-9639-c4e1b63a295a	2024-09-24 02:14:16	2024-09-24 02:14:16
+9d15352d-884b-4970-8828-fbe2a2ff607e	75	9d15352d-86c4-4b56-af3f-8cf05c7e4b3d	2024-09-24 02:15:20	2024-09-24 02:15:20
+9d15352d-8931-4106-81a6-67c990bb17d2	79	9d15352d-86c4-4b56-af3f-8cf05c7e4b3d	2024-09-24 02:15:20	2024-09-24 02:15:20
+9d15352d-89d9-4a80-9d3d-d3c49644e0a4	78	9d15352d-86c4-4b56-af3f-8cf05c7e4b3d	2024-09-24 02:15:20	2024-09-24 02:15:20
+9d15352d-8a6c-4cb5-b754-f8faa0d394c0	77	9d15352d-86c4-4b56-af3f-8cf05c7e4b3d	2024-09-24 02:15:20	2024-09-24 02:15:20
+9d15352d-8b08-4a8d-a138-17a51caccb7e	76	9d15352d-86c4-4b56-af3f-8cf05c7e4b3d	2024-09-24 02:15:20	2024-09-24 02:15:20
+9d15358a-4447-480f-8875-37ff51d8d4c2	Rp 280.000,00	9d15358a-42fc-49e8-a4f4-1938059415ea	2024-09-24 02:16:21	2024-09-24 02:16:21
+9d15358a-451d-49bc-ad93-c6589789d32f	Rp 300.000,00	9d15358a-42fc-49e8-a4f4-1938059415ea	2024-09-24 02:16:21	2024-09-24 02:16:21
+9d15358a-45a2-4bea-bfcc-559b4d4df9f3	Rp 320.000,00	9d15358a-42fc-49e8-a4f4-1938059415ea	2024-09-24 02:16:21	2024-09-24 02:16:21
+9d15358a-4633-469a-80c2-593f013b72fc	Rp 340.000,00	9d15358a-42fc-49e8-a4f4-1938059415ea	2024-09-24 02:16:21	2024-09-24 02:16:21
+9d15358a-46b2-481f-8b6d-0abd05cd5941	Rp 400.000,00	9d15358a-42fc-49e8-a4f4-1938059415ea	2024-09-24 02:16:21	2024-09-24 02:16:21
+9d1535e2-9d83-49b8-be65-d2f3ac81a504	Axel duduk di antara Maxwell dan Xaviera	9d1535e2-9c4f-4baa-b00f-c062e935c9ce	2024-09-24 02:17:19	2024-09-24 02:17:19
+9d1535e2-9e44-4c47-b8a8-51bf4b368607	Agas duduk dipisahkan 2 kursi dengan Xaviera	9d1535e2-9c4f-4baa-b00f-c062e935c9ce	2024-09-24 02:17:19	2024-09-24 02:17:19
+9d1535e2-9ed4-45aa-9fd0-10cee20d9361	Agas dan Axel duduk tepat berseberangan	9d1535e2-9c4f-4baa-b00f-c062e935c9ce	2024-09-24 02:17:19	2024-09-24 02:17:19
+9d1535e2-9f5e-4260-8124-c56a58d71c0b	Xaviera duduk di seberang Agas	9d1535e2-9c4f-4baa-b00f-c062e935c9ce	2024-09-24 02:17:19	2024-09-24 02:17:19
+9d1535e2-9fe1-4c0c-b41b-b6f0eeb5edfc	Kadit duduk berhadapan dengan Axel	9d1535e2-9c4f-4baa-b00f-c062e935c9ce	2024-09-24 02:17:19	2024-09-24 02:17:19
+9d153678-b5d7-4785-819a-ccd7e93a80d6	Kadit dan Agas dipisahkan oleh 2 kursi	9d153678-b4a6-4c2d-aa1d-470277791d39	2024-09-24 02:18:57	2024-09-24 02:18:57
+9d153678-b6aa-44ec-8c58-a0bf73327040	Kadit dan Sandy duduk berseberangan	9d153678-b4a6-4c2d-aa1d-470277791d39	2024-09-24 02:18:57	2024-09-24 02:18:57
+9d153678-b760-4625-8994-8d02a8dba4ca	Agas duduk di dekat Xaviera	9d153678-b4a6-4c2d-aa1d-470277791d39	2024-09-24 02:18:57	2024-09-24 02:18:57
+9d153678-b7ed-4ca2-b6f8-ca53deb62242	Shakira duduk di sebelah Maxwell	9d153678-b4a6-4c2d-aa1d-470277791d39	2024-09-24 02:18:57	2024-09-24 02:18:57
+9d153678-b877-475d-bf84-b278dae1f97c	Axel dan Xaviera duduk berhadapan	9d153678-b4a6-4c2d-aa1d-470277791d39	2024-09-24 02:18:57	2024-09-24 02:18:57
+9d1536e3-2d40-41d6-8685-5b8405fadc61	Maxwell duduk berhadapan dengan Axel	9d1536e3-2bca-4004-93ae-07d71933f541	2024-09-24 02:20:07	2024-09-24 02:20:07
+9d1536e3-2e1a-4854-bbc0-7f00b45c91b8	Maxwell duduk di sebelah Kadit	9d1536e3-2bca-4004-93ae-07d71933f541	2024-09-24 02:20:07	2024-09-24 02:20:07
+9d1536e3-2ebf-4b2a-870e-74b3c026593c	Shakira duduk di sebelah Axel	9d1536e3-2bca-4004-93ae-07d71933f541	2024-09-24 02:20:07	2024-09-24 02:20:07
+9d1536e3-2f48-46ca-aa68-0a1658c97d56	Agas duduk di antara Kevin dan Axel	9d1536e3-2bca-4004-93ae-07d71933f541	2024-09-24 02:20:07	2024-09-24 02:20:07
+9d1536e3-2fd1-40ab-8357-03fe27ff706b	Axel duduk di antara Sandy dan Shakira	9d1536e3-2bca-4004-93ae-07d71933f541	2024-09-24 02:20:07	2024-09-24 02:20:07
+9d1537a0-9784-4c7f-9027-8f7e69f91e2e	Kevin duduk di antara Agas dan Maxwell	9d1537a0-9608-427d-a5b6-79387d2a666f	2024-09-24 02:22:11	2024-09-24 02:22:11
+9d1537a0-9889-432e-8d06-e36c42388006	Shakira dan Axel dipisahkan oleh Sandy	9d1537a0-9608-427d-a5b6-79387d2a666f	2024-09-24 02:22:11	2024-09-24 02:22:11
+9d1537a0-992e-4f6d-8449-a7580c741919	Kadit duduk di antara Xaviera dan Shakira	9d1537a0-9608-427d-a5b6-79387d2a666f	2024-09-24 02:22:11	2024-09-24 02:22:11
+9d1537a0-99e8-44c8-9ab6-d3eb9bf712f1	Kevin dipisahkan 2 kursi dengan Sandy	9d1537a0-9608-427d-a5b6-79387d2a666f	2024-09-24 02:22:11	2024-09-24 02:22:11
+9d1537a0-9abf-45ab-90a6-57dabaf5a2e3	Axel duduk di antara Maxwell dan Xaviera	9d1537a0-9608-427d-a5b6-79387d2a666f	2024-09-24 02:22:11	2024-09-24 02:22:11
+9d153841-4137-4a3d-aa33-6bfb0c3c5ae8	Mulyono tidak mau belajar	9d153841-3fe8-42f0-9cd4-8ad81fea5ce5	2024-09-24 02:23:56	2024-09-24 02:23:56
+9d153841-421f-4cad-bc4b-2f9713c9f34c	Mulyono tidak rajin belajar	9d153841-3fe8-42f0-9cd4-8ad81fea5ce5	2024-09-24 02:23:56	2024-09-24 02:23:56
+9d153841-42b3-427c-9e93-394bba75dd72	Mulyono ingin juara kelas	9d153841-3fe8-42f0-9cd4-8ad81fea5ce5	2024-09-24 02:23:56	2024-09-24 02:23:56
+9d153841-435b-48eb-a516-c2169f383693	Mulyono tidak juara kelas	9d153841-3fe8-42f0-9cd4-8ad81fea5ce5	2024-09-24 02:23:56	2024-09-24 02:23:56
+9d153841-4402-4a67-8543-c50cb4c3d28c	Mulyono juara kelas	9d153841-3fe8-42f0-9cd4-8ad81fea5ce5	2024-09-24 02:23:56	2024-09-24 02:23:56
+9d15387b-6d58-4968-bdbd-6fe28753b21d	8	9d15387b-6c1f-4d50-bffe-d0562a4d55e8	2024-09-24 02:24:34	2024-09-24 02:24:34
+9d15387b-6e3d-4f1a-b92a-916305de3f02	6	9d15387b-6c1f-4d50-bffe-d0562a4d55e8	2024-09-24 02:24:34	2024-09-24 02:24:34
+9d15387b-6ee4-454f-bb73-ce3fb5f4bfe2	5	9d15387b-6c1f-4d50-bffe-d0562a4d55e8	2024-09-24 02:24:34	2024-09-24 02:24:34
+9d15387b-6f90-4e85-96e5-87760906d23e	4	9d15387b-6c1f-4d50-bffe-d0562a4d55e8	2024-09-24 02:24:34	2024-09-24 02:24:34
+9d15387b-7020-4239-ac6d-49d18ef1e806	1	9d15387b-6c1f-4d50-bffe-d0562a4d55e8	2024-09-24 02:24:34	2024-09-24 02:24:34
+9d1538ca-8a50-42cd-94d2-5d729893cb3e	termasuk hewan mamalia	9d1538ca-8901-426b-b098-8cc8063199fc	2024-09-24 02:25:26	2024-09-24 02:25:26
+9d1538ca-8b35-49e6-9855-e801bc5683b6	termasuk hewan yang beranak dan bertelur	9d1538ca-8901-426b-b098-8cc8063199fc	2024-09-24 02:25:26	2024-09-24 02:25:26
+9d1538ca-8bd4-4a6a-9b36-beacf6e2fa9d	berkembang dengan cara mamalia	9d1538ca-8901-426b-b098-8cc8063199fc	2024-09-24 02:25:26	2024-09-24 02:25:26
+9d1538ca-8c8a-49a2-8652-a3fc73d3d096	termasuk hewan bukan mamalia	9d1538ca-8901-426b-b098-8cc8063199fc	2024-09-24 02:25:26	2024-09-24 02:25:26
+9d1538ca-8d1c-45b4-b6ad-f2e84bebd8c9	termasuk hewan mamalia yang bertelur	9d1538ca-8901-426b-b098-8cc8063199fc	2024-09-24 02:25:26	2024-09-24 02:25:26
+9d153922-385c-40b1-96af-098621b626b1	ikan salmon ada di tempat hidup ikan lele	9d153922-36cb-48c3-b081-f29bb4ef69c4	2024-09-24 02:26:24	2024-09-24 02:26:24
+9d153922-394d-4d19-bc21-5c15b4a3aeeb	ikan salmon ada di tempat hidup bukan ikan salmon	9d153922-36cb-48c3-b081-f29bb4ef69c4	2024-09-24 02:26:24	2024-09-24 02:26:24
+9d153922-39f1-478d-b441-e5d34d528518	ikan lele ada di tempat hidup bukan ikan lele	9d153922-36cb-48c3-b081-f29bb4ef69c4	2024-09-24 02:26:24	2024-09-24 02:26:24
+9d153922-3a95-4b1e-bdcd-d7eaa5a1ebfd	ikan lele ada di tempat hidup bukan ikan salmon	9d153922-36cb-48c3-b081-f29bb4ef69c4	2024-09-24 02:26:24	2024-09-24 02:26:24
+9d153922-3b2c-4304-bf7a-69b08fb9ac86	ikan lele ada di tempat hidup ikan salmon	9d153922-36cb-48c3-b081-f29bb4ef69c4	2024-09-24 02:26:24	2024-09-24 02:26:24
+9d153993-c7d3-4f25-80ba-55dddc651ba1	Perdebatan	9d153993-c66d-4f59-a3bc-1f072965479c	2024-09-24 02:27:38	2024-09-24 02:27:38
+9d153993-c8b0-4f32-be9a-f0175802c95f	Bantahan	9d153993-c66d-4f59-a3bc-1f072965479c	2024-09-24 02:27:38	2024-09-24 02:27:38
+9d153993-c94e-42f6-bc61-8aec347d62a3	Perebutan	9d153993-c66d-4f59-a3bc-1f072965479c	2024-09-24 02:27:38	2024-09-24 02:27:38
+9d153993-c9ff-42e2-b7a7-699abf6d8787	Perselisihan	9d153993-c66d-4f59-a3bc-1f072965479c	2024-09-24 02:27:38	2024-09-24 02:27:38
+9d153993-ca97-4338-abe1-297d66287fe5	Perbedaan	9d153993-c66d-4f59-a3bc-1f072965479c	2024-09-24 02:27:38	2024-09-24 02:27:38
+9d1539de-dcb6-4e7f-9025-c8678b37db64	Balmond adalah bukan seorang hero yang sopan	9d1539de-db66-4100-aff2-b1595cd33eb6	2024-09-24 02:28:27	2024-09-24 02:28:27
+9d1539de-dd78-410a-b1cb-4e0a30ed07b1	Balmond adalah seorang hero yang tidak sopan	9d1539de-db66-4100-aff2-b1595cd33eb6	2024-09-24 02:28:27	2024-09-24 02:28:27
+9d1539de-de21-4eb1-8757-d808ff7b7ddb	Balmond adalah bukan seorang hero meskipun pandai berhitung	9d1539de-db66-4100-aff2-b1595cd33eb6	2024-09-24 02:28:27	2024-09-24 02:28:27
+9d1539de-dece-4030-b8ed-a4fc801442b7	Balmond adalah seorang murid yang pandai berhitung dan tidak sopan	9d1539de-db66-4100-aff2-b1595cd33eb6	2024-09-24 02:28:27	2024-09-24 02:28:27
+9d1539de-df86-483c-aa05-a160ebea0d90	Balmond adalah seorang hero yang pandai berhitung	9d1539de-db66-4100-aff2-b1595cd33eb6	2024-09-24 02:28:27	2024-09-24 02:28:27
+9d153a19-219f-4540-bc78-32cfa988bcfd	33	9d153a19-2063-4922-8b13-308e734e0c35	2024-09-24 02:29:05	2024-09-24 02:29:05
+9d153a19-2277-4eca-81d2-7a3275adb455	31	9d153a19-2063-4922-8b13-308e734e0c35	2024-09-24 02:29:05	2024-09-24 02:29:05
+9d153a19-2318-444f-be84-67866f580dde	32	9d153a19-2063-4922-8b13-308e734e0c35	2024-09-24 02:29:05	2024-09-24 02:29:05
+9d153a19-23c4-4213-ae81-fe31f6c68b03	29	9d153a19-2063-4922-8b13-308e734e0c35	2024-09-24 02:29:06	2024-09-24 02:29:06
+9d153a19-24a5-4f6c-88e3-265823063088	30	9d153a19-2063-4922-8b13-308e734e0c35	2024-09-24 02:29:06	2024-09-24 02:29:06
+9d153a76-d9aa-4dd0-91aa-2eaf7c59ebbf	Obesitas	9d153a76-d806-43b9-bf53-abf4c7b231b6	2024-09-24 02:30:07	2024-09-24 02:30:07
+9d153a76-dab0-41e6-89c5-8ba65fe6b740	Perlu mengatur pola makan agar tidak obesitas	9d153a76-d806-43b9-bf53-abf4c7b231b6	2024-09-24 02:30:07	2024-09-24 02:30:07
+9d153a76-db92-47e1-aaaa-767aa7096271	Kenaikan berat badan	9d153a76-d806-43b9-bf53-abf4c7b231b6	2024-09-24 02:30:07	2024-09-24 02:30:07
+9d153a76-dc2f-41b5-b99a-b1f26e6dcbd1	Terlalu banyak memakan lemak	9d153a76-d806-43b9-bf53-abf4c7b231b6	2024-09-24 02:30:07	2024-09-24 02:30:07
+9d153a76-dce0-4b25-a8d7-299a48fb50f7	Tidak ada simpulan yang bisa diambil	9d153a76-d806-43b9-bf53-abf4c7b231b6	2024-09-24 02:30:07	2024-09-24 02:30:07
+9d153acb-ffd0-4698-948a-35a001239a60	Axel lebih unggul 25 poin	9d153acb-fe68-4a07-885a-aafdbb26d9b4	2024-09-24 02:31:03	2024-09-24 02:31:03
+9d153acc-00aa-44e0-8e35-d96579f5101a	Sandy lebih unggul 23 poin dari Axel	9d153acb-fe68-4a07-885a-aafdbb26d9b4	2024-09-24 02:31:03	2024-09-24 02:31:03
+9d153acc-0146-4404-9a7c-d8b71e92bce5	Sandy memerlukan 8 poin untuk mengejar ketertinggalan Axel	9d153acb-fe68-4a07-885a-aafdbb26d9b4	2024-09-24 02:31:03	2024-09-24 02:31:03
+9d153acc-01f3-455a-934c-fe710dbf2dc0	Jumlah poin yang didapatkan Sandy sama dengan jumlah poin Axel	9d153acb-fe68-4a07-885a-aafdbb26d9b4	2024-09-24 02:31:03	2024-09-24 02:31:03
+9d153acc-0295-4f01-afbf-6abcaf46b53c	Jumlah poin Sandy dan Axel adalah 73 poin	9d153acb-fe68-4a07-885a-aafdbb26d9b4	2024-09-24 02:31:03	2024-09-24 02:31:03
+9d153b54-045c-48af-b112-de4f86ee4f7b	Sebagian yang mengikuti perkembangan teknologi adalah para pengusaha	9d153b54-032c-4291-a47c-b832930db9d9	2024-09-24 02:32:32	2024-09-24 02:32:32
+9d153b54-0522-486a-afc4-d22aa2bd76e7	Yang menggunakan mobil listrik adalah pengusaha	9d153b54-032c-4291-a47c-b832930db9d9	2024-09-24 02:32:32	2024-09-24 02:32:32
+9d153b54-05a0-4c80-b74a-3e74b3e2098c	Semua pengusaha mengikuti perkembangan teknologi	9d153b54-032c-4291-a47c-b832930db9d9	2024-09-24 02:32:32	2024-09-24 02:32:32
+9d153b54-061f-45e4-87a9-59a76353fad9	Semua yang mengikuti perkembangan teknologi adalah para pengusaha	9d153b54-032c-4291-a47c-b832930db9d9	2024-09-24 02:32:32	2024-09-24 02:32:32
+9d153b54-06ba-4d04-a768-3d65c0adbda9	Pengusaha itu menggunakan mobil listrik	9d153b54-032c-4291-a47c-b832930db9d9	2024-09-24 02:32:32	2024-09-24 02:32:32
+9d153b94-4a7d-4522-842e-2ea046aaef30	28, 25	9d153b94-48e4-4a5b-bda9-d963c4934665	2024-09-24 02:33:14	2024-09-24 02:33:14
+9d153b94-4b93-4caf-b1c0-806d3f5f4764	40, 37	9d153b94-48e4-4a5b-bda9-d963c4934665	2024-09-24 02:33:14	2024-09-24 02:33:14
+9d153b94-4c70-4d51-8ff6-e2c5fc7feb28	28, 30	9d153b94-48e4-4a5b-bda9-d963c4934665	2024-09-24 02:33:14	2024-09-24 02:33:14
+9d153b94-4d2f-4377-83a5-f9a5474ae391	50, 45	9d153b94-48e4-4a5b-bda9-d963c4934665	2024-09-24 02:33:14	2024-09-24 02:33:14
+9d153b94-4dce-46ea-abc2-b800a87aec45	36, 30	9d153b94-48e4-4a5b-bda9-d963c4934665	2024-09-24 02:33:14	2024-09-24 02:33:14
+9d153beb-2d65-4fb3-bdea-00ac4e8770fe	Ada lebih banyak motor daripada mobil	9d153beb-2c05-4a3a-b8e2-75a038124992	2024-09-24 02:34:11	2024-09-24 02:34:11
+9d153beb-2e59-494c-bab8-8ee38c140cde	Ada lebih banyak mobil daripada sepeda	9d153beb-2c05-4a3a-b8e2-75a038124992	2024-09-24 02:34:11	2024-09-24 02:34:11
+9d153beb-2ee3-47ee-8208-b64f23d3ad7a	Banyak motor sama dengan banyak sepeda	9d153beb-2c05-4a3a-b8e2-75a038124992	2024-09-24 02:34:11	2024-09-24 02:34:11
+9d153beb-2f66-467b-8550-3054b95015ce	Banyak motor sama dengan banyak mobil	9d153beb-2c05-4a3a-b8e2-75a038124992	2024-09-24 02:34:11	2024-09-24 02:34:11
+9d153beb-2fdd-482b-9099-180e05868d23	Ada lebih banyak sepeda daripada mobil	9d153beb-2c05-4a3a-b8e2-75a038124992	2024-09-24 02:34:11	2024-09-24 02:34:11
+9d153c49-fada-44a0-ab86-1e18cf95fff7	1.820	9d153c49-f97e-4f7d-8863-2030d3757c16	2024-09-24 02:35:13	2024-09-24 02:35:13
+9d153c49-fbb3-4328-a8a8-7a2183603af8	1.950	9d153c49-f97e-4f7d-8863-2030d3757c16	2024-09-24 02:35:13	2024-09-24 02:35:13
+9d153c49-fc62-4106-8b87-f80999c67582	2.000	9d153c49-f97e-4f7d-8863-2030d3757c16	2024-09-24 02:35:13	2024-09-24 02:35:13
+9d153c49-fcf2-4713-bae9-720a1bc397a9	2.500	9d153c49-f97e-4f7d-8863-2030d3757c16	2024-09-24 02:35:13	2024-09-24 02:35:13
+9d153c49-fd92-45d6-9e6a-252afe18c0f3	3.110	9d153c49-f97e-4f7d-8863-2030d3757c16	2024-09-24 02:35:13	2024-09-24 02:35:13
+9d153c87-a51d-4081-89c4-b06779fac227	62,78	9d153c87-a3ef-45bd-a272-4d4bbd724886	2024-09-24 02:35:53	2024-09-24 02:35:53
+9d153c87-a5d6-4d3a-b9e1-db9908458c14	62,95	9d153c87-a3ef-45bd-a272-4d4bbd724886	2024-09-24 02:35:53	2024-09-24 02:35:53
+9d153c87-a652-4843-813f-850238751a02	63,87	9d153c87-a3ef-45bd-a272-4d4bbd724886	2024-09-24 02:35:53	2024-09-24 02:35:53
+9d153c87-a6f1-48a3-a56a-6ce18ce9e455	65,72	9d153c87-a3ef-45bd-a272-4d4bbd724886	2024-09-24 02:35:53	2024-09-24 02:35:53
+9d153c87-a77b-42bd-a326-79aaa3114ef0	66,93	9d153c87-a3ef-45bd-a272-4d4bbd724886	2024-09-24 02:35:53	2024-09-24 02:35:53
+9d153cac-bb7f-4ea9-b3b1-ea7b36e473ba	Rutin mengerjakan latihan soal biasa dan menunda belajar	9d153cac-ba4c-4126-9815-b2d0dde6f5d5	2024-09-24 02:36:18	2024-09-24 02:36:18
+9d153cac-bc67-4b31-87b8-58b967ec44bf	Rutin mengikuti TO dan latihan soal biasa	9d153cac-ba4c-4126-9815-b2d0dde6f5d5	2024-09-24 02:36:18	2024-09-24 02:36:18
+9d153cac-bd11-4b5c-863d-fae32869506f	Rutin mengulang materi dan menunda belajar	9d153cac-ba4c-4126-9815-b2d0dde6f5d5	2024-09-24 02:36:18	2024-09-24 02:36:18
+9d153cac-bda0-4e93-8c5e-df23be16ccaf	Rutin mengerjakan latihan soal biasa dan mengulang materi	9d153cac-ba4c-4126-9815-b2d0dde6f5d5	2024-09-24 02:36:18	2024-09-24 02:36:18
+9d153cac-be3b-4bea-934b-e4797b3811a8	Rutin mengikuti TO dan mengulang materi	9d153cac-ba4c-4126-9815-b2d0dde6f5d5	2024-09-24 02:36:18	2024-09-24 02:36:18
+9d153cc7-0fac-4865-a1ef-35295bd403f7	72000	9d153cc7-0e86-45e2-aa1c-0698bc39df94	2024-09-24 02:36:35	2024-09-24 02:36:35
+9d153cc7-1076-46fd-bf45-800c74424d95	86400	9d153cc7-0e86-45e2-aa1c-0698bc39df94	2024-09-24 02:36:35	2024-09-24 02:36:35
+9d153cc7-10fb-43e7-aa95-361bf9ed5eb8	144000	9d153cc7-0e86-45e2-aa1c-0698bc39df94	2024-09-24 02:36:35	2024-09-24 02:36:35
+9d153cc7-118d-4bab-a149-54be187e3d81	288000	9d153cc7-0e86-45e2-aa1c-0698bc39df94	2024-09-24 02:36:35	2024-09-24 02:36:35
+9d153cc7-1213-4ca2-a969-3c50d6b71525	518400	9d153cc7-0e86-45e2-aa1c-0698bc39df94	2024-09-24 02:36:35	2024-09-24 02:36:35
+9d153d08-72cd-4a53-8f87-0aafcd325dbf	2 menit	9d153d08-7176-42c0-b337-f618d5873cc6	2024-09-24 02:37:18	2024-09-24 02:37:18
+9d153d08-73a3-4779-9c3b-98331ca76801	3 menit	9d153d08-7176-42c0-b337-f618d5873cc6	2024-09-24 02:37:18	2024-09-24 02:37:18
+9d153d08-7431-4f44-a8f1-e54c2dba181a	6 menit	9d153d08-7176-42c0-b337-f618d5873cc6	2024-09-24 02:37:18	2024-09-24 02:37:18
+9d153d08-74d0-432c-92b0-d9f2e4a80292	7 menit	9d153d08-7176-42c0-b337-f618d5873cc6	2024-09-24 02:37:18	2024-09-24 02:37:18
+9d153d08-756e-4648-be0f-fcf8ac2723ff	9 menit	9d153d08-7176-42c0-b337-f618d5873cc6	2024-09-24 02:37:18	2024-09-24 02:37:18
+9d153d2a-74b1-495c-9e2f-ea02a0e3fb12	M, 4897	9d153d2a-7375-4150-a6a7-1e5a7d06dd19	2024-09-24 02:37:40	2024-09-24 02:37:40
+9d153d2a-7559-47b8-bf7f-1693753a2679	N, 4781	9d153d2a-7375-4150-a6a7-1e5a7d06dd19	2024-09-24 02:37:40	2024-09-24 02:37:40
+9d153d2a-75d1-4c66-ad2d-86fe8edf178a	N, 3987	9d153d2a-7375-4150-a6a7-1e5a7d06dd19	2024-09-24 02:37:40	2024-09-24 02:37:40
+9d153d2a-7655-4239-9154-d37bf27aad85	L, 4789	9d153d2a-7375-4150-a6a7-1e5a7d06dd19	2024-09-24 02:37:40	2024-09-24 02:37:40
+9d153d2a-76d1-4d7e-8302-9a91fc86e24b	M, 4675	9d153d2a-7375-4150-a6a7-1e5a7d06dd19	2024-09-24 02:37:40	2024-09-24 02:37:40
+9d153d73-0aa2-42db-b4ee-a1af4ce9c34a	200 cm2	9d153d73-095e-4448-89fe-267719a0b6fd	2024-09-24 02:38:28	2024-09-24 02:38:28
+9d153d73-0b7c-4455-92b3-0e6860984934	185 cm2	9d153d73-095e-4448-89fe-267719a0b6fd	2024-09-24 02:38:28	2024-09-24 02:38:28
+9d153d73-0c17-42c5-b207-c6ec18ef875b	160 cm2	9d153d73-095e-4448-89fe-267719a0b6fd	2024-09-24 02:38:28	2024-09-24 02:38:28
+9d153d73-0ca9-4a4f-bf6b-dc7e440d0da1	135 cm2	9d153d73-095e-4448-89fe-267719a0b6fd	2024-09-24 02:38:28	2024-09-24 02:38:28
+9d153d73-0d37-44db-97f9-efb8b4f2d42f	120 cm2	9d153d73-095e-4448-89fe-267719a0b6fd	2024-09-24 02:38:28	2024-09-24 02:38:28
+9d153db4-4c84-4bdf-86d1-e6f92c842daa	13500	9d153db4-4b4b-4714-8011-4f5c1a868d6d	2024-09-24 02:39:11	2024-09-24 02:39:11
+9d153db4-4d3e-4818-b361-329b2185701f	14000	9d153db4-4b4b-4714-8011-4f5c1a868d6d	2024-09-24 02:39:11	2024-09-24 02:39:11
+9d153db4-4dbc-4c62-8759-e442acc049d0	14500	9d153db4-4b4b-4714-8011-4f5c1a868d6d	2024-09-24 02:39:11	2024-09-24 02:39:11
+9d153db4-4e3d-4954-a391-a73fdea94b10	15000	9d153db4-4b4b-4714-8011-4f5c1a868d6d	2024-09-24 02:39:11	2024-09-24 02:39:11
+9d153db4-4ec4-4e98-bb57-13371b4aa338	15500	9d153db4-4b4b-4714-8011-4f5c1a868d6d	2024-09-24 02:39:11	2024-09-24 02:39:11
+9d153ddb-5afa-4394-a90b-b54655f58841	9	9d153ddb-59b2-4e8c-9d4c-c00f27615b83	2024-09-24 02:39:36	2024-09-24 02:39:36
+9d153ddb-5bc1-4840-a840-049112e0e7e9	11	9d153ddb-59b2-4e8c-9d4c-c00f27615b83	2024-09-24 02:39:36	2024-09-24 02:39:36
+9d153ddb-5c78-4a85-853b-a16bbe8298d7	13	9d153ddb-59b2-4e8c-9d4c-c00f27615b83	2024-09-24 02:39:36	2024-09-24 02:39:36
+9d153ddb-5d16-44c2-a977-c233611d1fb3	15	9d153ddb-59b2-4e8c-9d4c-c00f27615b83	2024-09-24 02:39:36	2024-09-24 02:39:36
+9d153ddb-5db6-46e5-b539-c1121a86bdcc	17	9d153ddb-59b2-4e8c-9d4c-c00f27615b83	2024-09-24 02:39:36	2024-09-24 02:39:36
+9d153e2b-513d-409f-a35f-d2ce5c313b30	10	9d153e2b-4fdf-4cc2-b0db-1bf442d31a7c	2024-09-24 02:40:29	2024-09-24 02:40:29
+9d153e2b-5226-4c13-98e6-ece20eb31136	12	9d153e2b-4fdf-4cc2-b0db-1bf442d31a7c	2024-09-24 02:40:29	2024-09-24 02:40:29
+9d153e2b-52b9-4fea-9113-6d98fc027377	24	9d153e2b-4fdf-4cc2-b0db-1bf442d31a7c	2024-09-24 02:40:29	2024-09-24 02:40:29
+9d153e2b-5361-42a5-b1b0-e4aa420bac7a	28	9d153e2b-4fdf-4cc2-b0db-1bf442d31a7c	2024-09-24 02:40:29	2024-09-24 02:40:29
+9d153e2b-5411-4105-a679-5c8211e6018a	36	9d153e2b-4fdf-4cc2-b0db-1bf442d31a7c	2024-09-24 02:40:29	2024-09-24 02:40:29
+9d153e64-4262-4f80-9fd1-f2d5997ff473	4	9d153e64-411a-4f07-b86b-600df5188ada	2024-09-24 02:41:06	2024-09-24 02:41:06
+9d153e64-432f-4a37-aae1-d8c625939232	5	9d153e64-411a-4f07-b86b-600df5188ada	2024-09-24 02:41:06	2024-09-24 02:41:06
+9d153e64-43b3-4e80-b0d0-97c5b54c1689	6	9d153e64-411a-4f07-b86b-600df5188ada	2024-09-24 02:41:06	2024-09-24 02:41:06
+9d153e64-442d-4255-8cc9-db2d37ed143b	7	9d153e64-411a-4f07-b86b-600df5188ada	2024-09-24 02:41:06	2024-09-24 02:41:06
+9d153e64-44ae-4243-91dc-2e05182cc006	8	9d153e64-411a-4f07-b86b-600df5188ada	2024-09-24 02:41:06	2024-09-24 02:41:06
+9d153e6b-3e8a-4069-9b65-5cbc37f00eb6	56	9d153e6b-3d60-434f-8a5e-c1faa91b0f6f	2024-09-24 02:41:10	2024-09-24 02:41:10
+9d153e6b-3f32-4ef1-9195-a09ed11dcb1b	50	9d153e6b-3d60-434f-8a5e-c1faa91b0f6f	2024-09-24 02:41:10	2024-09-24 02:41:10
+9d153e6b-3fb6-43fd-9568-b1b91799009a	48	9d153e6b-3d60-434f-8a5e-c1faa91b0f6f	2024-09-24 02:41:10	2024-09-24 02:41:10
+9d153e6b-4031-45da-ad80-57c530ced581	15	9d153e6b-3d60-434f-8a5e-c1faa91b0f6f	2024-09-24 02:41:10	2024-09-24 02:41:10
+9d153e6b-40ac-4a63-b398-2d0cc3030224	Tidak Terdefinisi	9d153e6b-3d60-434f-8a5e-c1faa91b0f6f	2024-09-24 02:41:10	2024-09-24 02:41:10
+9d153e9f-9684-4b52-99f6-b970b90bfbe9	12 buah	9d153e9f-954f-4c05-b537-06a938c5ee53	2024-09-24 02:41:45	2024-09-24 02:41:45
+9d153e9f-9752-4dac-a794-7ce86c97d1c5	13 buah	9d153e9f-954f-4c05-b537-06a938c5ee53	2024-09-24 02:41:45	2024-09-24 02:41:45
+9d153e9f-97e1-424c-bba1-7e598035f568	14 buah	9d153e9f-954f-4c05-b537-06a938c5ee53	2024-09-24 02:41:45	2024-09-24 02:41:45
+9d153e9f-9879-452b-9fc4-c529a2177997	15 buah	9d153e9f-954f-4c05-b537-06a938c5ee53	2024-09-24 02:41:45	2024-09-24 02:41:45
+9d153e9f-991d-49a7-9174-34592ba841c8	16 buah	9d153e9f-954f-4c05-b537-06a938c5ee53	2024-09-24 02:41:45	2024-09-24 02:41:45
+9d153ec0-7323-4538-a696-b5340da1b287	Empat lagu dengan durasi masing-masing lagu 180 detik	9d153ec0-71c2-463e-9867-b50ba72b05e1	2024-09-24 02:42:06	2024-09-24 02:42:06
+9d153ec0-73f4-4a42-98a4-b841422294cb	Lima lagu dengan durasi masing-masing lagu 2 menit 24 detik	9d153ec0-71c2-463e-9867-b50ba72b05e1	2024-09-24 02:42:06	2024-09-24 02:42:06
+9d153ec0-747e-488c-8617-663ff2939644	Tiga lagu dengan durasi masing-masing lagu 4 menit 24 detik	9d153ec0-71c2-463e-9867-b50ba72b05e1	2024-09-24 02:42:06	2024-09-24 02:42:06
+9d153ec0-7503-4258-bcc2-eab7239aae00	Empat lagu dengan durasi masing-masing lagu 200 detik	9d153ec0-71c2-463e-9867-b50ba72b05e1	2024-09-24 02:42:06	2024-09-24 02:42:06
+9d153ec0-75a4-46c8-8d81-037ac5b1642b	Tiga lagu dengan durasi masing-masing 4 menit	9d153ec0-71c2-463e-9867-b50ba72b05e1	2024-09-24 02:42:06	2024-09-24 02:42:06
+9d153edb-f0e3-46b0-8534-a1bcaf26226a	294 buah	9d153edb-efbe-4309-9185-141b9a40d99f	2024-09-24 02:42:24	2024-09-24 02:42:24
+9d153edb-f1a6-403c-9f5e-317db034aacd	295 buah	9d153edb-efbe-4309-9185-141b9a40d99f	2024-09-24 02:42:24	2024-09-24 02:42:24
+9d153edb-f22f-4b69-b26c-d6684839f74f	296 buah	9d153edb-efbe-4309-9185-141b9a40d99f	2024-09-24 02:42:24	2024-09-24 02:42:24
+9d153edb-f2d1-4d9b-883a-6380a279d775	287 buah	9d153edb-efbe-4309-9185-141b9a40d99f	2024-09-24 02:42:24	2024-09-24 02:42:24
+9d153edb-f353-4e91-bd16-731f5743f7e1	288 buah	9d153edb-efbe-4309-9185-141b9a40d99f	2024-09-24 02:42:24	2024-09-24 02:42:24
+9d153f25-9b3e-4b69-b5c5-a4f62141eff5	3842 buah	9d153f25-99f5-4825-8ed2-910c8dde5f15	2024-09-24 02:43:13	2024-09-24 02:43:13
+9d153f25-9c0a-41de-b081-8b178670e1d5	4852 buah	9d153f25-99f5-4825-8ed2-910c8dde5f15	2024-09-24 02:43:13	2024-09-24 02:43:13
+9d153f25-9c95-46f3-8207-e4c9ee3bbbdc	3492 buah	9d153f25-99f5-4825-8ed2-910c8dde5f15	2024-09-24 02:43:13	2024-09-24 02:43:13
+9d153f25-9d1b-4b8c-9e6f-16c88de196d4	3872 buah	9d153f25-99f5-4825-8ed2-910c8dde5f15	2024-09-24 02:43:13	2024-09-24 02:43:13
+9d153f25-9d90-4b5e-b7f5-a5e1853a2fff	4882 buah	9d153f25-99f5-4825-8ed2-910c8dde5f15	2024-09-24 02:43:13	2024-09-24 02:43:13
+9d153f3a-1e52-442c-9b3a-a9052ae3614d	Total seluruh anggaran adalah 1158,21 Milliar Rupiah	9d153f3a-1cda-4cc9-a12e-0cae71fb81b2	2024-09-24 02:43:26	2024-09-24 02:43:26
+9d153f3a-1f2b-412d-9465-a5256d62f597	Total seluruh anggaran adalah 1160,19 Milliar Rupiah	9d153f3a-1cda-4cc9-a12e-0cae71fb81b2	2024-09-24 02:43:26	2024-09-24 02:43:26
+9d153f3a-1fca-4019-9ed4-28263aab9f80	Terdapat 2 program yang memiliki anggaran di atas rata-rata	9d153f3a-1cda-4cc9-a12e-0cae71fb81b2	2024-09-24 02:43:26	2024-09-24 02:43:26
+9d153f3a-205e-4566-acb4-60c0f1ca4d9b	Rata-rata seluruh anggaran adalah 193.53 Milliar Rupiah	9d153f3a-1cda-4cc9-a12e-0cae71fb81b2	2024-09-24 02:43:26	2024-09-24 02:43:26
+9d153f3a-20f8-4d4b-98d5-9ee63be42755	Rata-rata seluruh anggaran adalah 187.64 Milliar Rupiah	9d153f3a-1cda-4cc9-a12e-0cae71fb81b2	2024-09-24 02:43:26	2024-09-24 02:43:26
+9d153f59-8235-4f26-820e-ae37e793a16a	5472	9d153f59-80ec-4f5c-b20d-bdf8d84640ad	2024-09-24 02:43:47	2024-09-24 02:43:47
+9d153f59-82ea-44a7-980f-e3c38dbaf750	4096	9d153f59-80ec-4f5c-b20d-bdf8d84640ad	2024-09-24 02:43:47	2024-09-24 02:43:47
+9d153f59-8368-4c4c-9f41-ac4c18f74f53	2401	9d153f59-80ec-4f5c-b20d-bdf8d84640ad	2024-09-24 02:43:47	2024-09-24 02:43:47
+9d153f59-83ec-4e6b-a075-cc8e0fc7f7c6	1680	9d153f59-80ec-4f5c-b20d-bdf8d84640ad	2024-09-24 02:43:47	2024-09-24 02:43:47
+9d153f59-847b-4528-9bd1-17c28948ca58	840	9d153f59-80ec-4f5c-b20d-bdf8d84640ad	2024-09-24 02:43:47	2024-09-24 02:43:47
+9d153f7a-ad87-4929-8d06-0f07025c751d	160 gram	9d153f7a-ac55-4c3a-8efb-3dd3a207e70a	2024-09-24 02:44:08	2024-09-24 02:44:08
+9d153f7a-ae40-422e-b9c2-6b7775218c70	120 gram	9d153f7a-ac55-4c3a-8efb-3dd3a207e70a	2024-09-24 02:44:08	2024-09-24 02:44:08
+9d153f7a-aecf-4a66-8f2e-f6f52cae88b0	100 gram	9d153f7a-ac55-4c3a-8efb-3dd3a207e70a	2024-09-24 02:44:08	2024-09-24 02:44:08
+9d153f7a-af48-4ce2-a0e9-8348ad1ab164	60 gram	9d153f7a-ac55-4c3a-8efb-3dd3a207e70a	2024-09-24 02:44:08	2024-09-24 02:44:08
+9d153f7a-afcc-42bd-af32-1455bd5a3cc1	20 gram	9d153f7a-ac55-4c3a-8efb-3dd3a207e70a	2024-09-24 02:44:08	2024-09-24 02:44:08
+9d153f8e-1662-4b9c-b10a-e37db8ba0f9e	169	9d153f8e-152b-4d10-a401-29022a3a8e83	2024-09-24 02:44:21	2024-09-24 02:44:21
+9d153f8e-1731-496d-b5d8-25c98214d30b	241	9d153f8e-152b-4d10-a401-29022a3a8e83	2024-09-24 02:44:21	2024-09-24 02:44:21
+9d153f8e-17d8-4008-a05f-b0bb9db5266e	343	9d153f8e-152b-4d10-a401-29022a3a8e83	2024-09-24 02:44:21	2024-09-24 02:44:21
+9d153f8e-1863-4e27-9da4-d7d998809137	409	9d153f8e-152b-4d10-a401-29022a3a8e83	2024-09-24 02:44:21	2024-09-24 02:44:21
+9d153f8e-1923-4ffb-9fef-403e419710b1	840	9d153f8e-152b-4d10-a401-29022a3a8e83	2024-09-24 02:44:21	2024-09-24 02:44:21
+9d153fbd-aee5-46a5-a4a5-9bf6cc5aec29	Banyak anak muda lebih fokus pada pengembangan diri daripada menikah.	9d153fbd-add1-49fb-b711-9045c9b0250d	2024-09-24 02:44:52	2024-09-24 02:44:52
+9d153fbd-af95-44e6-8312-d1183d15dd15	Anak muda Indonesia lebih memilih mengejar impian daripada menikah.	9d153fbd-add1-49fb-b711-9045c9b0250d	2024-09-24 02:44:52	2024-09-24 02:44:52
+9d153fbd-b023-43c3-b321-27ab719d1a49	Banyak anak muda di Indonesia kini menolak untuk menikah pada usia muda.	9d153fbd-add1-49fb-b711-9045c9b0250d	2024-09-24 02:44:52	2024-09-24 02:44:52
+9d153fbd-b0b6-47d7-bd72-b13e95a5a300	Pernikahan kini bukan lagi menjadi prioritas utama bagi anak muda di Indonesia.	9d153fbd-add1-49fb-b711-9045c9b0250d	2024-09-24 02:44:52	2024-09-24 02:44:52
+9d153fbd-b139-474b-8f52-2ed55bd12238	Pernikahan usia muda masih sering terjadi di berbagai daerah di Indonesia.	9d153fbd-add1-49fb-b711-9045c9b0250d	2024-09-24 02:44:52	2024-09-24 02:44:52
+9d153fcd-b312-480b-868a-5cff96ed4f02	0,96	9d153fcd-ab45-498d-9a05-51eef4745e28	2024-09-24 02:45:03	2024-09-24 02:45:03
+9d153fcd-b4f3-4ba8-a8e4-45760cc69f1d	0,7	9d153fcd-ab45-498d-9a05-51eef4745e28	2024-09-24 02:45:03	2024-09-24 02:45:03
+9d153fcd-b66f-4410-8e6c-1d3c12d8365b	0,21	9d153fcd-ab45-498d-9a05-51eef4745e28	2024-09-24 02:45:03	2024-09-24 02:45:03
+9d153fcd-b7c1-4d23-8ffa-8cdc6c98f69c	0,16	9d153fcd-ab45-498d-9a05-51eef4745e28	2024-09-24 02:45:03	2024-09-24 02:45:03
+9d153fcd-b933-4660-93ae-34994a1515c2	0,14	9d153fcd-ab45-498d-9a05-51eef4745e28	2024-09-24 02:45:03	2024-09-24 02:45:03
+9d15400a-8ca2-43bf-9b96-43860e67625f	Simpulan tersebut pasti benar	9d15400a-8b93-4ecc-9baa-9fe3f133b0a3	2024-09-24 02:45:43	2024-09-24 02:45:43
+9d15400a-8d53-4729-a9ed-ff1245eca98c	Simpulan tersebut mungkin benar	9d15400a-8b93-4ecc-9baa-9fe3f133b0a3	2024-09-24 02:45:43	2024-09-24 02:45:43
+9d15400a-8dd1-425a-b897-cf994991d106	Simpulan tersebut pasti salah	9d15400a-8b93-4ecc-9baa-9fe3f133b0a3	2024-09-24 02:45:43	2024-09-24 02:45:43
+9d15400a-8e5a-48b2-9065-be11f0b563f2	Simpulan tidak relevan dengan informasi yang diberikan	9d15400a-8b93-4ecc-9baa-9fe3f133b0a3	2024-09-24 02:45:43	2024-09-24 02:45:43
+9d15400a-8ee7-422c-b16b-88339c6e81fe	Simpulan tidak dapat dinilai karena informasi tidak cukup	9d15400a-8b93-4ecc-9baa-9fe3f133b0a3	2024-09-24 02:45:43	2024-09-24 02:45:43
+9d154013-8114-44d2-9518-adfcc12c34d5	1/2401	9d154013-7fcd-442e-bb89-1afc74cd4c98	2024-09-24 02:45:48	2024-09-24 02:45:48
+9d154013-81d8-48c5-9af5-ad841948cb5f	1/840	9d154013-7fcd-442e-bb89-1afc74cd4c98	2024-09-24 02:45:48	2024-09-24 02:45:48
+9d154013-826e-4531-8390-0e9f1b11a90c	1/343	9d154013-7fcd-442e-bb89-1afc74cd4c98	2024-09-24 02:45:48	2024-09-24 02:45:48
+9d154013-82f0-4dad-9268-d7e946a4ada3	1/49	9d154013-7fcd-442e-bb89-1afc74cd4c98	2024-09-24 02:45:48	2024-09-24 02:45:48
+9d154013-8370-4c57-8c6b-88c874efc377	1/7	9d154013-7fcd-442e-bb89-1afc74cd4c98	2024-09-24 02:45:48	2024-09-24 02:45:48
+9d154045-0ec5-4e27-b851-feb3f5c0da3a	Rossi jatuh di tengah balapan	9d154045-0d78-4413-8815-1d56a1f44c27	2024-09-24 02:46:21	2024-09-24 02:46:21
+9d154045-0fac-4e37-a0df-e688fb5ab7c2	Rossi dapat menyelesaikan perlombaan namun pada posisi paling belakang	9d154045-0d78-4413-8815-1d56a1f44c27	2024-09-24 02:46:21	2024-09-24 02:46:21
+9d154045-106c-4cbf-b523-c29228f5a4c1	Rossi akan mengalami kerusakan mesin sehingga tidak dapat menyelesaikan perlombaan	9d154045-0d78-4413-8815-1d56a1f44c27	2024-09-24 02:46:21	2024-09-24 02:46:21
+9d154045-110e-4e5c-b804-fa6504604eaa	Rossi tidak dapat menyelesaikan perlombaan	9d154045-0d78-4413-8815-1d56a1f44c27	2024-09-24 02:46:21	2024-09-24 02:46:21
+9d154045-1195-4a11-bf85-9827dcc0e056	Rossi dapat menyelesaikan perlombaan, namun dengan hasil yang mengecewakan	9d154045-0d78-4413-8815-1d56a1f44c27	2024-09-24 02:46:21	2024-09-24 02:46:21
+9d154088-1b21-43bc-b441-cd44040f3548	5	9d154088-19ff-41a3-b4e6-9abe34ed555e	2024-09-24 02:47:05	2024-09-24 02:47:05
+9d154088-1bd1-49c6-8fc5-f69402172ddb	2,5	9d154088-19ff-41a3-b4e6-9abe34ed555e	2024-09-24 02:47:05	2024-09-24 02:47:05
+9d154088-1c56-4b6a-9b39-9a4ce5b0ba55	2	9d154088-19ff-41a3-b4e6-9abe34ed555e	2024-09-24 02:47:05	2024-09-24 02:47:05
+9d154088-1ce8-41e2-95ff-775c72bb01c8	1,25	9d154088-19ff-41a3-b4e6-9abe34ed555e	2024-09-24 02:47:05	2024-09-24 02:47:05
+9d154088-1d7a-4763-a8e6-95d16da7eeca	0,625	9d154088-19ff-41a3-b4e6-9abe34ed555e	2024-09-24 02:47:05	2024-09-24 02:47:05
+9d1540ca-314c-47c7-81c0-5f91856e70df	0	9d1540ca-3011-44c9-9396-28b823215145	2024-09-24 02:47:48	2024-09-24 02:47:48
+9d1540ca-3228-4048-ab8d-5c6da5432408	1	9d1540ca-3011-44c9-9396-28b823215145	2024-09-24 02:47:48	2024-09-24 02:47:48
+9d1540ca-32d6-445a-b408-61787075aa75	2	9d1540ca-3011-44c9-9396-28b823215145	2024-09-24 02:47:48	2024-09-24 02:47:48
+9d1540ca-3382-4ff2-a39c-44150dbb3e55	3	9d1540ca-3011-44c9-9396-28b823215145	2024-09-24 02:47:48	2024-09-24 02:47:48
+9d1540ca-340e-435f-9441-68f6aaa2e427	4	9d1540ca-3011-44c9-9396-28b823215145	2024-09-24 02:47:48	2024-09-24 02:47:48
+9d154125-2b0e-48bb-8e4b-7de248cf7dfd	Pernyataan (1) SAJA cukup untuk menjawab pertanyaan, tetapi pernyataan (2) SAJA tidak cukup.	9d154125-29dc-4dc6-bb47-3b124bb8b0f1	2024-09-24 02:48:48	2024-09-24 02:48:48
+9d154125-2bbd-472c-84ee-1fbe08f587f3	Pernyataan (2) SAJA cukup untuk menjawab pertanyaan, tetapi pernyataan (1) SAJA tidak cukup.	9d154125-29dc-4dc6-bb47-3b124bb8b0f1	2024-09-24 02:48:48	2024-09-24 02:48:48
+9d154125-2c61-415d-8caa-8139fd105af4	Pernyataan (1) dan (2) cukup untuk menjawab pertanyaan, tetapi salah satu dari keduanya tidak cukup	9d154125-29dc-4dc6-bb47-3b124bb8b0f1	2024-09-24 02:48:48	2024-09-24 02:48:48
+9d154125-2cfe-469b-b5cd-2008e26d0127	Pernyataan (1) atau pernyataan (2) SAJA sudah cukup untuk menjawab pertanyaan.	9d154125-29dc-4dc6-bb47-3b124bb8b0f1	2024-09-24 02:48:48	2024-09-24 02:48:48
+9d154125-2d96-4881-a120-9c822e23912e	Pernyataan (1) dan pernyataan (2) tidak cukup untuk menjawab pertanyaan.	9d154125-29dc-4dc6-bb47-3b124bb8b0f1	2024-09-24 02:48:48	2024-09-24 02:48:48
+9d154160-f645-4fa6-a2e7-6d6623282eda	2x-5	9d154160-f4f6-4a1b-a2de-cba1cfc2bbde	2024-09-24 02:49:27	2024-09-24 02:49:27
+9d154160-f71b-43ec-aeb3-7ce08d72cbc6	2x+5	9d154160-f4f6-4a1b-a2de-cba1cfc2bbde	2024-09-24 02:49:27	2024-09-24 02:49:27
+9d154160-f7b7-4882-b80c-4083ec0a05f8	2x-3	9d154160-f4f6-4a1b-a2de-cba1cfc2bbde	2024-09-24 02:49:27	2024-09-24 02:49:27
+9d154160-f843-432f-b112-eeee2a440371	2x-1	9d154160-f4f6-4a1b-a2de-cba1cfc2bbde	2024-09-24 02:49:27	2024-09-24 02:49:27
+9d154160-f8d5-465f-845b-aa7acb20fb97	2x+1	9d154160-f4f6-4a1b-a2de-cba1cfc2bbde	2024-09-24 02:49:27	2024-09-24 02:49:27
+9d154214-56ca-463a-bc4a-cdb73d4c9bca	Buah kalengan atau buah beku tidak dapat dikonsumsi karena berbahaya.	9d154214-5531-4d7b-ae14-2fa2d3dcbcb0	2024-09-24 02:51:25	2024-09-24 02:51:25
+9d154214-579a-4753-acef-6601093ffae1	Buah dengan kandungan gula yang tinggi membahayakan kesehatan tubuh.	9d154214-5531-4d7b-ae14-2fa2d3dcbcb0	2024-09-24 02:51:25	2024-09-24 02:51:25
+9d154214-5845-48d3-a38a-f19b9feb1791	Kandungan yang tidak baik untuk tubuh mungkin terdapat pada buah beku.	9d154214-5531-4d7b-ae14-2fa2d3dcbcb0	2024-09-24 02:51:25	2024-09-24 02:51:25
+9d154214-58e4-493f-9f1c-209e806ae1ef	Pengawet atau bahan kimia tambahan menyebabkan buah tidak dapat dikonsumsi.	9d154214-5531-4d7b-ae14-2fa2d3dcbcb0	2024-09-24 02:51:25	2024-09-24 02:51:25
+9d154214-596c-46aa-a48e-768a7bb85714	Kandungan gula yang tinggi dan pengawet terkandung dalam setiap buah kalengan.	9d154214-5531-4d7b-ae14-2fa2d3dcbcb0	2024-09-24 02:51:25	2024-09-24 02:51:25
+9d15423a-727d-44ae-94bd-c721826196e4	3/(2m+4)	9d15423a-7105-446d-ba51-19a4164c17bd	2024-09-24 02:51:50	2024-09-24 02:51:50
+9d15423a-7358-4495-a056-259c22f010c0	3/(2m-4)	9d15423a-7105-446d-ba51-19a4164c17bd	2024-09-24 02:51:50	2024-09-24 02:51:50
+9d15423a-7404-491a-8f62-a884f929d9a5	3/(4m+2)	9d15423a-7105-446d-ba51-19a4164c17bd	2024-09-24 02:51:50	2024-09-24 02:51:50
+9d15423a-74b0-4442-91ee-02a55a9c7231	3/(4m-2)	9d15423a-7105-446d-ba51-19a4164c17bd	2024-09-24 02:51:50	2024-09-24 02:51:50
+9d15423a-754b-4f6e-868a-6bb1f3faaabe	3/(2m+2)	9d15423a-7105-446d-ba51-19a4164c17bd	2024-09-24 02:51:50	2024-09-24 02:51:50
+9d154264-1b85-48da-b00b-8c8397e6db56	Teknik bercocok tanam	9d154264-1a4c-4e13-a92e-8f4b30c52327	2024-09-24 02:52:17	2024-09-24 02:52:17
+9d154264-1c43-4cac-8d07-80e0830adc52	Wirausaha di bidang tanaman dalam pot	9d154264-1a4c-4e13-a92e-8f4b30c52327	2024-09-24 02:52:17	2024-09-24 02:52:17
+9d154264-1cdc-465e-ad37-b81e1cc17aaf	Teknik pertanian	9d154264-1a4c-4e13-a92e-8f4b30c52327	2024-09-24 02:52:17	2024-09-24 02:52:17
+9d154264-1d7f-40a7-a09b-61315e4ef2b4	Teknik melestarikan lingkungan	9d154264-1a4c-4e13-a92e-8f4b30c52327	2024-09-24 02:52:17	2024-09-24 02:52:17
+9d154264-1e16-4e29-8c4d-3f0c4a0f3df0	Teknik menambah pendapatan	9d154264-1a4c-4e13-a92e-8f4b30c52327	2024-09-24 02:52:17	2024-09-24 02:52:17
+9d1542ae-f7c6-4ca6-891f-2426eabea79b	Bahan kimia yang digunakan untuk menyuburkan tanah.	9d1542ae-f66e-43a8-944a-576f8c41191b	2024-09-24 02:53:06	2024-09-24 02:53:06
+9d1542ae-f8a1-4d8b-8187-0f870cffeea8	Tanaman khusus yang digunakan untuk menyuburkan tanah.	9d1542ae-f66e-43a8-944a-576f8c41191b	2024-09-24 02:53:06	2024-09-24 02:53:06
+9d1542ae-f94e-4be5-b5f5-f7b4c735da1a	Pupuk alami yang terbuat dari bahan organik yang sudah membusuk.	9d1542ae-f66e-43a8-944a-576f8c41191b	2024-09-24 02:53:06	2024-09-24 02:53:06
+9d1542ae-f9ee-40bf-b680-4961f5210219	Campuran tanah dan pasir untuk menanam tanaman.	9d1542ae-f66e-43a8-944a-576f8c41191b	2024-09-24 02:53:06	2024-09-24 02:53:06
+9d1542ae-fa85-4a9b-9409-3116a36a2634	Alat pertanian untuk menggemburkan tanah.	9d1542ae-f66e-43a8-944a-576f8c41191b	2024-09-24 02:53:06	2024-09-24 02:53:06
+9d154308-23b2-4ada-9b62-59d61e812593	(-4,-2)	9d154308-2220-4f6d-ab1f-18c01498626a	2024-09-24 02:54:04	2024-09-24 02:54:04
+9d154308-2496-4736-8a6e-8541d9c3985e	(2,4)	9d154308-2220-4f6d-ab1f-18c01498626a	2024-09-24 02:54:04	2024-09-24 02:54:04
+9d154308-2559-456b-8761-12ed91563e8a	(2,2)	9d154308-2220-4f6d-ab1f-18c01498626a	2024-09-24 02:54:04	2024-09-24 02:54:04
+9d154308-2607-404b-957b-6c866c338245	(2,-3)	9d154308-2220-4f6d-ab1f-18c01498626a	2024-09-24 02:54:04	2024-09-24 02:54:04
+9d154308-26a7-4cf7-adde-b6f71e83c603	(3,2)	9d154308-2220-4f6d-ab1f-18c01498626a	2024-09-24 02:54:04	2024-09-24 02:54:04
+9d15430c-c4c8-4e41-a342-9d8f7f099cb8	Pengaruh Perubahan Sosial Terhadap Kehidupan Masyarakat	9d15430c-c397-4676-ac12-8d00835d1817	2024-09-24 02:54:07	2024-09-24 02:54:07
+9d15430c-c577-4de2-bca3-b180b71d6860	Dimensi dan Dampak Perubahan Sosial-Budaya	9d15430c-c397-4676-ac12-8d00835d1817	2024-09-24 02:54:07	2024-09-24 02:54:07
+9d15430c-c5ff-470b-b78c-41fe49864cbf	Hubungan Antara Teknologi dan Perubahan Sosial	9d15430c-c397-4676-ac12-8d00835d1817	2024-09-24 02:54:07	2024-09-24 02:54:07
+9d15430c-c687-4ba3-9abb-83cbcc154130	Modernisasi, Teknologi, dan Kesenjangan Sosial	9d15430c-c397-4676-ac12-8d00835d1817	2024-09-24 02:54:07	2024-09-24 02:54:07
+9d15430c-c6fd-41ea-9e7e-7a55455b8f1e	Peran Manusia dalam Perubahan Sosial dan Budaya	9d15430c-c397-4676-ac12-8d00835d1817	2024-09-24 02:54:07	2024-09-24 02:54:07
+9d154378-aa87-4d5d-97bc-92b881fcce5e	b+c=0	9d154378-a954-442e-b074-5edbe2eeb7cc	2024-09-24 02:55:18	2024-09-24 02:55:18
+9d154378-ab46-4de0-bb26-19528717a4ab	b=a*c	9d154378-a954-442e-b074-5edbe2eeb7cc	2024-09-24 02:55:18	2024-09-24 02:55:18
+9d154378-abd6-45e7-ba63-9411ebb54651	c=a^2	9d154378-a954-442e-b074-5edbe2eeb7cc	2024-09-24 02:55:18	2024-09-24 02:55:18
+9d154378-ac69-46d6-9645-24c9a384ccb3	b=4a	9d154378-a954-442e-b074-5edbe2eeb7cc	2024-09-24 02:55:18	2024-09-24 02:55:18
+9d154378-ad01-4440-a79d-06cd8e7429e7	b=c	9d154378-a954-442e-b074-5edbe2eeb7cc	2024-09-24 02:55:18	2024-09-24 02:55:18
+9d154395-273e-438e-8223-cf7515704bf5	Menyebabkan penurunan jumlah tenaga profesional.	9d154395-2609-4b29-8525-b52f301657a9	2024-09-24 02:55:37	2024-09-24 02:55:37
+9d154395-27f9-4cfe-a738-e6901a0cc683	Menyebabkan eskalasi atau peningkatan tenaga profesional.	9d154395-2609-4b29-8525-b52f301657a9	2024-09-24 02:55:37	2024-09-24 02:55:37
+9d154395-287f-400d-9a58-4811731d698a	Menyebabkan penghapusan tenaga profesional.	9d154395-2609-4b29-8525-b52f301657a9	2024-09-24 02:55:37	2024-09-24 02:55:37
+9d154395-2913-47d0-9036-82d8a6178635	Tidak ada dampak terhadap tenaga profesional.	9d154395-2609-4b29-8525-b52f301657a9	2024-09-24 02:55:37	2024-09-24 02:55:37
+9d154395-29a1-4c43-ad71-4ed3f6f1b744	Menggantikan tenaga profesional dengan teknologi.	9d154395-2609-4b29-8525-b52f301657a9	2024-09-24 02:55:37	2024-09-24 02:55:37
+9d1543c6-8269-4324-85fb-5202d71c431f	7	9d1543c6-8111-48fd-984e-a9198ab37520	2024-09-24 02:56:09	2024-09-24 02:56:09
+9d1543c6-832b-4b25-bb42-b6f15c8a2f84	49	9d1543c6-8111-48fd-984e-a9198ab37520	2024-09-24 02:56:09	2024-09-24 02:56:09
+9d1543c6-83d4-4e5c-8a52-dd0ad0a70f2f	343	9d1543c6-8111-48fd-984e-a9198ab37520	2024-09-24 02:56:09	2024-09-24 02:56:09
+9d1543c6-8462-4130-88ba-4af16e28390c	2401	9d1543c6-8111-48fd-984e-a9198ab37520	2024-09-24 02:56:09	2024-09-24 02:56:09
+9d1543c6-84e3-4a97-8e47-0b504638c82d	16807	9d1543c6-8111-48fd-984e-a9198ab37520	2024-09-24 02:56:09	2024-09-24 02:56:09
+9d154405-c3ce-4c2a-ba8e-9097c4ea0f54	2 menit	9d154405-c29c-4290-b299-d66e57b02257	2024-09-24 02:56:51	2024-09-24 02:56:51
+9d154405-c494-4bd9-9b14-b16679377ccc	2 menit 40 detik	9d154405-c29c-4290-b299-d66e57b02257	2024-09-24 02:56:51	2024-09-24 02:56:51
+9d154405-c51d-4aa7-bddb-ea73e782903f	3 menit 10 detik	9d154405-c29c-4290-b299-d66e57b02257	2024-09-24 02:56:51	2024-09-24 02:56:51
+9d154405-c5a5-46d8-9e40-f9e2ff2be4a5	3 menit 20 detik	9d154405-c29c-4290-b299-d66e57b02257	2024-09-24 02:56:51	2024-09-24 02:56:51
+9d154405-c624-4a93-aac6-c15df7e0887f	3 menit 40 detik	9d154405-c29c-4290-b299-d66e57b02257	2024-09-24 02:56:51	2024-09-24 02:56:51
+9d154438-ac73-4c75-bf2d-61564b47a6c3	7/15	9d154438-ab19-4208-9803-a8689ec92ccb	2024-09-24 02:57:24	2024-09-24 02:57:24
+9d154438-ad29-4e5f-a585-e854eae17601	8/15	9d154438-ab19-4208-9803-a8689ec92ccb	2024-09-24 02:57:24	2024-09-24 02:57:24
+9d154438-adde-4c20-86ca-1e2594ac1177	9/15	9d154438-ab19-4208-9803-a8689ec92ccb	2024-09-24 02:57:24	2024-09-24 02:57:24
+9d154438-ae73-4d1e-96af-275addb021d4	10/15	9d154438-ab19-4208-9803-a8689ec92ccb	2024-09-24 02:57:24	2024-09-24 02:57:24
+9d154438-af0a-43fb-b9db-9497a1fc7d3e	11/15	9d154438-ab19-4208-9803-a8689ec92ccb	2024-09-24 02:57:24	2024-09-24 02:57:24
+9d154456-d458-49d2-9db5-c7fa3b72b7fc	Menjelaskan pengaruh perubahan sosial-budaya terhadap perkembangan ekonomi.	9d154456-d32a-44f3-929d-ee13eb3e93df	2024-09-24 02:57:44	2024-09-24 02:57:44
+9d154456-d52a-4894-9042-3626098e8f9b	Mengajak masyarakat untuk menolak perubahan sosial yang terjadi karena dampaknya yang negatif.	9d154456-d32a-44f3-929d-ee13eb3e93df	2024-09-24 02:57:44	2024-09-24 02:57:44
+9d154456-d5c3-484f-910c-50f475df656a	Menginformasikan dampak positif dan negatif perubahan sosial-budaya di masyarakat.	9d154456-d32a-44f3-929d-ee13eb3e93df	2024-09-24 02:57:44	2024-09-24 02:57:44
+9d154456-d660-452d-ac3e-e159b7d44b65	Mendeskripsikan pentingnya inovasi teknologi dalam perubahan sosial-budaya.	9d154456-d32a-44f3-929d-ee13eb3e93df	2024-09-24 02:57:44	2024-09-24 02:57:44
+9d154456-d705-4e37-9146-6b7c8629c7a3	Mendeskripsikan pentingnya inovasi teknologi dalam perubahan sosial-budaya.	9d154456-d32a-44f3-929d-ee13eb3e93df	2024-09-24 02:57:44	2024-09-24 02:57:44
+9d154476-b09c-4a60-b050-0f7f34a1faca	Tutorial memasak nasi itu dibuatkan Anisa.	9d154476-af36-48dc-9549-5e88c9200973	2024-09-24 02:58:05	2024-09-24 02:58:05
+9d154476-b175-4d6e-97fc-22e0d94748ef	Tutorial memasak nasi itu membuat Anisa.	9d154476-af36-48dc-9549-5e88c9200973	2024-09-24 02:58:05	2024-09-24 02:58:05
+9d154476-b216-4df6-9280-6614d58c3dd6	Anisa membuat tutorial memasak nasi.	9d154476-af36-48dc-9549-5e88c9200973	2024-09-24 02:58:05	2024-09-24 02:58:05
+9d154476-b2a9-46fb-99e2-ab474b2c5e5a	Anisa memasak tutorial membuat nasi.	9d154476-af36-48dc-9549-5e88c9200973	2024-09-24 02:58:05	2024-09-24 02:58:05
+9d154476-b33a-4ff7-b38e-1c6621f63a22	Anisa dibuat tutorial memasak nasi.	9d154476-af36-48dc-9549-5e88c9200973	2024-09-24 02:58:05	2024-09-24 02:58:05
+9d1544a5-0c80-404b-9b4b-62e5837ee8ed	P>Q	9d1544a5-0b21-40fb-80e6-33523585d421	2024-09-24 02:58:35	2024-09-24 02:58:35
+9d1544a5-0d45-46f2-b4d0-78504632095a	P<Q	9d1544a5-0b21-40fb-80e6-33523585d421	2024-09-24 02:58:35	2024-09-24 02:58:35
+9d1544a5-0dcf-466c-bdd1-989cec33aaec	P=Q	9d1544a5-0b21-40fb-80e6-33523585d421	2024-09-24 02:58:35	2024-09-24 02:58:35
+9d1544a5-0e6a-4986-8320-49efc4eeab17	Tidak dapat ditentukan hubungan	9d1544a5-0b21-40fb-80e6-33523585d421	2024-09-24 02:58:35	2024-09-24 02:58:35
+9d1544a5-0efb-4449-89d5-612fef9db870	-	9d1544a5-0b21-40fb-80e6-33523585d421	2024-09-24 02:58:35	2024-09-24 02:58:35
+9d1544be-01f6-46b3-96a8-760f32f27bdf	Hamburger adalah makanan dari Jerman yang memiliki rasa enak namun memberikan dampak negatif pada tubuh jika dikonsumsi berlebihan, seperti meningkatkan berat badan dan memicu keinginan untuk makan lebih banyak.	9d1544be-007b-4559-b49e-46251cf1cc2e	2024-09-24 02:58:51	2024-09-24 02:58:51
+9d1544be-02ec-49ec-8f76-28c4136ae859	Makanan asal Hamburg, Jerman, seperti hamburger memiliki rasa yang lezat dan bisa mengenyangkan dalam waktu lama, tetapi tidak baik jika dimakan terlalu sering.	9d1544be-007b-4559-b49e-46251cf1cc2e	2024-09-24 02:58:51	2024-09-24 02:58:51
+9d1544be-03ad-4584-b01d-311f20c3afb2	Hamburger, makanan yang populer karena rasanya, memberikan energi jangka pendek dan tubuh memerlukan waktu hingga 3 hari untuk mencernanya sepenuhnya.	9d1544be-007b-4559-b49e-46251cf1cc2e	2024-09-24 02:58:51	2024-09-24 02:58:51
+9d1544be-0452-47d6-ba86-c87d3a482f45	Efek samping dari hamburger adalah peningkatan berat badan, kebutuhan jantung dan ginjal untuk bekerja ekstra, serta rasa kenyang yang bertahan hingga beberapa jam setelah makan.	9d1544be-007b-4559-b49e-46251cf1cc2e	2024-09-24 02:58:51	2024-09-24 02:58:51
+9d1544be-04eb-4931-b0df-9a0fc9f5f73a	Meskipun kaya rasa, hamburger adalah makanan yang sulit dicerna dan mengandung banyak kalori, sehingga tidak boleh dimakan terlalu sering untuk menjaga kesehatan.	9d1544be-007b-4559-b49e-46251cf1cc2e	2024-09-24 02:58:51	2024-09-24 02:58:51
+9d1544f7-2f4b-4c89-b1a5-c070f3c6f03a	yang cenderung tidak tertemukan dalam kamus, sulit pemecahannya oleh komputer, dan sulit diretas oleh hacker.	9d1544f7-2dea-4a01-8d76-4efdd6115920	2024-09-24 02:59:29	2024-09-24 02:59:29
+9d1544f7-3029-41c2-87c6-7c715c052f7e	yang cenderung tidak ditemukan dalam kamus, sulit dipecahkan oleh komputer, dan hacker sulit meretasnya.	9d1544f7-2dea-4a01-8d76-4efdd6115920	2024-09-24 02:59:29	2024-09-24 02:59:29
+9d1544f7-30bf-4d9a-ba6d-e71919260ee6	yang cenderung tidak ditemukan dalam kamus, pemecahannya sulit oleh komputer, dan sulit diretas oleh hacker.	9d1544f7-2dea-4a01-8d76-4efdd6115920	2024-09-24 02:59:29	2024-09-24 02:59:29
+9d1544f7-3161-43be-b699-c2ad2be1da13	yang cenderung tidak tertemukan dalam kamus, sulit terpecahkan oleh komputer, dan peretasannya oleh hacker sulit.	9d1544f7-2dea-4a01-8d76-4efdd6115920	2024-09-24 02:59:29	2024-09-24 02:59:29
+9d1544f7-320b-4c73-9ab6-922f1c4737a9	yang cenderung tidak ditemukan dalam kamus, sulit dipecahkan oleh komputer, dan sulit diretas oleh hacker.	9d1544f7-2dea-4a01-8d76-4efdd6115920	2024-09-24 02:59:29	2024-09-24 02:59:29
+9d15450b-0071-42cc-a5f0-1acc84abe544	Karena kandungan kalori hamburger terlalu tinggi.	9d15450a-fee5-4171-9e33-b93911c4afcc	2024-09-24 02:59:42	2024-09-24 02:59:42
+9d15450b-013e-4d08-aac1-014e279cfa6b	Karena tubuh tidak mampu mencerna seluruh zat yang ada dalam hamburger.	9d15450a-fee5-4171-9e33-b93911c4afcc	2024-09-24 02:59:42	2024-09-24 02:59:42
+9d15450b-01e9-4261-b8c6-540c1a97b8dd	Karena energi tubuh sudah digunakan untuk mencerna hamburger.	9d15450a-fee5-4171-9e33-b93911c4afcc	2024-09-24 02:59:42	2024-09-24 02:59:42
+9d15450b-028f-48d3-a7ba-188077c7d2ce	Karena metabolisme tubuh bekerja lebih lambat setelah memakan hamburger.	9d15450a-fee5-4171-9e33-b93911c4afcc	2024-09-24 02:59:42	2024-09-24 02:59:42
+9d15450b-0338-42bf-bbe0-57f835a92520	Karena ginjal bekerja lebih keras untuk mengolah natrium.	9d15450a-fee5-4171-9e33-b93911c4afcc	2024-09-24 02:59:42	2024-09-24 02:59:42
+9d154514-a252-48f9-9541-085bd368ba26	y/x * 100%	9d154514-a126-4523-ae39-e6f9c01b73b1	2024-09-24 02:59:48	2024-09-24 02:59:48
+9d154514-a2f6-49da-822c-a54dfe6ece91	x/y * 100%	9d154514-a126-4523-ae39-e6f9c01b73b1	2024-09-24 02:59:48	2024-09-24 02:59:48
+9d154514-a37e-48a0-981a-a63e26712eba	y/x-y * 100%	9d154514-a126-4523-ae39-e6f9c01b73b1	2024-09-24 02:59:48	2024-09-24 02:59:48
+9d154514-a3f8-45a3-861b-9f57926cddd8	y-x/x * 100%	9d154514-a126-4523-ae39-e6f9c01b73b1	2024-09-24 02:59:48	2024-09-24 02:59:48
+9d154514-a473-46ce-bc19-ef0a31dbc48a	x-y/y * 100%	9d154514-a126-4523-ae39-e6f9c01b73b1	2024-09-24 02:59:48	2024-09-24 02:59:48
+9d154539-b6ac-49ab-8268-b996d9af3a23	0	9d154539-b54e-4ef2-b7e7-23cd59f920f7	2024-09-24 03:00:12	2024-09-24 03:00:12
+9d154539-b77c-46fb-acc4-ab76608370f6	1	9d154539-b54e-4ef2-b7e7-23cd59f920f7	2024-09-24 03:00:12	2024-09-24 03:00:12
+9d154539-b823-4702-a226-f9a90101acde	2	9d154539-b54e-4ef2-b7e7-23cd59f920f7	2024-09-24 03:00:12	2024-09-24 03:00:12
+9d154539-b8c5-4fe8-ba2c-c411d5343584	3	9d154539-b54e-4ef2-b7e7-23cd59f920f7	2024-09-24 03:00:12	2024-09-24 03:00:12
+9d154539-b956-4f87-afbf-85ab26f0e5cf	4	9d154539-b54e-4ef2-b7e7-23cd59f920f7	2024-09-24 03:00:12	2024-09-24 03:00:12
+9d1545e3-cbb4-4112-abac-97f9b9aac966	(1)	9d1545e3-ca50-4d45-8520-39ac8d4e64a4	2024-09-24 03:02:04	2024-09-24 03:02:04
+9d1545e3-cca7-439b-bc40-e8717a6eb171	(2)	9d1545e3-ca50-4d45-8520-39ac8d4e64a4	2024-09-24 03:02:04	2024-09-24 03:02:04
+9d1545e3-cd59-403f-a8ba-e19668ce6a15	(3)	9d1545e3-ca50-4d45-8520-39ac8d4e64a4	2024-09-24 03:02:04	2024-09-24 03:02:04
+9d1545e3-cdf7-4a95-9494-3535c5d726bc	(4)	9d1545e3-ca50-4d45-8520-39ac8d4e64a4	2024-09-24 03:02:04	2024-09-24 03:02:04
+9d1545e3-ce8e-4b9a-885c-eb9cb7be7103	(5)	9d1545e3-ca50-4d45-8520-39ac8d4e64a4	2024-09-24 03:02:04	2024-09-24 03:02:04
+9d1545fa-e1e1-4d89-9635-06ed0d5b44f4	Angklung diakui sebagai Warisan Budaya Dunia Kategori Tak Benda oleh UNESCO pada 16 November 2010.	9d1545fa-e09f-4a8c-81c0-6b7f19781184	2024-09-24 03:02:19	2024-09-24 03:02:19
+9d1545fa-e2a4-4613-8e37-e2e54d755972	Pelestarian angklung di Indonesia menghadapi hambatan seperti kurangnya regenerasi seniman dan perajin angklung.	9d1545fa-e09f-4a8c-81c0-6b7f19781184	2024-09-24 03:02:19	2024-09-24 03:02:19
+9d1545fa-e37c-472d-a56e-7ced5f439ffb	Angklung dimainkan di 131 negara, dan terdapat minat yang tinggi di luar negeri.	9d1545fa-e09f-4a8c-81c0-6b7f19781184	2024-09-24 03:02:19	2024-09-24 03:02:19
+9d1545fa-e429-48de-aeb1-5e5422fccd51	Regenerasi pemain angklung di Indonesia dianggap tidak penting untuk perhatian semua pihak.	9d1545fa-e09f-4a8c-81c0-6b7f19781184	2024-09-24 03:02:19	2024-09-24 03:02:19
+9d1545fa-e4ba-46d9-8716-842a4d570d37	Angklung dimainkan di universitas di Amerika Serikat, termasuk di Pennsylvania dan Hawaii.	9d1545fa-e09f-4a8c-81c0-6b7f19781184	2024-09-24 03:02:19	2024-09-24 03:02:19
+9d154638-ea4e-45be-ba78-0a58bac62d40	48-12π	9d154638-e8da-4cc8-93bd-94eaa39dee2f	2024-09-24 03:03:00	2024-09-24 03:03:00
+9d154638-eb1a-47e4-89c4-1f5d2e5506c4	48+12π	9d154638-e8da-4cc8-93bd-94eaa39dee2f	2024-09-24 03:03:00	2024-09-24 03:03:00
+9d154638-ebce-481e-a7ac-ef70d9f97824	96-16π	9d154638-e8da-4cc8-93bd-94eaa39dee2f	2024-09-24 03:03:00	2024-09-24 03:03:00
+9d154638-ec68-4ccb-8efd-8f44a2a141cf	96+16π	9d154638-e8da-4cc8-93bd-94eaa39dee2f	2024-09-24 03:03:00	2024-09-24 03:03:00
+9d154638-ed02-4e71-8c59-66f5911f685b	48-16π	9d154638-e8da-4cc8-93bd-94eaa39dee2f	2024-09-24 03:03:00	2024-09-24 03:03:00
+9d154648-9250-4e59-a400-11895c3087f6	Angklung diakui oleh UNESCO sebagai Warisan Budaya Dunia, namun pelestariannya menghadapi masalah di Indonesia seperti kurangnya regenerasi. Sementara itu, angklung justru berkembang positif di luar negeri dan dimainkan di banyak negara.	9d154648-90e3-4660-bbaa-6215d37dbb85	2024-09-24 03:03:10	2024-09-24 03:03:10
+9d154648-9331-4f53-9d61-286af13433ec	Angklung sangat populer di Amerika Serikat, tetapi tidak ada minat di Indonesia.	9d154648-90e3-4660-bbaa-6215d37dbb85	2024-09-24 03:03:10	2024-09-24 03:03:10
+9d154648-93d4-4e90-8dae-a7e832cd07c2	Angklung tidak lagi dimainkan di negara asalnya, tetapi sangat populer di negara lain.	9d154648-90e3-4660-bbaa-6215d37dbb85	2024-09-24 03:03:10	2024-09-24 03:03:10
+9d154648-9461-4e67-9bdb-5fb86db5b176	Pelestarian angklung di Indonesia sangat baik dan mendapat perhatian dari semua pihak.	9d154648-90e3-4660-bbaa-6215d37dbb85	2024-09-24 03:03:10	2024-09-24 03:03:10
+9d154648-94e9-425d-9e97-b9cd0b73eb68	Angklung diakui UNESCO dan sangat penting untuk dimasukkan dalam kurikulum sekolah di Indonesia.	9d154648-90e3-4660-bbaa-6215d37dbb85	2024-09-24 03:03:10	2024-09-24 03:03:10
+9d154677-e6b5-4f5f-9b6b-eacd7d323e57	Rp.500,00	9d154677-e57b-4ed9-9db6-e59faed2066d	2024-09-24 03:03:41	2024-09-24 03:03:41
+9d154677-e766-41b8-8741-bc2451f36761	Rp.1000,00	9d154677-e57b-4ed9-9db6-e59faed2066d	2024-09-24 03:03:41	2024-09-24 03:03:41
+9d154677-e7f2-409b-bdc8-bf9c3ecda2de	Rp.1500,00	9d154677-e57b-4ed9-9db6-e59faed2066d	2024-09-24 03:03:41	2024-09-24 03:03:41
+9d154677-e878-4798-a615-224a94595d9b	Rp.2000,00	9d154677-e57b-4ed9-9db6-e59faed2066d	2024-09-24 03:03:41	2024-09-24 03:03:41
+9d154677-e8ec-4e31-8a8e-00b2d4a71662	Rp.2500,00	9d154677-e57b-4ed9-9db6-e59faed2066d	2024-09-24 03:03:41	2024-09-24 03:03:41
+9d1546b2-159e-4b50-8b75-09e8600d11fc	Angklung diakui sebagai warisan budaya dunia.	9d1546b2-1455-4406-a950-c2dba47e4f4a	2024-09-24 03:04:19	2024-09-24 03:04:19
+9d1546b2-164e-4f70-85fd-678041c5b7c5	Pelestarian angklung di Indonesia menghadapi hambatan utama berupa kurangnya regenerasi.	9d1546b2-1455-4406-a950-c2dba47e4f4a	2024-09-24 03:04:19	2024-09-24 03:04:19
+9d1546b2-16d1-4469-a4ca-eac8b9d632c2	Angklung dimainkan di banyak negara, termasuk di Amerika Serikat.	9d1546b2-1455-4406-a950-c2dba47e4f4a	2024-09-24 03:04:19	2024-09-24 03:04:19
+9d1546b2-1756-4902-aabd-1e88d1b98f9a	Pembuatan program pelestarian angklung sangat penting.	9d1546b2-1455-4406-a950-c2dba47e4f4a	2024-09-24 03:04:19	2024-09-24 03:04:19
+9d1546b2-17dd-4080-9046-1b76284e99f7	Angklung harus dimasukkan ke dalam kurikulum sekolah.	9d1546b2-1455-4406-a950-c2dba47e4f4a	2024-09-24 03:04:19	2024-09-24 03:04:19
+9d1546b9-0652-407e-acd0-d5125f404199	1/2cm	9d1546b9-053c-4558-ac9f-dfc3a5e88a45	2024-09-24 03:04:24	2024-09-24 03:04:24
+9d1546b9-06f3-4458-a515-a17e1d33e493	1cm	9d1546b9-053c-4558-ac9f-dfc3a5e88a45	2024-09-24 03:04:24	2024-09-24 03:04:24
+9d1546b9-0783-48b5-8356-b32b39917934	√2cm	9d1546b9-053c-4558-ac9f-dfc3a5e88a45	2024-09-24 03:04:24	2024-09-24 03:04:24
+9d1546b9-0808-4a06-9a85-91ca20e774c2	2cm	9d1546b9-053c-4558-ac9f-dfc3a5e88a45	2024-09-24 03:04:24	2024-09-24 03:04:24
+9d1546b9-0880-4359-aaf8-d9bf52b30603	√3cm	9d1546b9-053c-4558-ac9f-dfc3a5e88a45	2024-09-24 03:04:24	2024-09-24 03:04:24
+9d15470b-6fb9-4641-aa94-133725004c19	Paradoks Angklung: Diminati Dunia, Diabaikan di Indonesia	9d15470b-6e12-47f1-a2de-3c8ccd579955	2024-09-24 03:05:18	2024-09-24 03:05:18
+9d15470b-70b5-40c3-a86c-42184d08f29e	Upaya Pelestarian Angklung di Indonesia	9d15470b-6e12-47f1-a2de-3c8ccd579955	2024-09-24 03:05:18	2024-09-24 03:05:18
+9d15470b-716f-4dc1-a1ec-4938d040ea68	Hambatan Regenerasi Seniman Angklung di Tanah Air	9d15470b-6e12-47f1-a2de-3c8ccd579955	2024-09-24 03:05:18	2024-09-24 03:05:18
+9d15470b-7208-425f-9f0b-785ecedfa283	Angklung: Warisan Budaya Dunia yang Terancam Punah	9d15470b-6e12-47f1-a2de-3c8ccd579955	2024-09-24 03:05:18	2024-09-24 03:05:18
+9d15470b-729c-4af0-b996-8121debee19e	Perkembangan Angklung di Dunia dan Tantangannya di Indonesia	9d15470b-6e12-47f1-a2de-3c8ccd579955	2024-09-24 03:05:18	2024-09-24 03:05:18
+9d154713-b54d-4134-8b19-ed529fcd6abc	Gagasan paragraf pertama dan kedua tidak berhubungan.	9d154713-b43c-4902-8e1c-ecb2d3454517	2024-09-24 03:05:23	2024-09-24 03:05:23
+9d154713-b5f7-4da0-ab50-76fec139b668	Paragraf kedua tidak memiliki gagasan pokok.	9d154713-b43c-4902-8e1c-ecb2d3454517	2024-09-24 03:05:23	2024-09-24 03:05:23
+9d154713-b692-4fc6-a375-fd3079bbbea8	Paragraf pertama terlalu fokus pada dampak negatif teknologi.	9d154713-b43c-4902-8e1c-ecb2d3454517	2024-09-24 03:05:23	2024-09-24 03:05:23
+9d154713-b724-44a3-ba63-06a76190d106	Belum terdapat penjabaran tentang tindakan yang bijaksana dalam menyikapi kemajuan teknologi.	9d154713-b43c-4902-8e1c-ecb2d3454517	2024-09-24 03:05:23	2024-09-24 03:05:23
+9d154713-b7be-4243-b42f-701246b78c8d	Penggunaan pepatah pada paragraf pertama tidak relevan dengan kemajuan teknologi.	9d154713-b43c-4902-8e1c-ecb2d3454517	2024-09-24 03:05:23	2024-09-24 03:05:23
+9d154748-02dd-44f2-b240-215ea61afdc2	s(H)= x-9	9d154748-016c-45cd-99ab-556d7b56be3c	2024-09-24 03:05:57	2024-09-24 03:05:57
+9d154748-03bc-49f0-ba94-cbd2e4f4faec	s(H)= 2x-3	9d154748-016c-45cd-99ab-556d7b56be3c	2024-09-24 03:05:57	2024-09-24 03:05:57
+9d154748-0456-4353-bcb1-c5e3065531ed	s(H)= 3x+6	9d154748-016c-45cd-99ab-556d7b56be3c	2024-09-24 03:05:57	2024-09-24 03:05:57
+9d154748-04f5-46e0-8133-b618f4f50784	s(H)= 4x-1	9d154748-016c-45cd-99ab-556d7b56be3c	2024-09-24 03:05:57	2024-09-24 03:05:57
+9d154748-057f-4a69-992b-ccf133de0052	s(H)= 5x+2	9d154748-016c-45cd-99ab-556d7b56be3c	2024-09-24 03:05:57	2024-09-24 03:05:57
+9d154768-8555-4f6f-a259-6e45dc6c0fea	Apa saja dimensi dalam perubahan sosial menurut Idraddin dan Irwan?	9d154768-8421-44c8-bf2e-7f7d1171bed6	2024-09-24 03:06:19	2024-09-24 03:06:19
+9d154768-860f-470c-ba15-e8aad2729eaf	Apa yang dimaksud dengan perubahan sosial?	9d154768-8421-44c8-bf2e-7f7d1171bed6	2024-09-24 03:06:19	2024-09-24 03:06:19
+9d154768-8695-4426-be2d-7469a8952e02	Bagaimana dampak dari adanya inovasi teknologi karena adanya perubahan sosial budaya?	9d154768-8421-44c8-bf2e-7f7d1171bed6	2024-09-24 03:06:19	2024-09-24 03:06:19
+9d154768-8716-493c-a5c9-916dad6d756f	Apa hal yang dipicu dari disorientasi nilai dan norma budaya pada perubahan sosial-budaya?	9d154768-8421-44c8-bf2e-7f7d1171bed6	2024-09-24 03:06:19	2024-09-24 03:06:19
+9d154768-879e-49ef-99dc-a819f060a681	Bagaimana perubahan sosial-budaya memengaruhi kebijakan pemerintah di bidang pendidikan?	9d154768-8421-44c8-bf2e-7f7d1171bed6	2024-09-24 03:06:19	2024-09-24 03:06:19
+9d1547a1-5cfa-4db8-96c9-2590a3b366df	Pernyataan (1) SAJA cukup untuk menjawab pertanyaan, tetapi pernyataan (2) SAJA tidak cukup.	9d1547a1-5b89-4ef8-b836-cbfb0d39570a	2024-09-24 03:06:56	2024-09-24 03:06:56
+9d1547a1-5dba-43dc-8ed6-ba42ca3753e6	Pernyataan (2) SAJA cukup untuk menjawab pertanyaan, tetapi pernyataan (1) SAJA tidak cukup.	9d1547a1-5b89-4ef8-b836-cbfb0d39570a	2024-09-24 03:06:56	2024-09-24 03:06:56
+9d1547a1-5e5e-49c0-92d4-8f19381386a1	Pernyataan (1) dan (2) cukup untuk menjawab pertanyaan, tetapi salah satu dari keduanya tidak cukup.	9d1547a1-5b89-4ef8-b836-cbfb0d39570a	2024-09-24 03:06:56	2024-09-24 03:06:56
+9d1547a1-5ef5-4961-ac59-995f7424b8f3	Pernyataan (1) atau pernyataan (2) SAJA sudah cukup untuk menjawab pertanyaan.	9d1547a1-5b89-4ef8-b836-cbfb0d39570a	2024-09-24 03:06:56	2024-09-24 03:06:56
+9d1547a1-5f92-44de-b550-73cf143f7daa	Pernyataan (1) dan pernyataan (2) tidak cukup untuk menjawab pertanyaan.	9d1547a1-5b89-4ef8-b836-cbfb0d39570a	2024-09-24 03:06:56	2024-09-24 03:06:56
+9d154825-0159-4d6c-9435-496e58cd72f2	Perubahan sosial di masyarakat	9d154824-fff5-4af3-8a5b-3fdd9bf341d0	2024-09-24 03:08:22	2024-09-24 03:08:22
+9d154825-0209-4301-8a3b-102c2b9802f4	Perubahan sosial akan terjadi	9d154824-fff5-4af3-8a5b-3fdd9bf341d0	2024-09-24 03:08:22	2024-09-24 03:08:22
+9d154825-028c-4e5f-806b-a64cf8aa6fef	Perubahan sosial selalu terjadi	9d154824-fff5-4af3-8a5b-3fdd9bf341d0	2024-09-24 03:08:22	2024-09-24 03:08:22
+9d154825-0315-4ae1-b45e-17a3b3dda5b6	Masyarakat akan selalu berubah	9d154824-fff5-4af3-8a5b-3fdd9bf341d0	2024-09-24 03:08:22	2024-09-24 03:08:22
+9d154825-0395-4486-8b3a-52884a012e6e	Proses perubahan sosial di masyarakat	9d154824-fff5-4af3-8a5b-3fdd9bf341d0	2024-09-24 03:08:22	2024-09-24 03:08:22
+9d15486f-a134-4c15-9200-82d2705eff06	petunjuk	9d15486f-a01e-4b7b-acfa-9022b917d44d	2024-09-24 03:09:11	2024-09-24 03:09:11
+9d15486f-a1db-4ba6-9b01-6898bad4b7a5	nasihat	9d15486f-a01e-4b7b-acfa-9022b917d44d	2024-09-24 03:09:11	2024-09-24 03:09:11
+9d15486f-a26a-46cf-b6c2-b0ef3b69049d	ungkapan	9d15486f-a01e-4b7b-acfa-9022b917d44d	2024-09-24 03:09:11	2024-09-24 03:09:11
+9d15486f-a2f2-443f-a164-c6ba0522d21e	anjuran	9d15486f-a01e-4b7b-acfa-9022b917d44d	2024-09-24 03:09:11	2024-09-24 03:09:11
+9d15486f-a368-4279-b801-5e4400797ce6	ajaran	9d15486f-a01e-4b7b-acfa-9022b917d44d	2024-09-24 03:09:11	2024-09-24 03:09:11
+9d154888-632e-4415-88c3-6e2c540bf1f8	15	9d154888-61b5-4929-98c3-ddbc438dd7c3	2024-09-24 03:09:27	2024-09-24 03:09:27
+9d154888-63e1-44d7-8df3-c887380c0188	-10	9d154888-61b5-4929-98c3-ddbc438dd7c3	2024-09-24 03:09:27	2024-09-24 03:09:27
+9d154888-646e-421b-ab16-2066e0a333f6	10	9d154888-61b5-4929-98c3-ddbc438dd7c3	2024-09-24 03:09:27	2024-09-24 03:09:27
+9d154888-64f0-4037-940e-44db2c799529	-5	9d154888-61b5-4929-98c3-ddbc438dd7c3	2024-09-24 03:09:27	2024-09-24 03:09:27
+9d154888-657e-4687-98a4-9ad7a59edf2c	-15	9d154888-61b5-4929-98c3-ddbc438dd7c3	2024-09-24 03:09:27	2024-09-24 03:09:27
+9d154afc-5ba4-41a6-82fc-7828baf3677a	menggoda	9d154afc-5a5e-4dbb-b3b8-0bd97bed441f	2024-09-24 03:16:19	2024-09-24 03:16:19
+9d1548b3-c53d-42e6-9383-7b95f83aed43	Posisi atau status sosial yang menentukan kedudukan seseorang dalam struktur masyarakat.	9d1548b3-c40d-4340-a4d1-b685f08ecd7f	2024-09-24 03:09:56	2024-09-24 03:09:56
+9d1548b3-c5db-49ad-a733-f36a08dc2461	Kondisi atau keadaan ekonomi yang mencerminkan kemampuan finansial individu atau kelompok.	9d1548b3-c40d-4340-a4d1-b685f08ecd7f	2024-09-24 03:09:56	2024-09-24 03:09:56
+9d1548b3-c65c-46a3-b74b-dcc34177e5a6	Kualitas atau mutu hidup yang mencerminkan kesejahteraan dan kemakmuran individu.	9d1548b3-c40d-4340-a4d1-b685f08ecd7f	2024-09-24 03:09:56	2024-09-24 03:09:56
+9d1548b3-c6e4-4dec-8223-b0bc834d86b9	Tingkat atau level yang menunjukkan kualitas atau standar kehidupan seseorang dalam masyarakat.	9d1548b3-c40d-4340-a4d1-b685f08ecd7f	2024-09-24 03:09:56	2024-09-24 03:09:56
+9d1548b3-c75b-43ad-b231-8bbe7f349a75	Pangkat atau jenjang dalam hierarki sosial yang menggambarkan status seseorang di masyarakat.	9d1548b3-c40d-4340-a4d1-b685f08ecd7f	2024-09-24 03:09:56	2024-09-24 03:09:56
+9d1548d1-6380-4b6b-9d6f-bdec6db553cd	melihat	9d1548d1-622e-4d6a-8599-d51496276f9e	2024-09-24 03:10:15	2024-09-24 03:10:15
+9d1548d1-6428-4eee-bf6e-c3c77e233a40	mengetahui	9d1548d1-622e-4d6a-8599-d51496276f9e	2024-09-24 03:10:15	2024-09-24 03:10:15
+9d1548d1-64a9-4127-9ef1-cfc88902593f	menonton	9d1548d1-622e-4d6a-8599-d51496276f9e	2024-09-24 03:10:15	2024-09-24 03:10:15
+9d1548d1-652b-4574-acee-dd44913bc7ce	memantau	9d1548d1-622e-4d6a-8599-d51496276f9e	2024-09-24 03:10:15	2024-09-24 03:10:15
+9d1548d1-65a7-473d-b2a1-c05243ce202a	mengikuti	9d1548d1-622e-4d6a-8599-d51496276f9e	2024-09-24 03:10:15	2024-09-24 03:10:15
+9d154917-c58f-4690-a996-0786473c5144	perincian	9d154917-c409-4d91-8c87-260d8c79c503	2024-09-24 03:11:01	2024-09-24 03:11:01
+9d154917-c690-4236-8499-14d05db46d68	penghubungan	9d154917-c409-4d91-8c87-260d8c79c503	2024-09-24 03:11:01	2024-09-24 03:11:01
+9d154917-c744-4164-9b65-b90a4cdafdc4	penambahan	9d154917-c409-4d91-8c87-260d8c79c503	2024-09-24 03:11:01	2024-09-24 03:11:01
+9d154917-c7f4-4ace-8177-bcafc1c85b39	penegasan	9d154917-c409-4d91-8c87-260d8c79c503	2024-09-24 03:11:01	2024-09-24 03:11:01
+9d154917-c8bb-4ff8-a542-00fe8f47c1cb	perluasan	9d154917-c409-4d91-8c87-260d8c79c503	2024-09-24 03:11:01	2024-09-24 03:11:01
+9d15493f-dce0-4845-a815-f3020876836e	(10) dan (12)	9d15493f-db88-4cda-a1d0-7f86395cc632	2024-09-24 03:11:27	2024-09-24 03:11:27
+9d15493f-dd95-40c3-8462-57e70b4bd947	(1) dan (3)	9d15493f-db88-4cda-a1d0-7f86395cc632	2024-09-24 03:11:27	2024-09-24 03:11:27
+9d15493f-de2c-43bf-b5b1-0d48b5b71b2c	(5) dan (7)	9d15493f-db88-4cda-a1d0-7f86395cc632	2024-09-24 03:11:27	2024-09-24 03:11:27
+9d15493f-deae-4845-a54a-00eb9e2a6e14	(10) dan (8)	9d15493f-db88-4cda-a1d0-7f86395cc632	2024-09-24 03:11:27	2024-09-24 03:11:27
+9d15493f-df28-405b-b268-b439224b0dd4	(6) dan (4)	9d15493f-db88-4cda-a1d0-7f86395cc632	2024-09-24 03:11:27	2024-09-24 03:11:27
+9d154996-371a-4157-b4d5-4c54e2f85fea	kata “sangat” pada kalimat (4)	9d154996-35f4-4d89-9e61-cb92fc91437b	2024-09-24 03:12:24	2024-09-24 03:12:24
+9d154996-37bf-47a1-87ff-a002c96e0349	kata “mencapai” pada kalimat (3)	9d154996-35f4-4d89-9e61-cb92fc91437b	2024-09-24 03:12:24	2024-09-24 03:12:24
+9d154996-3844-40dc-9429-9d02b8260abe	kata “setiap” pada kalimat (8)	9d154996-35f4-4d89-9e61-cb92fc91437b	2024-09-24 03:12:24	2024-09-24 03:12:24
+9d154996-38d4-421d-8097-bfec9dfd965d	kata “maka” dalam kalimat (7)	9d154996-35f4-4d89-9e61-cb92fc91437b	2024-09-24 03:12:24	2024-09-24 03:12:24
+9d154996-395e-4dc8-8c85-817345689870	kata “dengan” pada kalimat (5)	9d154996-35f4-4d89-9e61-cb92fc91437b	2024-09-24 03:12:24	2024-09-24 03:12:24
+9d1549af-db4d-4602-9214-525bf03b9f9a	Paragraf kedua merupakan penolakan dari paragraf pertama.	9d1549af-da06-4d0a-a616-c6f54031555d	2024-09-24 03:12:41	2024-09-24 03:12:41
+9d1549af-dc01-4ae4-8a61-49cdc3dca517	Paragraf kedua merupakan penjelasan dari paragraf pertama.	9d1549af-da06-4d0a-a616-c6f54031555d	2024-09-24 03:12:41	2024-09-24 03:12:41
+9d1549af-dc9a-4f44-b9c1-cfd78e4bdced	Paragraf kedua merupakan contoh dari paragraf pertama.	9d1549af-da06-4d0a-a616-c6f54031555d	2024-09-24 03:12:41	2024-09-24 03:12:41
+9d1549af-dd35-4b8c-851f-3b8f46c455bc	Paragraf pertama merupakan akibat dari paragraf kedua.	9d1549af-da06-4d0a-a616-c6f54031555d	2024-09-24 03:12:41	2024-09-24 03:12:41
+9d1549af-ddbb-449f-9105-2c938d7014b2	Paragraf pertama merupakan sebab dari paragraf kedua.	9d1549af-da06-4d0a-a616-c6f54031555d	2024-09-24 03:12:41	2024-09-24 03:12:41
+9d1549e3-d828-4c15-9262-9262fab5aa76	Cendrawasih Vogelkop	9d1549e3-d6e0-4e0b-a434-74b152985def	2024-09-24 03:13:15	2024-09-24 03:13:15
+9d1549e3-d8e6-4b7a-966e-1e369762b4a5	Burung Cendrawasih	9d1549e3-d6e0-4e0b-a434-74b152985def	2024-09-24 03:13:15	2024-09-24 03:13:15
+9d1549e3-d970-4a28-a5f7-e0424e5d323a	Cendrawasih betina	9d1549e3-d6e0-4e0b-a434-74b152985def	2024-09-24 03:13:15	2024-09-24 03:13:15
+9d1549e3-da2b-4056-805b-cb4d1540b30c	Kuakalame ekor-kuning	9d1549e3-d6e0-4e0b-a434-74b152985def	2024-09-24 03:13:15	2024-09-24 03:13:15
+9d1549e3-dab3-43f0-ae27-6726afc74642	Cendrawasih jantan	9d1549e3-d6e0-4e0b-a434-74b152985def	2024-09-24 03:13:15	2024-09-24 03:13:15
+9d154a0f-9a79-4482-9260-8698faf7db5a	(1)	9d154a0f-990c-47ab-a9d9-6ce528e98199	2024-09-24 03:13:44	2024-09-24 03:13:44
+9d154a0f-9b41-4d53-818d-495f20d8956e	(3)	9d154a0f-990c-47ab-a9d9-6ce528e98199	2024-09-24 03:13:44	2024-09-24 03:13:44
+9d154a0f-9c05-41e1-86c3-6db8b9d3eded	(5)	9d154a0f-990c-47ab-a9d9-6ce528e98199	2024-09-24 03:13:44	2024-09-24 03:13:44
+9d154a0f-9ca2-45c2-9606-82af7f42372f	(7)	9d154a0f-990c-47ab-a9d9-6ce528e98199	2024-09-24 03:13:44	2024-09-24 03:13:44
+9d154a0f-9d2d-4c64-b93d-b411ed1b4cf1	(8)	9d154a0f-990c-47ab-a9d9-6ce528e98199	2024-09-24 03:13:44	2024-09-24 03:13:44
+9d154a38-d390-46cd-8377-e163d639197e	Jenis	9d154a38-d23a-4e1e-be68-903e3a55774c	2024-09-24 03:14:11	2024-09-24 03:14:11
+9d154a38-d442-4304-a9bc-5a645cd379c6	Bagian	9d154a38-d23a-4e1e-be68-903e3a55774c	2024-09-24 03:14:11	2024-09-24 03:14:11
+9d154a38-d4e9-4cb9-b831-dc6f927e878e	Kelas	9d154a38-d23a-4e1e-be68-903e3a55774c	2024-09-24 03:14:11	2024-09-24 03:14:11
+9d154a38-d576-43f3-a978-73487c012200	Suku	9d154a38-d23a-4e1e-be68-903e3a55774c	2024-09-24 03:14:11	2024-09-24 03:14:11
+9d154a38-d60c-4620-9a4d-70e831e15cc7	Macam	9d154a38-d23a-4e1e-be68-903e3a55774c	2024-09-24 03:14:11	2024-09-24 03:14:11
+9d154a80-201a-4f3a-aa75-fe67ab0e8f7d	Penduduk yang mendiami kepulauan tersebut sangat ramah dengan para pendatang	9d154a80-1ed7-40fa-956f-70a3a859d91f	2024-09-24 03:14:57	2024-09-24 03:14:57
+9d154a80-20cc-40b6-917d-a4e863eef983	Pertemuan rutin bulan ini akan dilaksanakan di kediaman kepala desa	9d154a80-1ed7-40fa-956f-70a3a859d91f	2024-09-24 03:14:57	2024-09-24 03:14:57
+9d154a80-2150-4df3-bd55-4ca8f0dbab00	Kesejahteraan masyarakat desa itu terlihat dari megahnya rumah penduduknya	9d154a80-1ed7-40fa-956f-70a3a859d91f	2024-09-24 03:14:57	2024-09-24 03:14:57
+9d154a80-21cc-4261-b3e0-656c423df9d1	Hampir semua bajunya sudah kekecilan sehingga dia sering membeli baju baru	9d154a80-1ed7-40fa-956f-70a3a859d91f	2024-09-24 03:14:57	2024-09-24 03:14:57
+9d154a80-223b-46ef-a9be-96821bdb41b7	Ilmu kelautan berperan penting dalam memajukan wilayah dengan banyak pulau	9d154a80-1ed7-40fa-956f-70a3a859d91f	2024-09-24 03:14:57	2024-09-24 03:14:57
+9d154aeb-8321-4cb5-902b-70f11a761f24	Cancel culture dapat membantu menegakkan norma sosial secara efektif dan meningkatkan kepatuhan, tetapi dapat merusak hubungan profesional dan pribadi individu.	9d154aeb-819d-438f-8a76-75d7bcef6dcb	2024-09-24 03:16:08	2024-09-24 03:16:08
+9d154aeb-83e4-4d2d-9a4f-279d7b8364bc	Cancel culture memperbaiki norma sosial dan tidak memiliki dampak pada hubungan individu; namun, dapat memperbaiki kesehatan mental.	9d154aeb-819d-438f-8a76-75d7bcef6dcb	2024-09-24 03:16:08	2024-09-24 03:16:08
+9d154aeb-848d-44e8-8978-1f32c10a2e05	Cancel culture mengurangi kepatuhan sosial dan meningkatkan hubungan individu; namun, dapat mengurangi efek boikot.	9d154aeb-819d-438f-8a76-75d7bcef6dcb	2024-09-24 03:16:08	2024-09-24 03:16:08
+9d154aeb-8534-4101-8788-509b44994a2b	Cancel culture mempromosikan kepatuhan sosial dan meningkatkan hubungan profesional; namun, tidak memiliki dampak pada kesehatan mental individu.	9d154aeb-819d-438f-8a76-75d7bcef6dcb	2024-09-24 03:16:08	2024-09-24 03:16:08
+9d154aeb-85c2-4f68-8564-84377d5c5e3e	Cancel culture dapat mempercepat perubahan sosial dan meningkatkan kesadaran publik, tetapi dapat menimbulkan ketidakadilan dan merusak kesejahteraan individu yang terpengaruh.	9d154aeb-819d-438f-8a76-75d7bcef6dcb	2024-09-24 03:16:08	2024-09-24 03:16:08
+9d154afc-5c65-4634-851e-45211a54ce91	memikat	9d154afc-5a5e-4dbb-b3b8-0bd97bed441f	2024-09-24 03:16:19	2024-09-24 03:16:19
+9d154afc-5d04-4253-8478-4efd54f27bd0	menyindir	9d154afc-5a5e-4dbb-b3b8-0bd97bed441f	2024-09-24 03:16:19	2024-09-24 03:16:19
+9d154afc-5d97-4c49-b764-3e9e9d7ff444	mengimbau	9d154afc-5a5e-4dbb-b3b8-0bd97bed441f	2024-09-24 03:16:19	2024-09-24 03:16:19
+9d154afc-5e31-4349-981c-6b0d9145d617	menyanjung	9d154afc-5a5e-4dbb-b3b8-0bd97bed441f	2024-09-24 03:16:19	2024-09-24 03:16:19
+9d154b09-069e-4b8a-a564-91dd2528c5d1	Supportive	9d154b09-054c-4e6a-974e-70a656a3d8e0	2024-09-24 03:16:27	2024-09-24 03:16:27
+9d154b09-0751-4731-9619-d5e7a59e8f3d	Respectful	9d154b09-054c-4e6a-974e-70a656a3d8e0	2024-09-24 03:16:27	2024-09-24 03:16:27
+9d154b09-07d9-4e3f-bc38-8206583b563e	Indifferent	9d154b09-054c-4e6a-974e-70a656a3d8e0	2024-09-24 03:16:27	2024-09-24 03:16:27
+9d154b09-0862-423b-a4b6-30aa7b2a8dd7	Judgmental	9d154b09-054c-4e6a-974e-70a656a3d8e0	2024-09-24 03:16:27	2024-09-24 03:16:27
+9d154b09-08e6-4758-aec7-a2b78bbdc85a	Contradictory	9d154b09-054c-4e6a-974e-70a656a3d8e0	2024-09-24 03:16:27	2024-09-24 03:16:27
+9d154b3b-6095-444e-9bed-e653f4ae7a45	3-4-1-2-5	9d154b3b-5f48-4823-af9f-5819657fe8f9	2024-09-24 03:17:00	2024-09-24 03:17:00
+9d154b3b-6153-4215-821b-c5f4f6d518ee	2-5-1-3-4	9d154b3b-5f48-4823-af9f-5819657fe8f9	2024-09-24 03:17:00	2024-09-24 03:17:00
+9d154b3b-6214-4b53-97b1-8ef76f36d51a	3-4-5-2-1	9d154b3b-5f48-4823-af9f-5819657fe8f9	2024-09-24 03:17:00	2024-09-24 03:17:00
+9d154b3b-62d6-4fb5-8225-c2fe17a53254	2-5-3-4-1	9d154b3b-5f48-4823-af9f-5819657fe8f9	2024-09-24 03:17:00	2024-09-24 03:17:00
+9d154b3b-6369-4163-a67f-15a8ee34404e	3-4-2-5-1	9d154b3b-5f48-4823-af9f-5819657fe8f9	2024-09-24 03:17:00	2024-09-24 03:17:00
+9d154b3e-fd01-4ada-be21-33b8d867692e	(6)	9d154b3e-fbbd-4898-a9d3-6c3d354b9e71	2024-09-24 03:17:02	2024-09-24 03:17:02
+9d154b3e-fdd0-4a65-b3b8-ab537a1e1aaa	(8)	9d154b3e-fbbd-4898-a9d3-6c3d354b9e71	2024-09-24 03:17:02	2024-09-24 03:17:02
+9d154b3e-fe87-4c5d-a4b9-6f2896aadb90	(1)	9d154b3e-fbbd-4898-a9d3-6c3d354b9e71	2024-09-24 03:17:02	2024-09-24 03:17:02
+9d154b3e-ff2e-435f-937d-eb16e92ce727	(4)	9d154b3e-fbbd-4898-a9d3-6c3d354b9e71	2024-09-24 03:17:02	2024-09-24 03:17:02
+9d154b3e-ffd7-4aa8-b9ea-c3019cec13c2	(7)	9d154b3e-fbbd-4898-a9d3-6c3d354b9e71	2024-09-24 03:17:02	2024-09-24 03:17:02
+9d154b7a-cf2e-4b87-9d5e-1fe38f35b4a0	banyak	9d154b7a-cdcf-40f6-bf6b-a16f732c7019	2024-09-24 03:17:42	2024-09-24 03:17:42
+9d154b7a-cfd7-4e05-82ad-730c8460c299	berukuran	9d154b7a-cdcf-40f6-bf6b-a16f732c7019	2024-09-24 03:17:42	2024-09-24 03:17:42
+9d154b7a-d062-4b5f-961c-1648ab81e35c	berbagai	9d154b7a-cdcf-40f6-bf6b-a16f732c7019	2024-09-24 03:17:42	2024-09-24 03:17:42
+9d154b7a-d0e9-448a-88e5-323c7d66bd73	berapa	9d154b7a-cdcf-40f6-bf6b-a16f732c7019	2024-09-24 03:17:42	2024-09-24 03:17:42
+9d154b7a-d16e-4f3b-a99e-166a5a80040b	macam	9d154b7a-cdcf-40f6-bf6b-a16f732c7019	2024-09-24 03:17:42	2024-09-24 03:17:42
+9d154b7c-4758-4292-9278-69e13452395c	Tegas dan berani	9d154b7c-460d-4565-9ea7-7ad2b1935ae0	2024-09-24 03:17:43	2024-09-24 03:17:43
+9d154b7c-4808-4b59-afe4-727beabad094	Ragu dan bingung	9d154b7c-460d-4565-9ea7-7ad2b1935ae0	2024-09-24 03:17:43	2024-09-24 03:17:43
+9d154b7c-4895-4919-9d69-80fb5eeb663f	Setia dan bertanggung jawab	9d154b7c-460d-4565-9ea7-7ad2b1935ae0	2024-09-24 03:17:43	2024-09-24 03:17:43
+9d154b7c-4932-4b01-b555-1560b02cd10a	Egois dan tidak peduli	9d154b7c-460d-4565-9ea7-7ad2b1935ae0	2024-09-24 03:17:43	2024-09-24 03:17:43
+9d154b7c-49d9-4735-b3b2-31e99b94a1ed	Cemburu dan penuh curiga	9d154b7c-460d-4565-9ea7-7ad2b1935ae0	2024-09-24 03:17:43	2024-09-24 03:17:43
+9d154b96-d008-4d8b-8e24-f1e7a5183d58	Breanna Shaw	9d154b96-cedf-4103-b1ab-3098e9a2103e	2024-09-24 03:18:00	2024-09-24 03:18:00
+9d154b96-d0a5-4249-a980-6f27a99c99b0	Yaseer Said	9d154b96-cedf-4103-b1ab-3098e9a2103e	2024-09-24 03:18:00	2024-09-24 03:18:00
+9d154b96-d12c-4766-8661-931076199fba	Kerry Baldwin	9d154b96-cedf-4103-b1ab-3098e9a2103e	2024-09-24 03:18:00	2024-09-24 03:18:00
+9d154b96-d1be-4d19-937a-fb4741289331	Caleb Beers	9d154b96-cedf-4103-b1ab-3098e9a2103e	2024-09-24 03:18:00	2024-09-24 03:18:00
+9d154b96-d254-4d2b-b1ee-ac52760cb75f	Daniel Tay	9d154b96-cedf-4103-b1ab-3098e9a2103e	2024-09-24 03:18:00	2024-09-24 03:18:00
+9d154bb6-1b6b-40fa-8729-1aee3b538ac2	Tidak mampu berterus terang	9d154bb6-1a28-4e67-bf0e-7f94e2ef9702	2024-09-24 03:18:20	2024-09-24 03:18:20
+9d154bb6-1c3c-40a1-b708-ac0b9dea2d72	Lebih menyayangi istrinya	9d154bb6-1a28-4e67-bf0e-7f94e2ef9702	2024-09-24 03:18:21	2024-09-24 03:18:21
+9d154bb6-1cde-4881-8f4b-efcae4955db9	Lebih mempercayai Nurul	9d154bb6-1a28-4e67-bf0e-7f94e2ef9702	2024-09-24 03:18:21	2024-09-24 03:18:21
+9d154bb6-1d70-4435-8b21-172dad7672cf	Tidak mampu berjanji	9d154bb6-1a28-4e67-bf0e-7f94e2ef9702	2024-09-24 03:18:21	2024-09-24 03:18:21
+9d154bb6-1e10-4838-b89b-3ff8679e1b87	Tidak mampu menenangkan jiwa istrinya	9d154bb6-1a28-4e67-bf0e-7f94e2ef9702	2024-09-24 03:18:21	2024-09-24 03:18:21
+9d154bec-7497-40f4-be1d-3396158e59ab	perlakuan, amanat	9d154bec-7342-45f4-b178-389fcab902a3	2024-09-24 03:18:56	2024-09-24 03:18:56
+9d154bec-7547-44fa-b0e8-d4dae1767296	respons, larangan	9d154bec-7342-45f4-b178-389fcab902a3	2024-09-24 03:18:56	2024-09-24 03:18:56
+9d154bec-75f0-4077-ae41-116147ea9b1d	reaksi, pesan	9d154bec-7342-45f4-b178-389fcab902a3	2024-09-24 03:18:56	2024-09-24 03:18:56
+9d154bec-7692-4e6b-9848-2b56b7b40685	perlakuan, pesan	9d154bec-7342-45f4-b178-389fcab902a3	2024-09-24 03:18:56	2024-09-24 03:18:56
+9d154bec-772f-4dd5-8257-857c9093bc51	reaksi, larangan	9d154bec-7342-45f4-b178-389fcab902a3	2024-09-24 03:18:56	2024-09-24 03:18:56
+9d154bf9-59ed-437f-8fb6-2378db7c2aa3	modesty	9d154bf9-5889-4d09-8f2d-eb0c576ed27f	2024-09-24 03:19:05	2024-09-24 03:19:05
+9d154bf9-5ad4-4523-968d-8073bf60b071	simplicity	9d154bf9-5889-4d09-8f2d-eb0c576ed27f	2024-09-24 03:19:05	2024-09-24 03:19:05
+9d154bf9-5b93-4fcc-9050-4f2ac98d2a76	thriftiness	9d154bf9-5889-4d09-8f2d-eb0c576ed27f	2024-09-24 03:19:05	2024-09-24 03:19:05
+9d154bf9-5c3d-4f5b-9ed4-c14cc53a3dad	strictness	9d154bf9-5889-4d09-8f2d-eb0c576ed27f	2024-09-24 03:19:05	2024-09-24 03:19:05
+9d154bf9-5cd5-440a-9152-44f09bfc4c79	cheapness	9d154bf9-5889-4d09-8f2d-eb0c576ed27f	2024-09-24 03:19:05	2024-09-24 03:19:05
+9d154bf9-7913-4453-a9b0-59b5c91786b6	Rencana pelajaran yang berisi pokok-pokok materi yang akan diajarkan.	9d154bf9-77bb-4570-b174-5e6246a986f8	2024-09-24 03:19:05	2024-09-24 03:19:05
+9d154bf9-79c8-4230-8763-81d2b68e1576	Dokumen yang berisi tujuan pembelajaran, metode, dan bahan ajar.	9d154bf9-77bb-4570-b174-5e6246a986f8	2024-09-24 03:19:05	2024-09-24 03:19:05
+9d154bf9-7a59-471a-a75b-305fe24928ab	Pedoman bagi guru untuk menyusun pembelajaran di kelas.	9d154bf9-77bb-4570-b174-5e6246a986f8	2024-09-24 03:19:05	2024-09-24 03:19:05
+9d154bf9-7afd-4bf2-b215-97b762e09029	Kerangka dasar yang digunakan untuk mengatur jalannya suatu pembelajaran.	9d154bf9-77bb-4570-b174-5e6246a986f8	2024-09-24 03:19:05	2024-09-24 03:19:05
+9d154bf9-7b90-4e68-acb7-620bf96bd847	Daftar lengkap seluruh materi yang harus dihafalkan oleh siswa.	9d154bf9-77bb-4570-b174-5e6246a986f8	2024-09-24 03:19:05	2024-09-24 03:19:05
+9d154c58-8a1d-487a-a71f-febaa0b9ae6d	Bu Mus memberikan pengajaran tentang moralitas, demokrasi, hukum, dan kesadaran pribadi kepada murid-muridnya sejak dini, sehingga mereka mampu menggali nilai-nilai luhur dalam diri dan tidak bergantung pada kondisi fisik sekolah.	9d154c58-88ab-44ff-8b3b-0777365e0bdf	2024-09-24 03:20:07	2024-09-24 03:20:07
+9d154c58-8b05-4084-a816-1941be13d47b	Gambar yang ditunjukkan oleh Bu Mus kepada murid-muridnya adalah foto sekolah dengan fasilitas lengkap dan modern, yang membuat para murid semakin iri dan terus mengeluh tentang keadaan sekolah mereka sendiri.	9d154c58-88ab-44ff-8b3b-0777365e0bdf	2024-09-24 03:20:07	2024-09-24 03:20:07
+9d154c58-8bb9-465f-a1ad-322af2139b81	Setiap kali hujan deras turun, murid-murid selalu meminta sekolah diliburkan karena kondisi atap yang bocor, namun Bu Mus mengabaikan keluhan tersebut dan tetap mengajar seperti biasa.	9d154c58-88ab-44ff-8b3b-0777365e0bdf	2024-09-24 03:20:07	2024-09-24 03:20:07
+9d154c58-8c72-4014-9ad3-6b0930770fe5	Murid-murid kerap kali mengeluhkan kondisi sekolah, terutama saat musim hujan, namun setelah mendengarkan cerita Bu Mus tentang Bung Karno yang belajar di penjara, mereka mulai sering bolos saat hujan lebat.	9d154c58-88ab-44ff-8b3b-0777365e0bdf	2024-09-24 03:20:07	2024-09-24 03:20:07
+9d154c58-8d0b-454d-a026-c9506b6192c5	Bu Mus sering mendengarkan keluhan murid-muridnya tentang kondisi sekolah yang tidak nyaman, seperti atap yang bocor, dan langsung memberikan solusi berupa perbaikan fasilitas sekolah.	9d154c58-88ab-44ff-8b3b-0777365e0bdf	2024-09-24 03:20:07	2024-09-24 03:20:07
+9d154c5b-1cd3-4266-84ff-6e0e17535df2	Breanna Shaw	9d154c5b-1b90-4b2a-b8e1-42e3d39fec30	2024-09-24 03:20:09	2024-09-24 03:20:09
+9d154c5b-1d8d-415c-8e72-13924477e81b	Yaseer Said	9d154c5b-1b90-4b2a-b8e1-42e3d39fec30	2024-09-24 03:20:09	2024-09-24 03:20:09
+9d154c5b-1e2e-4b45-9a58-49ede44d5f8e	Kerry Baldwin	9d154c5b-1b90-4b2a-b8e1-42e3d39fec30	2024-09-24 03:20:09	2024-09-24 03:20:09
+9d154c5b-1edc-4a77-80c8-3fb7f52fe193	Caleb Beers	9d154c5b-1b90-4b2a-b8e1-42e3d39fec30	2024-09-24 03:20:09	2024-09-24 03:20:09
+9d154c5b-1f71-4433-a4b6-2269f204d342	Daniel Tay	9d154c5b-1b90-4b2a-b8e1-42e3d39fec30	2024-09-24 03:20:09	2024-09-24 03:20:09
+9d154ca5-3ae4-44f6-b921-9a2e9cd6153a	Menggambarkan situasi kritis di mana banyak negara mengalami gelombang panas ekstrem.	9d154ca5-3932-48dc-8a9f-e5dcbb4ce2df	2024-09-24 03:20:57	2024-09-24 03:20:57
+9d154ca5-3bb7-48eb-a7cd-a6eabc4a4c45	Mengindikasikan bahwa manusia bertanggung jawab atas pemanasan global yang terus meningkat.	9d154ca5-3932-48dc-8a9f-e5dcbb4ce2df	2024-09-24 03:20:57	2024-09-24 03:20:57
+9d154ca5-3c53-44ac-b9e7-ba82f02f96d2	Merujuk pada ketidakmampuan manusia untuk bertindak cepat dalam menghadapi bencana alam.	9d154ca5-3932-48dc-8a9f-e5dcbb4ce2df	2024-09-24 03:20:57	2024-09-24 03:20:57
+9d154ca5-3ced-4ffb-b95e-b3afebe1c85d	Menyiratkan bahwa umat manusia sedang menghadapi ancaman besar dari pemanasan global yang tidak dapat dihindari.	9d154ca5-3932-48dc-8a9f-e5dcbb4ce2df	2024-09-24 03:20:57	2024-09-24 03:20:57
+9d154ca5-3d84-493f-8d14-0afebf624821	Mengkritik pemerintah yang tidak berkomitmen dalam menangani isu perubahan iklim dengan serius.	9d154ca5-3932-48dc-8a9f-e5dcbb4ce2df	2024-09-24 03:20:57	2024-09-24 03:20:57
+9d154cce-4b62-40b1-ae32-09e62eb84bd8	Breanna Shaw	9d154cce-49d6-44cf-b586-7152ff937a3b	2024-09-24 03:21:24	2024-09-24 03:21:24
+9d154cce-4c48-4f3c-a052-696a93da3685	Yaseer Said	9d154cce-49d6-44cf-b586-7152ff937a3b	2024-09-24 03:21:24	2024-09-24 03:21:24
+9d154cce-4d03-4efc-8447-b11a3a4dedbb	Kerry Baldwin	9d154cce-49d6-44cf-b586-7152ff937a3b	2024-09-24 03:21:24	2024-09-24 03:21:24
+9d154cce-4da1-4ba5-9019-543e16c27604	Caleb Beers	9d154cce-49d6-44cf-b586-7152ff937a3b	2024-09-24 03:21:24	2024-09-24 03:21:24
+9d154cce-4e2a-47d6-b529-1b624ae3da28	Daniel Tay	9d154cce-49d6-44cf-b586-7152ff937a3b	2024-09-24 03:21:24	2024-09-24 03:21:24
+9d154d04-7e2d-4557-9ea7-cd39f58ca307	Karena adaptasi lebih murah dan cepat dilakukan dibandingkan mitigasi.	9d154d04-7cb2-4fde-a08d-d33cf570e72b	2024-09-24 03:22:00	2024-09-24 03:22:00
+9d154d04-7eef-4c0e-8616-81751e9edbdf	Karena menunggu komitmen global yang tidak jelas dapat menyebabkan lebih banyak kerugian bagi masyarakat yang rentan terhadap perubahan iklim.	9d154d04-7cb2-4fde-a08d-d33cf570e72b	2024-09-24 03:22:00	2024-09-24 03:22:00
+9d154d04-7f91-40a3-b664-73c6dc0f72e4	Karena negara-negara besar tidak memberikan dukungan keuangan kepada negara berkembang.	9d154d04-7cb2-4fde-a08d-d33cf570e72b	2024-09-24 03:22:00	2024-09-24 03:22:00
+9d154d04-8033-42bd-83b9-6f1e224db7dd	Karena Indonesia memiliki sumber daya alam yang memadai untuk menghadapi perubahan iklim tanpa bantuan internasional.	9d154d04-7cb2-4fde-a08d-d33cf570e72b	2024-09-24 03:22:00	2024-09-24 03:22:00
+9d154d04-80ca-420f-a2ce-56a96f4c7cca	Karena Indonesia sudah berhasil mengatasi perubahan iklim dengan aksi mitigasi yang efektif sejak tahun 2000-an.	9d154d04-7cb2-4fde-a08d-d33cf570e72b	2024-09-24 03:22:00	2024-09-24 03:22:00
+9d154d68-d55e-48c8-8dcd-be1df12c4748	Karena seluruh dunia belum mengadakan konferensi iklim yang cukup untuk menemukan solusi konkret.	9d154d68-d3a6-42a8-8261-5451a4647ed6	2024-09-24 03:23:05	2024-09-24 03:23:05
+9d154d68-d632-4ccf-920f-c8c917489950	Karena perubahan iklim dianggap sebagai masalah yang tidak mungkin diselesaikan oleh negara-negara besar.	9d154d68-d3a6-42a8-8261-5451a4647ed6	2024-09-24 03:23:05	2024-09-24 03:23:05
+9d154d68-d704-4812-b319-f3f947e393ff	Karena petani dan nelayan di seluruh dunia tidak mendapat dukungan cukup untuk menghadapi perubahan iklim.	9d154d68-d3a6-42a8-8261-5451a4647ed6	2024-09-24 03:23:05	2024-09-24 03:23:05
+9d154d68-d7a9-4e1f-a9c7-5a41e33c981a	Karena suhu global sudah terlalu tinggi sehingga tidak ada langkah yang dapat dilakukan untuk menurunkan suhu.	9d154d68-d3a6-42a8-8261-5451a4647ed6	2024-09-24 03:23:05	2024-09-24 03:23:05
+9d154d68-d85d-41c6-9eed-e558e682424c	Karena pembahasan perubahan iklim lebih condong pada politik dan ekonomi daripada memperhatikan dampaknya pada manusia yang rentan.	9d154d68-d3a6-42a8-8261-5451a4647ed6	2024-09-24 03:23:05	2024-09-24 03:23:05
+9d154e73-b843-4f52-8a42-df9ec53f420f	is an important skill for actors to suppress themselves to create a new character	9d154e73-b6b7-46a2-829a-70395f4cca4a	2024-09-24 03:26:00	2024-09-24 03:26:00
+9d154e73-b917-4a9f-8885-9f558e98bac2	explores history, motivations, beliefs and values of a new character	9d154e73-b6b7-46a2-829a-70395f4cca4a	2024-09-24 03:26:00	2024-09-24 03:26:00
+9d154e73-b9d5-4909-a229-cedefb8a4725	enables actors to use several brain regions to be professional acting coaches	9d154e73-b6b7-46a2-829a-70395f4cca4a	2024-09-24 03:26:00	2024-09-24 03:26:00
+9d154e73-ba87-43b2-9eaa-a5af730e9192	is a simulation implemented by actors to answer questions from others’ perspectives	9d154e73-b6b7-46a2-829a-70395f4cca4a	2024-09-24 03:26:00	2024-09-24 03:26:00
+9d154e73-bb25-4561-8011-aae3df7c4cf8	deactivates an actor’s brain regions to process information contained within a script	9d154e73-b6b7-46a2-829a-70395f4cca4a	2024-09-24 03:26:00	2024-09-24 03:26:00
+9d154ee7-db98-4d0d-9c62-92a2ef3eae10	actors	9d154ee7-da0f-425a-bdfd-8c89509b9d01	2024-09-24 03:27:16	2024-09-24 03:27:16
+9d154ee7-dc59-4487-be6a-7a45c5d787a5	the fundamental mechanisms	9d154ee7-da0f-425a-bdfd-8c89509b9d01	2024-09-24 03:27:16	2024-09-24 03:27:16
+9d154ee7-dcf4-45d3-b704-c59890c1f45c	researchers	9d154ee7-da0f-425a-bdfd-8c89509b9d01	2024-09-24 03:27:16	2024-09-24 03:27:16
+9d154ee7-dd7f-4114-83f3-def808b20ad3	interactive productions	9d154ee7-da0f-425a-bdfd-8c89509b9d01	2024-09-24 03:27:16	2024-09-24 03:27:16
+9d154ee7-de1a-4a2d-9564-38848d4f83fd	autistic individuals	9d154ee7-da0f-425a-bdfd-8c89509b9d01	2024-09-24 03:27:16	2024-09-24 03:27:16
+9d154f6e-9b23-4a22-ad4e-d7de582c1d20	According to a recent study, when actors take on a new character, they may be able to suppress their everyday self.	9d154f6e-99dc-4f5c-a618-bbfe89178848	2024-09-24 03:28:45	2024-09-24 03:28:45
+9d154f6e-9bc0-4640-8fb2-47e3c32ea391	They used a series of sensory drama games, known as the Hunter Heartbeat Method.	9d154f6e-99dc-4f5c-a618-bbfe89178848	2024-09-24 03:28:45	2024-09-24 03:28:45
+9d154f6e-9c3a-4f66-b2ba-735e6eeb4b99	The findings showed that when the actors heard their own name during the performance, their response was suppressed in the left anterior prefrontal cortex of the brain.	9d154f6e-99dc-4f5c-a618-bbfe89178848	2024-09-24 03:28:45	2024-09-24 03:28:45
+9d154f6e-9cb6-4f08-9fdf-b0db1598aa46	The same result was witnessed consistently in six actors who were tested when rehearsing several times over a week.	9d154f6e-99dc-4f5c-a618-bbfe89178848	2024-09-24 03:28:45	2024-09-24 03:28:45
+9d154f6e-9d40-4c8b-ad4d-a54006064c75	We hope that this study will help us understand what theatre training does to the brain and to build new connections between neuroscientists and theatre professionals.	9d154f6e-99dc-4f5c-a618-bbfe89178848	2024-09-24 03:28:45	2024-09-24 03:28:45
+9d154fcc-d1b7-4150-9434-218e91008970	Text 1 Paragraph 1 and Text 2 Paragraph 1	9d154fcc-d07c-4a3e-98da-c3fff124b055	2024-09-24 03:29:46	2024-09-24 03:29:46
+9d154fcc-d263-4f0d-9cca-06ad4153200c	Text 1 Paragraph 2 and Text 2 Paragraph 3	9d154fcc-d07c-4a3e-98da-c3fff124b055	2024-09-24 03:29:46	2024-09-24 03:29:46
+9d154fcc-d2f5-4284-934f-dad516c72b82	Text 1 Paragraph 1 and Text 2 Paragraph 3	9d154fcc-d07c-4a3e-98da-c3fff124b055	2024-09-24 03:29:46	2024-09-24 03:29:46
+9d154fcc-d383-4425-a632-8737be47f39b	Text 1 Paragraph 2 and Text 2 Paragraph 4	9d154fcc-d07c-4a3e-98da-c3fff124b055	2024-09-24 03:29:46	2024-09-24 03:29:46
+9d154fcc-d430-4ad8-a256-ba3722093e30	Text 1 Paragraph 1 and Text 2 Paragraph 2	9d154fcc-d07c-4a3e-98da-c3fff124b055	2024-09-24 03:29:46	2024-09-24 03:29:46
+9d155008-0652-44fc-ac5c-8a24af44543b	Folasin adalah zat gizi esensial yang mampu mengurangi risiko kerusakan pada pembuluh darah.	9d155008-04ed-43d2-b6f8-e6103a03d700	2024-09-24 03:30:25	2024-09-24 03:30:25
+9d155008-0703-4735-af72-18d9f22b3188	Dalam 100 gram kacang merah kering dapat menghasilkan 4 gram serat yang terdiri dari serat larut air dan serat yang tidak larut air.	9d155008-04ed-43d2-b6f8-e6103a03d700	2024-09-24 03:30:25	2024-09-24 03:30:25
+9d155008-0787-49f4-a5cf-0b2d35847df9	Namun, di sisi lain, kacang merah memproduksi gas dalam usus yang membuat perut kembung.	9d155008-04ed-43d2-b6f8-e6103a03d700	2024-09-24 03:30:25	2024-09-24 03:30:25
+9d155008-080e-45b2-8f06-2628dbd948c6	Kacang merah memiliki kandungan gizi yang sangat baik dan menguntungkan bagi kesehatan tubuh manusia jika diolah secara benar.	9d155008-04ed-43d2-b6f8-e6103a03d700	2024-09-24 03:30:25	2024-09-24 03:30:25
+9d155008-088f-476e-8a60-76dd56183124	Kandungan lemak dan natrium yang dimiliki kacang merah sangat rendah, nyaris bebas lemak jenuh dan kolesterol.	9d155008-04ed-43d2-b6f8-e6103a03d700	2024-09-24 03:30:25	2024-09-24 03:30:25
+9d155099-bae3-4118-86ff-292c293493c5	Text 1 argues the importance of using cognitive empathy for acting, which is criticized by Text 2.	9d155099-b969-490b-8a1a-ac91bf491210	2024-09-24 03:32:01	2024-09-24 03:32:01
+9d155099-bbb8-45e7-8f6f-c9fc5518d6b3	Text 1 explains how the brain works when an actor performs a character and Text 2 compares the devices used in the study.	9d155099-b969-490b-8a1a-ac91bf491210	2024-09-24 03:32:01	2024-09-24 03:32:01
+9d155099-bc63-4afe-b35b-6733caf00ded	Both texts explain the mechanisms of the human brain, but they focus on different participants.	9d155099-b969-490b-8a1a-ac91bf491210	2024-09-24 03:32:01	2024-09-24 03:32:01
+9d155099-bcf8-413e-b7d2-594c04286662	Text 1 explains that in the character-creation process, an actor suppresses their self-processing, and Text 2 further elaborates the brain mechanisms.	9d155099-b969-490b-8a1a-ac91bf491210	2024-09-24 03:32:01	2024-09-24 03:32:01
+9d155099-bd88-491a-888d-164c06852f83	Texts 1 and 2 explain how creating and performing a new character using cognitive empathy can help actors to be more professional.	9d155099-b969-490b-8a1a-ac91bf491210	2024-09-24 03:32:01	2024-09-24 03:32:01
+9d15520f-c87c-4e6b-a220-8e147aa8d822	Kacang merah adalah makanan tinggi lemak dan natrium yang tidak baik untuk dikonsumsi dalam jumlah banyak.	9d15520f-c743-491d-8cad-58fe5b90bd84	2024-09-24 03:36:06	2024-09-24 03:36:06
+9d15520f-c945-46d5-97c7-c8abc95f2a52	Kacang merah harus dihindari karena dapat menyebabkan produksi gas dalam usus dan meningkatkan risiko penyakit.	9d15520f-c743-491d-8cad-58fe5b90bd84	2024-09-24 03:36:06	2024-09-24 03:36:06
+9d15520f-c9f0-4546-93ff-2ba0b79a52ea	Kacang merah adalah satu-satunya makanan yang dapat menurunkan kadar kolesterol dan gula darah secara signifikan.	9d15520f-c743-491d-8cad-58fe5b90bd84	2024-09-24 03:36:06	2024-09-24 03:36:06
+9d15520f-ca87-4837-b7b4-90b0128d041e	Folasin adalah zat gizi esensial yang mampu mengurangi kerusakan pembuluh darah, menurunkan kadar kolesterol dalam darah, berkurangnya konsentrasi gula darah, dan menurunkan risiko kanker usus besar.	9d15520f-c743-491d-8cad-58fe5b90bd84	2024-09-24 03:36:06	2024-09-24 03:36:06
+9d15520f-cb26-49d6-a1a8-35376b67948f	Kacang merah memiliki kandungan gizi yang sangat baik, termasuk folasin dan serat, yang dapat bermanfaat bagi kesehatan, tetapi juga dapat menyebabkan perut kembung.	9d15520f-c743-491d-8cad-58fe5b90bd84	2024-09-24 03:36:06	2024-09-24 03:36:06
+9d155253-d855-4ebf-aff2-33d72424c426	Climate change and its impact on wildlife	9d155253-d6f4-4c02-897d-5a162218043c	2024-09-24 03:36:51	2024-09-24 03:36:51
+9d155253-d908-4363-82a7-2eaa20868dfb	Environmental conservation efforts	9d155253-d6f4-4c02-897d-5a162218043c	2024-09-24 03:36:51	2024-09-24 03:36:51
+9d155253-d986-477c-aecd-7f2193c53f22	Effects of pollution on ecosystems	9d155253-d6f4-4c02-897d-5a162218043c	2024-09-24 03:36:51	2024-09-24 03:36:51
+9d155253-da25-44b2-8650-448ee0855a64	Wildlife migration patterns	9d155253-d6f4-4c02-897d-5a162218043c	2024-09-24 03:36:51	2024-09-24 03:36:51
+9d155253-dad8-471a-91b9-2ce85944e901	Human activities and their effect on climate change	9d155253-d6f4-4c02-897d-5a162218043c	2024-09-24 03:36:51	2024-09-24 03:36:51
+9d1552a6-9552-4cb9-ba1a-41d8e52ec959	Mengurangi kerusakan pembuluh darah, menurunkan kadar kolesterol dalam darah, mengurangi konsentrasi gula darah, dan menurunkan risiko kanker usus besar.	9d1552a6-93da-421c-9946-3dbf50892e9a	2024-09-24 03:37:45	2024-09-24 03:37:45
+9d1552a6-9618-4a57-966a-40d5e6f033cc	Mengurangi kerusakan pembuluh darah, menurunkan kadar kolesterol dalam darah, berkurangnya konsentrasi gula darah, dan turunnya risiko kanker usus besar.	9d1552a6-93da-421c-9946-3dbf50892e9a	2024-09-24 03:37:45	2024-09-24 03:37:45
+9d1552a6-96b7-4952-ad35-9f2e4d933516	Berkurangnya kerusakan pembuluh darah, menurunkan kadar kolesterol dalam darah, berkurangnya konsentrasi gula darah, dan menurunkan risiko kanker usus besar.	9d1552a6-93da-421c-9946-3dbf50892e9a	2024-09-24 03:37:45	2024-09-24 03:37:45
+9d1552a6-9757-4716-b299-1346832187f8	Mengurangi kerusakan pembuluh darah, turunnya kadar kolesterol dalam darah, mengurangi konsentrasi gula darah, dan turunnya risiko kanker usus besar.	9d1552a6-93da-421c-9946-3dbf50892e9a	2024-09-24 03:37:45	2024-09-24 03:37:45
+9d1552a6-97ef-4868-a725-a1a6d6b44748	Berkurangnya kerusakan pembuluh darah, turunnya kadar kolesterol dalam darah, berkurangnya konsentrasi gula darah, dan menurunkan risiko kanker usus besar.	9d1552a6-93da-421c-9946-3dbf50892e9a	2024-09-24 03:37:45	2024-09-24 03:37:45
+9d155305-1645-4864-9398-626c44fc7b27	Angin puting beliung tidak terjadi pada malam hari.	9d155305-14f5-4876-8245-b39b574ee48c	2024-09-24 03:38:47	2024-09-24 03:38:47
+9d155305-16f0-427a-ab2d-20f19a7dd9ba	Hujan lebat adalah salah satu tanda terjadinya angin puting beliung.	9d155305-14f5-4876-8245-b39b574ee48c	2024-09-24 03:38:47	2024-09-24 03:38:47
+9d155305-177f-406b-ab1f-490518477db6	Angin puting beliung terjadi karena pertumbuhan awan yang tebal.	9d155305-14f5-4876-8245-b39b574ee48c	2024-09-24 03:38:47	2024-09-24 03:38:47
+9d155305-1806-4182-843c-6aa7e730eb98	Angin puting beliung umumnya terjadi di tempat terbuka.	9d155305-14f5-4876-8245-b39b574ee48c	2024-09-24 03:38:47	2024-09-24 03:38:47
+9d155305-18a4-4939-9211-3da5c5b4cbb0	Pada musim hujan tidak akan tejadi angin puting beliung.	9d155305-14f5-4876-8245-b39b574ee48c	2024-09-24 03:38:47	2024-09-24 03:38:47
+9d15536d-1336-48cb-aacb-f01c5991e941	Climate change affects wildlife through habitat loss and extreme weather events.	9d15536d-11c6-4390-b201-df31e535a6bf	2024-09-24 03:39:55	2024-09-24 03:39:55
+9d15536d-13f9-430a-80b8-362977841030	Wildlife conservation efforts are insufficient to address climate change.	9d15536d-11c6-4390-b201-df31e535a6bf	2024-09-24 03:39:55	2024-09-24 03:39:55
+9d15536d-1492-467e-979f-cc84e7f3076a	Rising temperatures lead to increased biodiversity in ecosystems.	9d15536d-11c6-4390-b201-df31e535a6bf	2024-09-24 03:39:55	2024-09-24 03:39:55
+9d15536d-1527-408b-92a4-e711b99deb0b	Human activities are the primary cause of climate change.	9d15536d-11c6-4390-b201-df31e535a6bf	2024-09-24 03:39:55	2024-09-24 03:39:55
+9d15536d-15b4-46e0-9e90-f8b90ee6bd73	Wildlife migration patterns are unaffected by climate change.	9d15536d-11c6-4390-b201-df31e535a6bf	2024-09-24 03:39:55	2024-09-24 03:39:55
+9d1553d4-7352-4c91-8462-560379d0812c	Puting beliung dan angin kencang terjadi akibat efek pemanasan dan dinamika atmosfer.	9d1553d4-71eb-4d01-9238-228eb29dc6d8	2024-09-24 03:41:03	2024-09-24 03:41:03
+9d1553d4-7436-4b8b-b693-2d15765922c2	Proses terbentuknya puting beliung akibat pemanasan lokal dan dinamika atmosfer lokal.	9d1553d4-71eb-4d01-9238-228eb29dc6d8	2024-09-24 03:41:03	2024-09-24 03:41:03
+9d1553d4-74f7-4b01-b011-8489117517c0	Puting beliung bersifat lokal dan waktunya sangat singkat, tetapi sangat merusak	9d1553d4-71eb-4d01-9238-228eb29dc6d8	2024-09-24 03:41:03	2024-09-24 03:41:03
+9d1553d4-7592-4989-9595-fec4ea9a0239	Hujan lebat disertai angin kencang dan butiran es terjadi pada musim pancaroba.	9d1553d4-71eb-4d01-9238-228eb29dc6d8	2024-09-24 03:41:03	2024-09-24 03:41:03
+9d1553d4-7632-4233-bf8f-bce7d73a718c	Pemanasan lokal di wilayah minim pepohonan menyebabkan suhu udara naik.	9d1553d4-71eb-4d01-9238-228eb29dc6d8	2024-09-24 03:41:03	2024-09-24 03:41:03
+9d155432-245d-4323-a48e-d9d76ceece41	sangat singkat	9d155432-22ce-4880-811e-1177b632529b	2024-09-24 03:42:04	2024-09-24 03:42:04
+9d155432-2531-4673-b87f-89631c9a6e06	hujan lebat	9d155432-22ce-4880-811e-1177b632529b	2024-09-24 03:42:04	2024-09-24 03:42:04
+9d155432-25df-43c2-bc3c-62c6cfa0be93	udara basah	9d155432-22ce-4880-811e-1177b632529b	2024-09-24 03:42:04	2024-09-24 03:42:04
+9d155432-2679-4b8d-a77b-18dc6ef5840a	puting beliung	9d155432-22ce-4880-811e-1177b632529b	2024-09-24 03:42:04	2024-09-24 03:42:04
+9d155432-270a-4287-bbed-31d10a7e3251	titik beku	9d155432-22ce-4880-811e-1177b632529b	2024-09-24 03:42:04	2024-09-24 03:42:04
+9d155499-b81e-4420-b611-0b2a8e1ce8ed	The positive impact of technology on mental health	9d155499-b6ca-495c-bdd9-49d4df37f4cf	2024-09-24 03:43:12	2024-09-24 03:43:12
+9d155499-b8d8-417b-84a4-96156eab1591	The negative impact of technology on mental health	9d155499-b6ca-495c-bdd9-49d4df37f4cf	2024-09-24 03:43:12	2024-09-24 03:43:12
+9d155499-b978-440b-835c-a8d1fa77f907	The use of technology in daily life	9d155499-b6ca-495c-bdd9-49d4df37f4cf	2024-09-24 03:43:12	2024-09-24 03:43:12
+9d155499-ba00-4310-8d51-993cb7629810	The health benefits of adequate sleep	9d155499-b6ca-495c-bdd9-49d4df37f4cf	2024-09-24 03:43:12	2024-09-24 03:43:12
+9d155499-ba9f-481e-aea5-757132d4bd3d	The importance of physical activity for mental health	9d155499-b6ca-495c-bdd9-49d4df37f4cf	2024-09-24 03:43:12	2024-09-24 03:43:12
+9d15550c-a86b-4061-a086-b7c2d8044886	terkungkung	9d15550c-a6ed-40a9-9bff-f75e75bbc052	2024-09-24 03:44:27	2024-09-24 03:44:27
+9d15550c-a936-48bb-93a7-c2e8a9c48308	titik-titik	9d15550c-a6ed-40a9-9bff-f75e75bbc052	2024-09-24 03:44:27	2024-09-24 03:44:27
+9d15550c-a9c8-4f66-99b4-432b5cc33fb7	pepohonan	9d15550c-a6ed-40a9-9bff-f75e75bbc052	2024-09-24 03:44:27	2024-09-24 03:44:27
+9d15550c-aa5b-4696-b505-6a89255bee7b	kadang-kadang	9d15550c-a6ed-40a9-9bff-f75e75bbc052	2024-09-24 03:44:27	2024-09-24 03:44:27
+9d15550c-aaeb-4d6a-9fcb-bff08166577a	butiran-butiran es	9d15550c-a6ed-40a9-9bff-f75e75bbc052	2024-09-24 03:44:27	2024-09-24 03:44:27
+9d15554c-d84c-4e7f-a5be-84627422e9ca	To promote the use of social media	9d15554c-d6db-47c8-96bb-36709dcbeda5	2024-09-24 03:45:09	2024-09-24 03:45:09
+9d15554c-d90f-42d3-b6ac-e68f45fe17e5	To recommend sleep technology	9d15554c-d6db-47c8-96bb-36709dcbeda5	2024-09-24 03:45:09	2024-09-24 03:45:09
+9d15554c-d9bd-4c7a-a436-97bfc93f8962	To eliminate technology from daily life	9d15554c-d6db-47c8-96bb-36709dcbeda5	2024-09-24 03:45:09	2024-09-24 03:45:09
+9d15554c-da57-44c2-b4f6-5fb273ade255	To raise awareness of the importance of managing technology use	9d15554c-d6db-47c8-96bb-36709dcbeda5	2024-09-24 03:45:09	2024-09-24 03:45:09
+9d15554c-daff-4027-bce4-e5b7146c469d	To introduce digital technology	9d15554c-d6db-47c8-96bb-36709dcbeda5	2024-09-24 03:45:09	2024-09-24 03:45:09
+9d1555b6-422d-49b2-908a-1b3f17e926f2	bermacam-macam	9d1555b6-40e0-43c3-ae4c-db2525d8ca3e	2024-09-24 03:46:18	2024-09-24 03:46:18
+9d1555b6-42db-472e-bdbb-6043ff1d5742	kecil	9d1555b6-40e0-43c3-ae4c-db2525d8ca3e	2024-09-24 03:46:18	2024-09-24 03:46:18
+9d1555b6-4375-4a72-86a8-86bb11db27fd	banyak	9d1555b6-40e0-43c3-ae4c-db2525d8ca3e	2024-09-24 03:46:18	2024-09-24 03:46:18
+9d1555b6-43fe-42f1-9a9a-a5b1908034c2	sempit	9d1555b6-40e0-43c3-ae4c-db2525d8ca3e	2024-09-24 03:46:18	2024-09-24 03:46:18
+9d1555b6-4480-4e87-b300-703e0a15c0dc	luas	9d1555b6-40e0-43c3-ae4c-db2525d8ca3e	2024-09-24 03:46:18	2024-09-24 03:46:18
+9d155627-f50e-4cc8-890c-c5c23964c744	Sleep disturbances caused by blue light exposure	9d155627-f3b2-4e4f-8a3f-e5d4cf78a374	2024-09-24 03:47:33	2024-09-24 03:47:33
+9d155627-f5ba-452c-a41b-e6a7e118bca6	Increased levels of depression, anxiety, and stress	9d155627-f3b2-4e4f-8a3f-e5d4cf78a374	2024-09-24 03:47:33	2024-09-24 03:47:33
+9d155627-f650-4179-9392-7cb45947608b	Enhanced quality of direct social interaction	9d155627-f3b2-4e4f-8a3f-e5d4cf78a374	2024-09-24 03:47:33	2024-09-24 03:47:33
+9d155627-f6df-49bc-994c-1a96e3380e9e	Feelings of inadequacy and low self-esteem due to social media comparison	9d155627-f3b2-4e4f-8a3f-e5d4cf78a374	2024-09-24 03:47:33	2024-09-24 03:47:33
+9d155627-f76d-4455-bc23-a9e82bcb3a71	Reduction in time spent with others physically	9d155627-f3b2-4e4f-8a3f-e5d4cf78a374	2024-09-24 03:47:33	2024-09-24 03:47:33
+9d15562a-0ce5-4eee-a149-064c9cec5d68	pembungkusan	9d15562a-0b7a-40dc-ab96-8dfdcae90d05	2024-09-24 03:47:34	2024-09-24 03:47:34
+9d15562a-0dbd-4310-ac2f-12ad75ff3354	pendalaman	9d15562a-0b7a-40dc-ab96-8dfdcae90d05	2024-09-24 03:47:34	2024-09-24 03:47:34
+9d15562a-0e4f-43ee-a444-830b8ea8e7c2	penambahan	9d15562a-0b7a-40dc-ab96-8dfdcae90d05	2024-09-24 03:47:34	2024-09-24 03:47:34
+9d15562a-0ef2-4cd8-8540-f23a089f16b2	pengolahan	9d15562a-0b7a-40dc-ab96-8dfdcae90d05	2024-09-24 03:47:34	2024-09-24 03:47:34
+9d15562a-0f8d-4a46-b319-0d8f074d42bb	pembuatan	9d15562a-0b7a-40dc-ab96-8dfdcae90d05	2024-09-24 03:47:34	2024-09-24 03:47:34
+9d1556aa-92b8-4bc2-b10d-02e9154174bc	menghemat	9d1556aa-913d-4147-8efa-1d93f83e94e9	2024-09-24 03:48:58	2024-09-24 03:48:58
+9d1556aa-93be-481f-a0a4-9453f326aed6	menambahi	9d1556aa-913d-4147-8efa-1d93f83e94e9	2024-09-24 03:48:58	2024-09-24 03:48:58
+9d1556aa-9451-4d3d-a591-c682cc92f8ae	memperbanyak	9d1556aa-913d-4147-8efa-1d93f83e94e9	2024-09-24 03:48:58	2024-09-24 03:48:58
+9d1556aa-94ec-402b-babc-b929b9a27369	menjatuhkan	9d1556aa-913d-4147-8efa-1d93f83e94e9	2024-09-24 03:48:58	2024-09-24 03:48:58
+9d1556aa-9572-45a0-ab18-27f194401b3f	memperluas	9d1556aa-913d-4147-8efa-1d93f83e94e9	2024-09-24 03:48:58	2024-09-24 03:48:58
+9d15575a-669a-4b55-8827-82c3740dbb8a	Alternative medicine is now a big business in the United States with more Americans seeking it out than ever before	9d15575a-6553-4bcc-9cee-fdd9c617bd9c	2024-09-24 03:50:54	2024-09-24 03:50:54
+9d15575a-673a-4e80-9f2d-25da05b9f510	Today, it is not unusual for mainstream doctors to incorporate alternative therapies into their practice	9d15575a-6553-4bcc-9cee-fdd9c617bd9c	2024-09-24 03:50:54	2024-09-24 03:50:54
+9d15575a-67bc-4fc4-87cf-cdf0fc296f14	Over the last few decades, alternative medicine has become more popular, accepted, practiced in the United States. practiced in the United States.	9d15575a-6553-4bcc-9cee-fdd9c617bd9c	2024-09-24 03:50:54	2024-09-24 03:50:54
+9d15575a-6847-4958-882d-e058d21d322f	Americans’ interest in the courses about alternative  therapies.	9d15575a-6553-4bcc-9cee-fdd9c617bd9c	2024-09-24 03:50:54	2024-09-24 03:50:54
+9d15575a-68e1-446d-a734-8879c21b1977	People are tired of conventional medicine’s focus on technology.	9d15575a-6553-4bcc-9cee-fdd9c617bd9c	2024-09-24 03:50:54	2024-09-24 03:50:54
+9d1557a8-2b6f-4030-94b6-dedd3265bcc8	pain management	9d1557a8-2a32-436f-9aee-3cbaeba08bdd	2024-09-24 03:51:45	2024-09-24 03:51:45
+9d1557a8-2c2a-436e-bb57-ea6a47495f50	acupuncture	9d1557a8-2a32-436f-9aee-3cbaeba08bdd	2024-09-24 03:51:45	2024-09-24 03:51:45
+9d1557a8-2cb4-42d0-b173-f0ae5cf90c2e	taking herbal garlic supplements	9d1557a8-2a32-436f-9aee-3cbaeba08bdd	2024-09-24 03:51:45	2024-09-24 03:51:45
+9d1557a8-2d2d-454f-a9e8-042218b37b14	massage therapy	9d1557a8-2a32-436f-9aee-3cbaeba08bdd	2024-09-24 03:51:45	2024-09-24 03:51:45
+9d1557a8-2da9-47e5-a28a-f3df06041e50	homeopathy	9d1557a8-2a32-436f-9aee-3cbaeba08bdd	2024-09-24 03:51:45	2024-09-24 03:51:45
+9d1558fb-db56-4f0c-bf23-be3030389039	A senior citizen suffering from chemotherapy-induced nausea.	9d1558fb-d9f0-4ad9-a964-bcd00b32ddf8	2024-09-24 03:55:27	2024-09-24 03:55:27
+9d1558fb-dc28-4de1-8c41-56471277adc2	A young woman suffering from chronic fatigue syndrome	9d1558fb-d9f0-4ad9-a964-bcd00b32ddf8	2024-09-24 03:55:27	2024-09-24 03:55:27
+9d1558fb-dcb9-452f-aa7a-61d966acb709	A 45-year-old man who believes that his body and mind must be treated together.	9d1558fb-d9f0-4ad9-a964-bcd00b32ddf8	2024-09-24 03:55:27	2024-09-24 03:55:27
+9d1558fb-dd59-41aa-b498-dd2d7e680a7e	A 25-year-old track star with chronic back pain.	9d1558fb-d9f0-4ad9-a964-bcd00b32ddf8	2024-09-24 03:55:27	2024-09-24 03:55:27
+9d1558fb-dde8-4022-aa3c-ce8a53057a7b	A 30-year-old adult who has been alienated by conventional medicine.	9d1558fb-d9f0-4ad9-a964-bcd00b32ddf8	2024-09-24 03:55:27	2024-09-24 03:55:27
+9d155974-f146-4522-b965-27d95b93f089	more and more Americans are demanding alternative therapies.	9d155974-efed-4c46-b41d-11c9ee9298e6	2024-09-24 03:56:47	2024-09-24 03:56:47
+9d155974-f237-4910-8660-7aa0759558c0	healthcare insurance companies are now providing some benefits for alternative medical treatments.	9d155974-efed-4c46-b41d-11c9ee9298e6	2024-09-24 03:56:47	2024-09-24 03:56:47
+9d155974-f2c3-451b-afd0-b0725a80226c	They are frustrated by the time constraints of managed care.	9d155974-efed-4c46-b41d-11c9ee9298e6	2024-09-24 03:56:47	2024-09-24 03:56:47
+9d155974-f357-4609-9618-d1c8e9144577	Americans are trying to find a solution that can replace mainstream medicine that cannot treat certain conditions.	9d155974-efed-4c46-b41d-11c9ee9298e6	2024-09-24 03:56:47	2024-09-24 03:56:47
+9d155974-f3da-4186-917a-bc9ff0978932	scientific studies are becoming available that prove their effectiveness and safety.	9d155974-efed-4c46-b41d-11c9ee9298e6	2024-09-24 03:56:47	2024-09-24 03:56:47
+9d1559b5-cc18-4181-b61f-19162b1d7975	Scientists	9d1559b5-caf2-4d1a-843c-cb9457d89905	2024-09-24 03:57:29	2024-09-24 03:57:29
+9d1559b5-cccb-40f3-bc20-1ee9c2a0d21b	Patients	9d1559b5-caf2-4d1a-843c-cb9457d89905	2024-09-24 03:57:29	2024-09-24 03:57:29
+9d1559b5-cd53-4923-b282-2849bb87c92a	.Doctors	9d1559b5-caf2-4d1a-843c-cb9457d89905	2024-09-24 03:57:29	2024-09-24 03:57:29
+9d1559b5-cdcf-4169-afc0-6ec2a7612a6d	Alternative Medicine	9d1559b5-caf2-4d1a-843c-cb9457d89905	2024-09-24 03:57:29	2024-09-24 03:57:29
+9d1559b5-ce64-465a-83ac-e51af59f0908	Contemporary Scientific Beliefs	9d1559b5-caf2-4d1a-843c-cb9457d89905	2024-09-24 03:57:29	2024-09-24 03:57:29
+9d157366-dfe9-46a1-88cd-42909c7ddedd	Netral	9d157366-de9f-4e2e-9ec1-b54aff14ac55	2024-09-24 05:09:19	2024-09-24 05:09:19
+9d157366-e0a8-4aee-bcbd-9fd1f195f056	Kritis	9d157366-de9f-4e2e-9ec1-b54aff14ac55	2024-09-24 05:09:19	2024-09-24 05:09:19
+9d157366-e149-44cd-b642-4153746a7375	Apatis	9d157366-de9f-4e2e-9ec1-b54aff14ac55	2024-09-24 05:09:19	2024-09-24 05:09:19
+9d157366-e1df-40f4-afe0-25cb1672c432	Sugestif	9d157366-de9f-4e2e-9ec1-b54aff14ac55	2024-09-24 05:09:19	2024-09-24 05:09:19
+9d157366-e25b-40d3-80a9-ec7c77d8ae11	Apolitis	9d157366-de9f-4e2e-9ec1-b54aff14ac55	2024-09-24 05:09:19	2024-09-24 05:09:19
+9d1573d4-17d6-400b-a3b8-4a12f83ed4b3	mengetahui	9d1573d4-1691-498a-90a6-3f3bc72f8102	2024-09-24 05:10:31	2024-09-24 05:10:31
+9d1573d4-18aa-41c7-8ec7-3480edb4f4d6	mengamati	9d1573d4-1691-498a-90a6-3f3bc72f8102	2024-09-24 05:10:31	2024-09-24 05:10:31
+9d1573d4-193a-49ce-a365-fce3cfaf1acb	melempar	9d1573d4-1691-498a-90a6-3f3bc72f8102	2024-09-24 05:10:31	2024-09-24 05:10:31
+9d1573d4-19da-4416-a5cc-541d09133acc	mengeksplorasi	9d1573d4-1691-498a-90a6-3f3bc72f8102	2024-09-24 05:10:31	2024-09-24 05:10:31
+9d1573d4-1a60-4528-ba7f-acebd7442af7	mengambil	9d1573d4-1691-498a-90a6-3f3bc72f8102	2024-09-24 05:10:31	2024-09-24 05:10:31
+9d157446-be77-4b29-87b2-e74879b9dbff	perasaan bosan	9d157446-bd02-4df9-8b1d-02fde03c2778	2024-09-24 05:11:46	2024-09-24 05:11:46
+9d157446-bf59-4dd4-bb5a-356b37341f2b	malas berkegiatan	9d157446-bd02-4df9-8b1d-02fde03c2778	2024-09-24 05:11:46	2024-09-24 05:11:46
+9d157446-c002-4745-8e2f-b8a3db66b569	muak dengan sesuatu	9d157446-bd02-4df9-8b1d-02fde03c2778	2024-09-24 05:11:46	2024-09-24 05:11:46
+9d157446-c0ad-43d7-9b8d-407017b85b09	lelah yang berlebihan	9d157446-bd02-4df9-8b1d-02fde03c2778	2024-09-24 05:11:46	2024-09-24 05:11:46
+9d157446-c152-4f28-8913-eb1001b738e3	senang membantu	9d157446-bd02-4df9-8b1d-02fde03c2778	2024-09-24 05:11:46	2024-09-24 05:11:46
+9d157dcd-311e-4fe2-a273-150e3e5e5d1a	(2) dan (4)	9d157dcd-2fa6-4f40-aa18-b69300762e16	2024-09-24 05:38:24	2024-09-24 05:38:24
+9d157dcd-3205-40c7-a2f0-49889499903c	(1) dan (3)	9d157dcd-2fa6-4f40-aa18-b69300762e16	2024-09-24 05:38:24	2024-09-24 05:38:24
+9d157dcd-32cb-4e2a-a7f2-690aea9c6232	(1) dan (5)	9d157dcd-2fa6-4f40-aa18-b69300762e16	2024-09-24 05:38:24	2024-09-24 05:38:24
+9d157dcd-3380-4997-ad35-b360b19df5f1	(4) dan (5)	9d157dcd-2fa6-4f40-aa18-b69300762e16	2024-09-24 05:38:24	2024-09-24 05:38:24
+9d157dcd-3423-4772-a289-90449bbe7d43	(3) dan (4)	9d157dcd-2fa6-4f40-aa18-b69300762e16	2024-09-24 05:38:24	2024-09-24 05:38:24
+9d157e78-1d0c-4e30-8f6a-ab017868b255	menghilangkan kata “juga” sebelum kata “sering”	9d157e78-1b98-4c79-99f3-5eff5bc3acf5	2024-09-24 05:40:16	2024-09-24 05:40:16
+9d157e78-1df2-47b4-983b-e7f65fd7eb30	menghilangkan tanda koma (,) sebelum kata tetapi	9d157e78-1b98-4c79-99f3-5eff5bc3acf5	2024-09-24 05:40:16	2024-09-24 05:40:16
+9d157e78-1eb8-43b9-a3e3-35ad319ec81e	mengganti kata “diperhatikan” menjadi “di perhatikan”	9d157e78-1b98-4c79-99f3-5eff5bc3acf5	2024-09-24 05:40:16	2024-09-24 05:40:16
+9d157e78-1f7e-4495-8cb2-c964bd87794e	menghilangkan kata “banyak” sebelum kata “gula”	9d157e78-1b98-4c79-99f3-5eff5bc3acf5	2024-09-24 05:40:16	2024-09-24 05:40:16
+9d157e78-203b-4df3-90e9-bd53de114fa2	mengganti kata “karena” dengan kata “sebab”	9d157e78-1b98-4c79-99f3-5eff5bc3acf5	2024-09-24 05:40:16	2024-09-24 05:40:16
+9d157edc-b9bd-4d18-863f-c811b13ab0c6	TIDAK PERLU DIPERBAIKI	9d157edc-b825-421b-876c-5a689b61c403	2024-09-24 05:41:22	2024-09-24 05:41:22
+9d157edc-baa7-466d-af15-cf3ba7644ad2	Kementerian Kesehatan Republik indonesia	9d157edc-b825-421b-876c-5a689b61c403	2024-09-24 05:41:22	2024-09-24 05:41:22
+9d157edc-bb5d-4130-9224-dc4113101d8a	Kementrian Kesehatan Republik Indonesia	9d157edc-b825-421b-876c-5a689b61c403	2024-09-24 05:41:22	2024-09-24 05:41:22
+9d157edc-bc02-4df0-ba7b-7c3280244451	Kementerian Kesehatan Republik Indonesia	9d157edc-b825-421b-876c-5a689b61c403	2024-09-24 05:41:22	2024-09-24 05:41:22
+9d157edc-bcb4-46ea-9844-8941320bd9c0	“Kementrian Kesehatan Republik Indonesia”	9d157edc-b825-421b-876c-5a689b61c403	2024-09-24 05:41:22	2024-09-24 05:41:22
+9d157f36-5609-49f7-acba-771f7a52b09c	TIDAK PERLU DIPERBAIKI	9d157f36-54b9-49d1-bcc1-2bf5836b06be	2024-09-24 05:42:21	2024-09-24 05:42:21
+9d157f36-56ad-4e2b-ba74-19cdd3122581	dukung	9d157f36-54b9-49d1-bcc1-2bf5836b06be	2024-09-24 05:42:21	2024-09-24 05:42:21
+9d157f36-5742-4f23-a37c-00a768a2bf16	dukungan	9d157f36-54b9-49d1-bcc1-2bf5836b06be	2024-09-24 05:42:21	2024-09-24 05:42:21
+9d157f36-57c9-4d1c-9b50-426241d7c57d	di dukung	9d157f36-54b9-49d1-bcc1-2bf5836b06be	2024-09-24 05:42:21	2024-09-24 05:42:21
+9d157f36-5884-4821-a098-c46a3e15ec19	dukunglah	9d157f36-54b9-49d1-bcc1-2bf5836b06be	2024-09-24 05:42:21	2024-09-24 05:42:21
+9d157fc4-3e39-4cbf-982f-a6938a74b3cf	TIDAK PERLU DIPERBAIKI	9d157fc4-3cfc-49f9-abb5-5d1f70cee9b1	2024-09-24 05:43:54	2024-09-24 05:43:54
+9d157fc4-3ee2-4b14-87ff-4af31f0d2bbf	soft drink	9d157fc4-3cfc-49f9-abb5-5d1f70cee9b1	2024-09-24 05:43:54	2024-09-24 05:43:54
+9d157fc4-3f5c-4cb5-913d-9869e418600f	Minuman Soft	9d157fc4-3cfc-49f9-abb5-5d1f70cee9b1	2024-09-24 05:43:54	2024-09-24 05:43:54
+9d157fc4-3fd2-4c61-b1a9-4483a080f4b3	Soft Drink	9d157fc4-3cfc-49f9-abb5-5d1f70cee9b1	2024-09-24 05:43:54	2024-09-24 05:43:54
+9d157fc4-4063-4c00-a0b6-d287f6b34102	“soft drink”	9d157fc4-3cfc-49f9-abb5-5d1f70cee9b1	2024-09-24 05:43:54	2024-09-24 05:43:54
+9d1580da-17aa-4a97-b810-041e8912c1f7	sekolah mengadakan pelatihan coding untuk para siswa	9d1580da-1612-4b7a-9b47-4e5c907c5c70	2024-09-24 05:46:56	2024-09-24 05:46:56
+9d1580da-18d8-4b27-a0e1-5dca2a927f1b	siswa kelas 12 mengikuti bimbingan belajar persiapan UTBK	9d1580da-1612-4b7a-9b47-4e5c907c5c70	2024-09-24 05:46:56	2024-09-24 05:46:56
+9d1580da-198e-40bc-8367-8ed459e8d60b	seorang petani yang menyekolahkan anaknya hingga S-1	9d1580da-1612-4b7a-9b47-4e5c907c5c70	2024-09-24 05:46:56	2024-09-24 05:46:56
+9d1580da-1a24-426a-852e-b731f5905d8f	ibu guru sedang kursus mengemudi	9d1580da-1612-4b7a-9b47-4e5c907c5c70	2024-09-24 05:46:56	2024-09-24 05:46:56
+9d1580da-1af0-47dd-8ea9-354819cd7ad8	seorang ayah mengajarkan anaknya bersepeda	9d1580da-1612-4b7a-9b47-4e5c907c5c70	2024-09-24 05:46:56	2024-09-24 05:46:56
+9d158140-b41f-4146-bc6d-5486998446b1	untuk	9d158140-b29d-475c-ab9e-d744993208a9	2024-09-24 05:48:03	2024-09-24 05:48:03
+9d158140-b4f3-4e0d-bdfd-df3a0f1db666	perlu	9d158140-b29d-475c-ab9e-d744993208a9	2024-09-24 05:48:03	2024-09-24 05:48:03
+9d158140-b592-45ec-8c41-3f9d532e6743	agar	9d158140-b29d-475c-ab9e-d744993208a9	2024-09-24 05:48:03	2024-09-24 05:48:03
+9d158140-b640-4c74-a8df-f7848d96a4a6	yang	9d158140-b29d-475c-ab9e-d744993208a9	2024-09-24 05:48:03	2024-09-24 05:48:03
+9d158140-b6df-4b8e-a180-18db50ed071b	juga	9d158140-b29d-475c-ab9e-d744993208a9	2024-09-24 05:48:03	2024-09-24 05:48:03
+9d158194-3076-4f2e-8457-9d4d17dea1f2	(6)	9d158194-2eea-4125-a25f-40769ef21789	2024-09-24 05:48:58	2024-09-24 05:48:58
+9d158194-3150-426b-961f-d3e02878c871	(3)	9d158194-2eea-4125-a25f-40769ef21789	2024-09-24 05:48:58	2024-09-24 05:48:58
+9d158194-31f4-4eb3-a451-1fed0eadc5e9	(2)	9d158194-2eea-4125-a25f-40769ef21789	2024-09-24 05:48:58	2024-09-24 05:48:58
+9d158194-3297-4820-8a50-d2f5fe277ce2	(5)	9d158194-2eea-4125-a25f-40769ef21789	2024-09-24 05:48:58	2024-09-24 05:48:58
+9d158194-333d-4b63-9fe9-81a0270caa5a	(1)	9d158194-2eea-4125-a25f-40769ef21789	2024-09-24 05:48:58	2024-09-24 05:48:58
+9d1581e4-bd72-4efb-a396-70dcc07d4181	Semua masyarakat Indonesia sudah memahami saham dengan baik	9d1581e4-bc03-42da-9c49-2c3888fa0f2b	2024-09-24 05:49:51	2024-09-24 05:49:51
+9d1581e4-be3d-475b-a0a4-3d304f00b7ef	Saham memberikan hak partisipasi dalam Rapat Umum Pemegang Saham (RUPS)	9d1581e4-bc03-42da-9c49-2c3888fa0f2b	2024-09-24 05:49:51	2024-09-24 05:49:51
+9d1581e4-beea-4ef9-9867-e6b71f3c1ce0	Peluang bisnis edukasi saham tinggi di Indonesia karena rendahnya literasi mengenai saham	9d1581e4-bc03-42da-9c49-2c3888fa0f2b	2024-09-24 05:49:51	2024-09-24 05:49:51
+9d1581e4-bfb5-4fe2-9004-af459893d3bc	Pelatihan dan seminar saham tidak bermanfaat untuk investasi jangka panjang	9d1581e4-bc03-42da-9c49-2c3888fa0f2b	2024-09-24 05:49:51	2024-09-24 05:49:51
+9d1581e4-c054-46cf-877b-d247ea57f86e	Edukasi saham menurunkan partisipasi di pasar modal	9d1581e4-bc03-42da-9c49-2c3888fa0f2b	2024-09-24 05:49:51	2024-09-24 05:49:51
+9d158232-917f-4466-a0af-bb6c16eecd0a	(6)	9d158232-8fa6-44aa-b6d5-0e4966bfd931	2024-09-24 05:50:42	2024-09-24 05:50:42
+9d158232-926f-466d-ae30-3093e8957e06	(3)	9d158232-8fa6-44aa-b6d5-0e4966bfd931	2024-09-24 05:50:42	2024-09-24 05:50:42
+9d158232-9357-49e7-b17d-63b793fc6f5d	(2)	9d158232-8fa6-44aa-b6d5-0e4966bfd931	2024-09-24 05:50:42	2024-09-24 05:50:42
+9d158232-942a-4a09-a9b7-d9c9ff7c7e3c	(5)	9d158232-8fa6-44aa-b6d5-0e4966bfd931	2024-09-24 05:50:42	2024-09-24 05:50:42
+9d158232-94ce-4734-9253-4a3c0a56853c	(1)	9d158232-8fa6-44aa-b6d5-0e4966bfd931	2024-09-24 05:50:42	2024-09-24 05:50:42
+\.
+
+
+--
+-- Data for Name: subtest_questions; Type: TABLE DATA; Schema: public; Owner: nusajar_fagaihhve
+--
+
+COPY public.subtest_questions (id, question_photo, question, answer_type, correct_answer, link_pembahasan, subtest_id, tryout_id, weight, created_at, updated_at) FROM stdin;
+9d15338d-768d-4ca1-92bf-710ed47bf1ce		<p><span style="background-color:transparent;color:#000000;"><strong>SEHAT : RUMAH SAKIT</strong></span></p>	multiple choices	KENYANG : RUMAH MAKAN	\N	9d13cb99-6f3d-4987-a23d-a7b0a9ae468f	9d153263-dfec-485c-907e-ce6e4aabd930	0	2024-09-24 02:10:47	2024-09-24 02:10:47
+9d15340f-86d8-4359-8209-ff0d6003b560		<p><span style="background-color:transparent;color:#000000;">Rata-rata nilai ETS yang diajar Rully adalah 85. Setelah diperiksa kembali ternyata ditemukan terdapat kecurangan yang mengakibatkan nilai dari 15 orang berubah dari 80 menjadi 50. Setelah nilai dikoreksi, rata-rata nilai para peserta berubah menjadi 70.</span></p><p><span style="background-color:transparent;color:#000000;">Banyaknya siswa yang diajar Rully adalah … orang.</span></p>	multiple choices	30	\N	9d13cb99-739d-4d40-a8fb-7df4464e963d	9d153263-dfec-485c-907e-ce6e4aabd930	0	2024-09-24 02:12:13	2024-09-24 02:12:13
+9d15341b-fd2a-40bc-a8fd-cbbf65eed3f7		<p><span style="background-color:transparent;color:#000000;"><strong>(1) Chelsea tampil sangat buruk di Liga Inggris musim 2023/2024&nbsp;&nbsp;</strong></span></p><p><span style="background-color:transparent;color:#000000;"><strong>(2) Pembelian pemain Chelsea sangat tidak efektif</strong></span></p>	multiple choices	Pernyataan (2) adalah penyebab dan pernyataan (1) adalah akibat	\N	9d13cb99-6f3d-4987-a23d-a7b0a9ae468f	9d153263-dfec-485c-907e-ce6e4aabd930	0	2024-09-24 02:12:21	2024-09-24 02:12:21
+9d15344b-04cb-4740-8b58-63dce25d887e		<p><span style="background-color:transparent;color:#000000;">Rata-rata nilai ETS yang diajar Rully adalah 85. Setelah diperiksa kembali ternyata ditemukan terdapat kecurangan yang mengakibatkan nilai dari 15 orang berubah dari 80 menjadi 50. Setelah nilai dikoreksi, rata-rata nilai para peserta berubah menjadi 70.</span></p><p><span style="background-color:transparent;color:#000000;">Jika banyaknya siswa yang diajar Rully adalah 50 siswa, rata-rata nilai kelompok siswa di luar 15 orang tersebut adalah …</span></p>	multiple choices	78 4/7	\N	9d13cb99-739d-4d40-a8fb-7df4464e963d	9d153263-dfec-485c-907e-ce6e4aabd930	0	2024-09-24 02:12:52	2024-09-24 02:12:52
+9d15348d-6ff3-4024-be52-470a89349a1e		<p><span style="background-color:transparent;color:#000000;">Justin sedang rutin top up diamond mobile legends menggunakan uangnya sebanyak 1/8 bagian dari seluruh uangnya. Uang Justin di awal sebanyak Rp 5.000.000,00. Sisa uang Justin sekarang sebanyak Rp 3.828.125,00, maka Justin paling sedikit telah top up sebanyak … kali.</span></p>	multiple choices	2	\N	9d13cb99-739d-4d40-a8fb-7df4464e963d	9d153263-dfec-485c-907e-ce6e4aabd930	0	2024-09-24 02:13:35	2024-09-24 02:13:35
+9d15349d-ac21-47c2-8c85-6a5a793fd0b6		<p><span style="background-color:transparent;color:#000000;"><strong>SAPI : SUSU</strong></span></p>	multiple choices	AYAM : TELUR	\N	9d13cb99-6f3d-4987-a23d-a7b0a9ae468f	9d153263-dfec-485c-907e-ce6e4aabd930	0	2024-09-24 02:13:46	2024-09-24 02:13:46
+9d1534cb-a9ae-4f12-9639-c4e1b63a295a		<p><span style="background-color:transparent;color:#000000;">Pada peta panjang jalan A adalah 12 cm, sedangkan panjang jalan B adalah 4 cm. Jika skala yang digunakan pada peta adalah 1:500.000, maka selisih panjang sesungguhnya antara jalan A dengan jalan B adalah … km.</span></p>	multiple choices	4	\N	9d13cb99-739d-4d40-a8fb-7df4464e963d	9d153263-dfec-485c-907e-ce6e4aabd930	0	2024-09-24 02:14:16	2024-09-24 02:14:16
+9d15352d-86c4-4b56-af3f-8cf05c7e4b3d		<p><span style="background-color:transparent;color:#000000;"><strong>32, 41, 50, 59, 68, …</strong></span></p>	multiple choices	77	\N	9d13cb99-6f3d-4987-a23d-a7b0a9ae468f	9d153263-dfec-485c-907e-ce6e4aabd930	0	2024-09-24 02:15:20	2024-09-24 02:15:20
+9d15358a-42fc-49e8-a4f4-1938059415ea		<p><span style="background-color:transparent;color:#000000;">Perbandingan uang yang dimiliki Anthony, Mudryk, dan </span><span style="background-color:#ffffff;color:#000000;">Núñez adalah 5 : 7 : 8. Jumlah Uang Mudryk dan Núñez adalah Rp 255.000,00. Jumlah uang </span><span style="background-color:transparent;color:#000000;">Anthony, Mudryk, dan </span><span style="background-color:#ffffff;color:#000000;">Núñez adalah …</span></p>	multiple choices	Rp 340.000,00	\N	9d13cb99-739d-4d40-a8fb-7df4464e963d	9d153263-dfec-485c-907e-ce6e4aabd930	0	2024-09-24 02:16:21	2024-09-24 02:16:21
+9d1535e2-9c4f-4baa-b00f-c062e935c9ce		<p><span style="background-color:transparent;color:#000000;"><i><strong>Gunakan teks di bawah ini untuk menjawab soal nomor 5 sampai dengan nomor 8!</strong></i></span></p><p><span style="background-color:transparent;color:#000000;"><strong>Pada suatu jamuan makan malam, 8 orang eksekutif muda (Sandy, Axel, Shakira, Kevin, Maxwell, Kadit, Agas, dan Xaviera) duduk mengelilingi satu meja bundar.</strong></span></p><p><span style="background-color:transparent;color:#000000;"><strong>(1) Maxwell duduk berseberangan dengan Sandy,</strong></span></p><p><span style="background-color:transparent;color:#000000;"><strong>(2) Kadit duduk di antara Xaviera dan Shakira,</strong></span></p><p><span style="background-color:transparent;color:#000000;"><strong>(3) Kevin dan Shakira duduk tepat berhadapan,</strong></span></p><p><span style="background-color:transparent;color:#000000;"><strong>(4) Xaviera duduk 2 kursi terpisah dari Sandy.</strong></span></p><p><span style="background-color:transparent;color:#000000;"><strong>Pernyataan di bawah ini yang benar adalah …</strong></span></p>	multiple choices	Agas duduk dipisahkan 2 kursi dengan Xaviera	\N	9d13cb99-6f3d-4987-a23d-a7b0a9ae468f	9d153263-dfec-485c-907e-ce6e4aabd930	0	2024-09-24 02:17:19	2024-09-24 02:17:19
+9d153678-b4a6-4c2d-aa1d-470277791d39		<p><span style="background-color:transparent;color:#000000;"><i><strong>Gunakan teks di bawah ini untuk menjawab soal nomor 5 sampai dengan nomor 8!</strong></i></span></p><p><span style="background-color:transparent;color:#000000;"><strong>Pada suatu jamuan makan malam, 8 orang eksekutif muda (Sandy, Axel, Shakira, Kevin, Maxwell, Kadit, Agas, dan Xaviera) duduk mengelilingi satu meja bundar.</strong></span></p><p><span style="background-color:transparent;color:#000000;"><strong>(1) Maxwell duduk berseberangan dengan Sandy,</strong></span></p><p><span style="background-color:transparent;color:#000000;"><strong>(2) Kadit duduk di antara Xaviera dan Shakira,</strong></span></p><p><span style="background-color:transparent;color:#000000;"><strong>(3) Kevin dan Shakira duduk tepat berhadapan,</strong></span></p><p><span style="background-color:transparent;color:#000000;"><strong>(4) Xaviera duduk 2 kursi terpisah dari Sandy.</strong></span></p><p><span style="background-color:transparent;color:#000000;"><strong>Bila Kadit dipisahkan oleh 2 kursi dengan Axel pernyataan di bawah ini yang benar adalah …</strong></span></p>	multiple choices	Axel dan Xaviera duduk berhadapan	\N	9d13cb99-6f3d-4987-a23d-a7b0a9ae468f	9d153263-dfec-485c-907e-ce6e4aabd930	0	2024-09-24 02:18:57	2024-09-24 02:18:57
+9d1536e3-2bca-4004-93ae-07d71933f541		<p><span style="background-color:transparent;color:#000000;"><i><strong>Gunakan teks di bawah ini untuk menjawab soal nomor 5 sampai dengan nomor 8!</strong></i></span></p><p><span style="background-color:transparent;color:#000000;"><strong>Pada suatu jamuan makan malam, 8 orang eksekutif muda (Sandy, Axel, Shakira, Kevin, Maxwell, Kadit, Agas, dan Xaviera) duduk mengelilingi satu meja bundar.</strong></span></p><p><span style="background-color:transparent;color:#000000;"><strong>(1) Maxwell duduk berseberangan dengan Sandy,</strong></span></p><p><span style="background-color:transparent;color:#000000;"><strong>(2) Kadit duduk di antara Xaviera dan Shakira,</strong></span></p><p><span style="background-color:transparent;color:#000000;"><strong>(3) Kevin dan Shakira duduk tepat berhadapan,</strong></span></p><p><span style="background-color:transparent;color:#000000;"><strong>(4) Xaviera duduk 2 kursi terpisah dari Sandy.</strong></span></p><p><span style="background-color:transparent;color:#000000;"><strong>Bila Kadit dan Agas duduk berseberangan, pernyataan di bawah ini yang benar adalah …</strong></span></p>	multiple choices	Agas duduk di antara Kevin dan Axel	\N	9d13cb99-6f3d-4987-a23d-a7b0a9ae468f	9d153263-dfec-485c-907e-ce6e4aabd930	0	2024-09-24 02:20:07	2024-09-24 02:20:07
+9d15423a-7105-446d-ba51-19a4164c17bd		<p><span style="background-color:transparent;color:#000000;">Jika 4log6=m+1, maka 9log8=…</span></p>	multiple choices	3/(4m+2)	\N	9d13cb99-7229-43c6-830d-97f8d7f250c7	9d153263-dfec-485c-907e-ce6e4aabd930	0	2024-09-24 02:51:50	2024-09-24 02:51:50
+9d1537a0-9608-427d-a5b6-79387d2a666f		<p><span style="background-color:transparent;color:#000000;"><i><strong>Gunakan teks di bawah ini untuk menjawab soal nomor 5 sampai dengan nomor 8!</strong></i></span></p><p><span style="background-color:transparent;color:#000000;"><strong>Pada suatu jamuan makan malam, 8 orang eksekutif muda (Sandy, Axel, Shakira, Kevin, Maxwell, Kadit, Agas, dan Xaviera) duduk mengelilingi satu meja bundar.</strong></span></p><p><span style="background-color:transparent;color:#000000;"><strong>(1) Maxwell duduk berseberangan dengan Sandy,</strong></span></p><p><span style="background-color:transparent;color:#000000;"><strong>(2) Kadit duduk di antara Xaviera dan Shakira,</strong></span></p><p><span style="background-color:transparent;color:#000000;"><strong>(3) Kevin dan Shakira duduk tepat berhadapan,</strong></span></p><p><span style="background-color:transparent;color:#000000;"><strong>(4) Xaviera duduk 2 kursi terpisah dari Sandy.</strong></span></p><p><span style="background-color:transparent;color:#000000;"><strong>Beberapa kemungkinan di bawah ini yang tidak benar adalah …</strong></span></p>	multiple choices	Axel duduk di antara Maxwell dan Xaviera	\N	9d13cb99-6f3d-4987-a23d-a7b0a9ae468f	9d153263-dfec-485c-907e-ce6e4aabd930	0	2024-09-24 02:22:11	2024-09-24 02:22:11
+9d153841-3fe8-42f0-9cd4-8ad81fea5ce5		<p><span style="color:hsl(0, 0%, 0%);"><strong>Jika seseorang rajin belajar, maka ia juara kelas.&nbsp;</strong></span></p><p><span style="color:hsl(0, 0%, 0%);"><strong>Mulyono tidak rajin&nbsp;belajar, maka ...</strong></span></p>	multiple choices	Mulyono tidak juara kelas	\N	9d13cb99-6f3d-4987-a23d-a7b0a9ae468f	9d153263-dfec-485c-907e-ce6e4aabd930	0	2024-09-24 02:23:56	2024-09-24 02:23:56
+9d15387b-6c1f-4d50-bffe-d0562a4d55e8		<p><span style="background-color:transparent;color:#000000;"><strong>1, 0, 6, 2, 1, 7, 3, 2, …</strong></span></p>	multiple choices	8	\N	9d13cb99-6f3d-4987-a23d-a7b0a9ae468f	9d153263-dfec-485c-907e-ce6e4aabd930	0	2024-09-24 02:24:34	2024-09-24 02:24:34
+9d1538ca-8901-426b-b098-8cc8063199fc		<p><span style="background-color:transparent;color:#000000;"><strong>Hewan yang termasuk mamalia berkembang biak dengan cara beranak.</strong></span></p><p><span style="background-color:transparent;color:#000000;"><strong>Buaya berkembang biak dengan cara bertelur</strong></span></p><p><span style="background-color:transparent;color:#000000;"><strong>Simpulan yang tepat tentang buaya adalah …</strong></span></p>	multiple choices	termasuk hewan bukan mamalia	\N	9d13cb99-6f3d-4987-a23d-a7b0a9ae468f	9d153263-dfec-485c-907e-ce6e4aabd930	0	2024-09-24 02:25:26	2024-09-24 02:25:26
+9d153922-36cb-48c3-b081-f29bb4ef69c4		<p><span style="background-color:transparent;color:#000000;"><strong>Ikan lele hidup di air tawar</strong></span></p><p><span style="background-color:transparent;color:#000000;"><strong>Ikan salmon hidup di air laut</strong></span></p>	multiple choices	ikan lele ada di tempat hidup bukan ikan salmon	\N	9d13cb99-6f3d-4987-a23d-a7b0a9ae468f	9d153263-dfec-485c-907e-ce6e4aabd930	0	2024-09-24 02:26:24	2024-09-24 02:26:24
+9d153993-c66d-4f59-a3bc-1f072965479c		<p><span style="background-color:transparent;color:#000000;"><strong>Sinonim dari kata Kontroversi adalah …</strong></span></p>	multiple choices	Perdebatan	\N	9d13cb99-6f3d-4987-a23d-a7b0a9ae468f	9d153263-dfec-485c-907e-ce6e4aabd930	0	2024-09-24 02:27:38	2024-09-24 02:27:38
+9d1539de-db66-4100-aff2-b1595cd33eb6		<p><span style="background-color:transparent;color:#000000;"><strong>Semua hero pandai berhitung dan sopan</strong></span></p><p><span style="background-color:transparent;color:#000000;"><strong>Balmond tidak sopan, tetapi pandai berhitung</strong></span></p>	multiple choices	Balmond adalah bukan seorang hero meskipun pandai berhitung	\N	9d13cb99-6f3d-4987-a23d-a7b0a9ae468f	9d153263-dfec-485c-907e-ce6e4aabd930	0	2024-09-24 02:28:27	2024-09-24 02:28:27
+9d153a19-2063-4922-8b13-308e734e0c35		<p><span style="background-color:transparent;color:#000000;"><strong>3, 5, 9, 17, …</strong></span></p>	multiple choices	33	\N	9d13cb99-6f3d-4987-a23d-a7b0a9ae468f	9d153263-dfec-485c-907e-ce6e4aabd930	0	2024-09-24 02:29:05	2024-09-24 02:29:05
+9d153a76-d806-43b9-bf53-abf4c7b231b6		<p><span style="background-color:transparent;color:#000000;"><strong>Karbohidrat yang berlebihan akan diubah menjadi lemak dan disimpan dalam tubuh sebagai cadangan energi. Kenaikan berat badan diakibatkan oleh cadangan energi yang terus bertambah.</strong></span></p><p><span style="background-color:transparent;color:#000000;"><strong>Jika cadangan energi terus bertambah maka simpulan yang dapat diambil adalah …</strong></span></p>	multiple choices	Kenaikan berat badan	\N	9d13cb99-6f3d-4987-a23d-a7b0a9ae468f	9d153263-dfec-485c-907e-ce6e4aabd930	0	2024-09-24 02:30:07	2024-09-24 02:30:07
+9d153acb-fe68-4a07-885a-aafdbb26d9b4		<p><span style="background-color:#ffffff;color:#000000;"><strong>Dalam suatu babak Clash of Champions, diberlakukan aturan, apabila jawaban benar diberikan 4 poin, apabila salah dikurangi 2 poin, dan tidak menjawab dikurangi 1 poin. Dari 25 soal yang diberikan, Sandy menjawab 12 soal dengan benar dan 10 soal salah. Jika Axel mendapat 48 poin, maka …</strong></span></p>	multiple choices	Jumlah poin Sandy dan Axel adalah 73 poin	\N	9d13cb99-6f3d-4987-a23d-a7b0a9ae468f	9d153263-dfec-485c-907e-ce6e4aabd930	0	2024-09-24 02:31:03	2024-09-24 02:31:03
+9d153b54-032c-4291-a47c-b832930db9d9		<p><span style="background-color:#ffffff;color:#000000;"><strong>Beberapa pengusaha menggunakan mobil listrik untuk digunakan sebagai mobil sehari-hari. Semua yang menggunakan mobil listrik mengikuti perkembangan teknologi.</strong></span></p><p><span style="background-color:#ffffff;color:#000000;"><strong>Kesimpulan yang tepat adalah ...</strong></span></p>	multiple choices	Sebagian yang mengikuti perkembangan teknologi adalah para pengusaha	\N	9d13cb99-6f3d-4987-a23d-a7b0a9ae468f	9d153263-dfec-485c-907e-ce6e4aabd930	0	2024-09-24 02:32:32	2024-09-24 02:32:32
+9d153b94-48e4-4a5b-bda9-d963c4934665		<p><span style="background-color:transparent;color:#000000;"><strong>8, 20, 17, 16, …, …, 36, 84, 81</strong></span></p>	multiple choices	40, 37	\N	9d13cb99-6f3d-4987-a23d-a7b0a9ae468f	9d153263-dfec-485c-907e-ce6e4aabd930	0	2024-09-24 02:33:14	2024-09-24 02:33:14
+9d153beb-2c05-4a3a-b8e2-75a038124992		<p><span style="background-color:#ffffff;color:#000000;"><strong>Suatu lahan parkir dipenuhi oleh 80 kendaraan yang terdiri dari motor, mobil, dan sepeda. Petugas parkir menghitung semua roda pada motor dan mobil, totalnya ada 200 roda.</strong></span></p><p><span style="background-color:#ffffff;color:#000000;"><strong>Berdasarkan informasi yang diberikan, manakah pernyataan yang PALING SESUAI dengan informasi tersebut?</strong></span></p>	multiple choices	Ada lebih banyak mobil daripada sepeda	\N	9d13cb99-6f3d-4987-a23d-a7b0a9ae468f	9d153263-dfec-485c-907e-ce6e4aabd930	0	2024-09-24 02:34:11	2024-09-24 02:34:11
+9d153c49-f97e-4f7d-8863-2030d3757c16		<p><span style="background-color:#ffffff;color:#000000;"><strong>Suatu rumah memiliki 6 kamar yang totalnya berukuran 65,52m2 akan dipasangi keramik berukuran 30 cm x 40 cm. Berapa jumlah keramik yang dibutuhkan untuk 20 kamar dengan ukuran yang sama?</strong></span></p>	multiple choices	1.820	\N	9d13cb99-6f3d-4987-a23d-a7b0a9ae468f	9d153263-dfec-485c-907e-ce6e4aabd930	0	2024-09-24 02:35:13	2024-09-24 02:35:13
+9d153c87-a3ef-45bd-a272-4d4bbd724886	soalScreenshot 2024-09-24 023414.png_JRn.png	<p><span style="background-color:transparent;color:#000000;">Nilai mahasiswa jurusan ilmu padi untuk mata kuliah bahasa padi adalah sebagai berikut.</span><br>&nbsp;</p><p><span style="background-color:transparent;color:#000000;">Rata - rata nilai mahasiswa pada tabel di atas adalah …</span></p>	multiple choices	66,93	\N	9d13cb99-739d-4d40-a8fb-7df4464e963d	9d153263-dfec-485c-907e-ce6e4aabd930	0	2024-09-24 02:35:53	2024-09-24 02:35:53
+9d153f7a-ac55-4c3a-8efb-3dd3a207e70a		<p><span style="background-color:#ffffff;color:#000000;"><strong>Somi sedang menjalani program diet. Porsi dan komposisi makannya diatur supaya konsisten setiap kali makan. Dalam satu kali makan, komposisi protein dan karbohidrat harus ia konsumsi adalah 6:2. Jika untuk 3 kali makan totalnya Somi membutuhkan sebanyak 180 gram protein, berapa total karbohidrat yang ia butuhkan untuk 5 kali makan?</strong></span></p>	multiple choices	100 gram	\N	9d13cb99-6f3d-4987-a23d-a7b0a9ae468f	9d153263-dfec-485c-907e-ce6e4aabd930	0	2024-09-24 02:44:08	2024-09-24 02:44:08
+9d153cac-ba4c-4126-9815-b2d0dde6f5d5		<p><span style="background-color:transparent;color:#000000;"><strong>Messi memiliki perhitungan khusus yang diyakininya dapat memproyeksikan nilai UTK 2025 sebagai berikut.</strong></span></p><p><span style="background-color:transparent;color:#000000;"><strong>- Jika rajin mengikuti TO, nilai UTBK naik 0,3</strong></span></p><p><span style="background-color:transparent;color:#000000;"><strong>- Jika rajin mengerjakan latihan soal biasa, nilai UTBK akan meningkat 10%&nbsp;</strong></span></p><p><span style="background-color:transparent;color:#000000;"><strong>- Jika rutin melakukan pengulangan materi, nilai UTBK akan meningkat 3/20</strong></span></p><p><span style="background-color:transparent;color:#000000;"><strong>- Jika sering menunda belajar, diyakini nilai UTBK akan berkurang 20%</strong></span></p><p><span style="background-color:transparent;color:#000000;"><strong>Manakah di antara pilihan berikut yang memberikan kemungkinan Messi mendapatkan nilai UTBK paling besar?</strong></span></p>	multiple choices	Rutin mengikuti TO dan mengulang materi	\N	9d13cb99-6f3d-4987-a23d-a7b0a9ae468f	9d153263-dfec-485c-907e-ce6e4aabd930	0	2024-09-24 02:36:18	2024-09-24 02:36:18
+9d153cc7-0e86-45e2-aa1c-0698bc39df94		<p><span style="background-color:transparent;color:#000000;">Terdapat 5 buku matematika, 5 buku kimia, 3 buku fisika. Buku-buku tersebut akan ditumpuk di atas meja wali kelas. Banyaknya cara menumpuk buku-buku tersebut dengan syarat buku dengan topik yang sama berdekatan adalah …&nbsp;</span></p>	multiple choices	518400	\N	9d13cb99-739d-4d40-a8fb-7df4464e963d	9d153263-dfec-485c-907e-ce6e4aabd930	0	2024-09-24 02:36:35	2024-09-24 02:36:35
+9d153d08-7176-42c0-b337-f618d5873cc6		<p><span style="background-color:transparent;color:#000000;">Setiap hari minggu pagi, Rizky lari pagi menuju lapangan dari arah selatan dengan kecepatan 120m/menit, sedangkan Ridho lari dari arah utara menuju lapangan yang sama dengan kecepatan 150m/menit. Diketahui jarak lapangan ke rumah mereka masing-masing adalah 1,8km. Jika Rizky berangkat dari rumah pada pukul 07.28, sedangkan Ridho pukul 07.25, selisih waktu mereka tiba di lapangan adalah …</span></p>	multiple choices	6 menit	\N	9d13cb99-739d-4d40-a8fb-7df4464e963d	9d153263-dfec-485c-907e-ce6e4aabd930	0	2024-09-24 02:37:18	2024-09-24 02:37:18
+9d153d2a-7375-4150-a6a7-1e5a7d06dd19		<p><span style="background-color:transparent;color:#000000;"><strong>7/H , 24/K , 115/... , 684/Q , .../T</strong></span></p>	multiple choices	N, 4781	\N	9d13cb99-6f3d-4987-a23d-a7b0a9ae468f	9d153263-dfec-485c-907e-ce6e4aabd930	0	2024-09-24 02:37:40	2024-09-24 02:37:40
+9d153d73-095e-4448-89fe-267719a0b6fd	soalunnamed (1).png_kMn.png	<p><span style="background-color:transparent;color:#000000;">Toni memiliki selembar karton untuk membuat namanya dengan huruf kapital. Ia membuat huruf T dengan ukuran seperti pada gambar. Luas karton yang dibutuhkan untuk membuat huruf T tersebut adalah …</span></p>	multiple choices	185 cm2	\N	9d13cb99-739d-4d40-a8fb-7df4464e963d	9d153263-dfec-485c-907e-ce6e4aabd930	0	2024-09-24 02:38:28	2024-09-24 02:38:28
+9d153db4-4b4b-4714-8011-4f5c1a868d6d		<p><span style="background-color:transparent;color:#000000;">Hasil produksi sepatu yang dibuat pengrajin di desa Sepatu pada bulan pertama menghasilkan 1400 pasang. Setiap bulan berikutnya, hasil produksi meningkat sebanyak 25 pasang sehingga membentuk deret aritmatika. Banyak pasang produksi selama 9 bulan pertama adalah … pasang.</span></p>	multiple choices	13500	\N	9d13cb99-739d-4d40-a8fb-7df4464e963d	9d153263-dfec-485c-907e-ce6e4aabd930	0	2024-09-24 02:39:11	2024-09-24 02:39:11
+9d153ddb-59b2-4e8c-9d4c-c00f27615b83		<p><span style="background-color:transparent;color:#000000;">Pada suatu kelas terdapat 36 orang mahasiswa Informatika. Banyak mahasiswa yang gemar Sistem Operasi dua kali banyak mahasiswa yang gemar Struktur Data, sedangkan banyak mahasiswa yang gemar Sistem Operasi dan Struktur Data 5 orang. Jika terdapat 8 mahasiswa yang tidak gemar Struktur Data maupun Sistem Operasi, banyak mahasiswa yang hanya gemar Sistem Operasi adalah … mahasiswa.</span></p>	multiple choices	11	\N	9d13cb99-739d-4d40-a8fb-7df4464e963d	9d153263-dfec-485c-907e-ce6e4aabd930	0	2024-09-24 02:39:36	2024-09-24 02:39:36
+9d153e2b-4fdf-4cc2-b0db-1bf442d31a7c	soalunnamed (2).png_nmy.png	<p><span style="background-color:transparent;color:#000000;">Berikut ini adalah diagram lingkaran tentang cara siswa pergi ke sekolah dari 110 siswa yang ada.</span></p><p><span style="background-color:transparent;color:#000000;">Dari diagram berikut, banyaknya siswa yang berangkat menggunakan Sepeda adalah …</span></p>	multiple choices	12	\N	9d13cb99-739d-4d40-a8fb-7df4464e963d	9d153263-dfec-485c-907e-ce6e4aabd930	0	2024-09-24 02:40:28	2024-09-24 02:40:28
+9d153e64-411a-4f07-b86b-600df5188ada		<p><span style="background-color:#ffffff;color:#212529;">Suatu proyek yang memiliki perencanaan kerja selama 40 hari akan dikerjakan oleh 30 orang pekerja. Memasuki hari ke-14, proyek dihentikan sementara dan dilanjutkan 3 hari kemudian. Satu minggu sebelum masa penyelesaian proyek berakhir, hanya tersisa 90% pekerja yang mampu melanjutkan pekerjaannya sampai dengan selesai. Dengan kondisi seperti itu, proyek tersebut akan terlambat lebih dari ... hari.</span></p>	multiple choices	4	\N	9d13cb99-739d-4d40-a8fb-7df4464e963d	9d153263-dfec-485c-907e-ce6e4aabd930	0	2024-09-24 02:41:06	2024-09-24 02:41:06
+9d153e6b-3d60-434f-8a5e-c1faa91b0f6f	soalScreenshot 2024-09-24 093753.png_Usm.png	<p><span style="color:hsl(0, 0%, 0%);"><strong>Angka yang dapa memenuhi segitiga dibawah ini adalah ...</strong></span></p>	multiple choices	15	\N	9d13cb99-6f3d-4987-a23d-a7b0a9ae468f	9d153263-dfec-485c-907e-ce6e4aabd930	0	2024-09-24 02:41:10	2024-09-24 02:41:10
+9d153e9f-954f-4c05-b537-06a938c5ee53		<p><span style="background-color:transparent;color:#000000;">Tok Dalang selalu memetik mangganya setiap hari dan mencatatnya. Ternyata banyaknya mangga yang dipetik pada hari ke-n sesuai rumus Un=80+12n. Perbedaan jumlah mangga yang dipetik setiap hari adalah …&nbsp;</span></p>	multiple choices	12 buah	\N	9d13cb99-739d-4d40-a8fb-7df4464e963d	9d153263-dfec-485c-907e-ce6e4aabd930	0	2024-09-24 02:41:45	2024-09-24 02:41:45
+9d153ec0-71c2-463e-9867-b50ba72b05e1		<p><span style="background-color:#ffffff;color:#000000;"><strong>Manakah yang menghasilkan total durasi mendengarkan lagu terlama?</strong></span></p>	multiple choices	Empat lagu dengan durasi masing-masing lagu 200 detik	\N	9d13cb99-6f3d-4987-a23d-a7b0a9ae468f	9d153263-dfec-485c-907e-ce6e4aabd930	0	2024-09-24 02:42:06	2024-09-24 02:42:06
+9d153edb-efbe-4309-9185-141b9a40d99f		<p><span style="background-color:transparent;color:#000000;">Tok Dalang selalu memetik mangganya setiap hari dan mencatatnya. Ternyata banyaknya mangga yang dipetik pada hari ke-n sesuai rumus Un=80+12n. Banyaknya jeruk yang dipetik pada hari ke-18 adalah …</span></p>	multiple choices	296 buah	\N	9d13cb99-739d-4d40-a8fb-7df4464e963d	9d153263-dfec-485c-907e-ce6e4aabd930	0	2024-09-24 02:42:24	2024-09-24 02:42:24
+9d153f25-99f5-4825-8ed2-910c8dde5f15		<p><span style="background-color:transparent;color:#000000;">Tok Dalang selalu memetik mangganya setiap hari dan mencatatnya. Ternyata banyaknya mangga yang dipetik pada hari ke-n sesuai rumus Un=80+12n. Banyaknya jeruk yang dipetik selama 18 hari pertama adalah …</span></p>	multiple choices	3492 buah	\N	9d13cb99-739d-4d40-a8fb-7df4464e963d	9d153263-dfec-485c-907e-ce6e4aabd930	0	2024-09-24 02:43:13	2024-09-24 02:43:13
+9d153f3a-1cda-4cc9-a12e-0cae71fb81b2	soalScreenshot 2024-09-24 094225.png_NTq.png	<p><span style="background-color:#ffffff;color:#000000;"><strong>Pernyataan yang paling sesuai berdasarkan grafik adalah …</strong></span></p>	multiple choices	Rata-rata seluruh anggaran adalah 193.53 Milliar Rupiah	\N	9d13cb99-6f3d-4987-a23d-a7b0a9ae468f	9d153263-dfec-485c-907e-ce6e4aabd930	0	2024-09-24 02:43:26	2024-09-24 02:43:26
+9d153f59-80ec-4f5c-b20d-bdf8d84640ad		<p><span style="background-color:#ffffff;color:#212529;">Sebuah penyedia layanan telepon seluler akan mengeluarkan produk baru dengan nomor kartu terdiri dari 12 digit. Seorang pegawai mendapat tugas menyusun nomor kartu dengan kode prefix (empat nomor awal dari identitas penyedia layanan telepon seluler) adalah 0844 dan empat digit terakhir merupakan angka cantik yaitu 1221. Pegawai tersebut hanya diperbolehkan menggunakan angka 2, 3, 4, 5, 7, 8, 9 untuk menyusun nomor kartu. Banyak nomor kartu yang dapat dibuat oleh pegawai tersebut adalah …</span></p>	multiple choices	2401	\N	9d13cb99-739d-4d40-a8fb-7df4464e963d	9d153263-dfec-485c-907e-ce6e4aabd930	0	2024-09-24 02:43:47	2024-09-24 02:43:47
+9d153f8e-152b-4d10-a401-29022a3a8e83		<p><span style="background-color:#ffffff;color:#212529;">Sebuah penyedia layanan telepon seluler akan mengeluarkan produk baru dengan nomor kartu terdiri dari 12 digit. Seorang pegawai mendapat tugas menyusun nomor kartu dengan kode prefix (empat nomor awal dari identitas penyedia layanan telepon seluler) adalah 0844 dan empat digit terakhir merupakan angka cantik yaitu 1221. Pegawai tersebut hanya diperbolehkan menggunakan angka 2, 3, 4, 5, 7, 8, 9 untuk menyusun nomor kartu. Banyak nomor kartu 4 digit yang merupakan kelipatan 5 yang dapat dibuat oleh pegawai tersebut adalah …</span></p>	multiple choices	343	\N	9d13cb99-739d-4d40-a8fb-7df4464e963d	9d153263-dfec-485c-907e-ce6e4aabd930	0	2024-09-24 02:44:21	2024-09-24 02:44:21
+9d153fbd-add1-49fb-b711-9045c9b0250d		<p><span style="background-color:transparent;color:#000000;"><strong>Dari rata-rata usia pernikahan, baik untuk perempuan maupun laki-laki di Indonesia, tampak bahwa ada tren penundaan usia menikah dibandingkan dengan dekade sebelumnya.</strong></span></p><p><span style="background-color:transparent;color:#000000;"><strong>Pernyataan yang MEMPERLEMAH gagasan dalam paragraf di atas adalah …</strong></span></p>	multiple choices	Pernikahan usia muda masih sering terjadi di berbagai daerah di Indonesia.	\N	9d13cb99-6f3d-4987-a23d-a7b0a9ae468f	9d153263-dfec-485c-907e-ce6e4aabd930	0	2024-09-24 02:44:52	2024-09-24 02:44:52
+9d153fcd-ab45-498d-9a05-51eef4745e28		<p><span style="background-color:#ffffff;color:#212529;">Sebuah penyedia layanan telepon seluler akan mengeluarkan produk baru dengan nomor kartu terdiri dari 12 digit. Seorang pegawai mendapat tugas menyusun nomor kartu dengan kode prefix (empat nomor awal dari identitas penyedia layanan telepon seluler) adalah 0844 dan empat digit terakhir merupakan angka cantik yaitu 1221. Pegawai tersebut hanya diperbolehkan menggunakan angka 2, 3, 4, 5, 7, 8, 9 untuk menyusun nomor kartu. Peluang banyak nomor kartu 4 digit yang merupakan kelipatan 5 yang dapat dibuat oleh pegawai tersebut adalah …</span></p>	multiple choices	0,14	\N	9d13cb99-739d-4d40-a8fb-7df4464e963d	9d153263-dfec-485c-907e-ce6e4aabd930	0	2024-09-24 02:45:03	2024-09-24 02:45:03
+9d15400a-8b93-4ecc-9baa-9fe3f133b0a3		<p><span style="background-color:#ffffff;color:#000000;"><strong>Buah mangga yang manis memiliki aroma yang harum dan berwarna keemasan. Buah mangga bermanfaat bagi kesehatan tubuh.</strong></span></p><p><span style="background-color:#ffffff;color:#000000;"><strong>Simpulan berdasarkan informasi tersebut adalah buah mangga yang manis bermanfaat bagi kesehatan tubuh.</strong></span></p><p><span style="background-color:#ffffff;color:#000000;"><strong>Manakah pernyataan berikut yang menggambarkan kualitas simpulan tersebut?</strong></span></p>	multiple choices	Simpulan tersebut pasti benar	\N	9d13cb99-6f3d-4987-a23d-a7b0a9ae468f	9d153263-dfec-485c-907e-ce6e4aabd930	0	2024-09-24 02:45:43	2024-09-24 02:45:43
+9d154013-7fcd-442e-bb89-1afc74cd4c98		<p><span style="background-color:#ffffff;color:#212529;">Sebuah penyedia layanan telepon seluler akan mengeluarkan produk baru dengan nomor kartu terdiri dari 12 digit. Seorang pegawai mendapat tugas menyusun nomor kartu dengan kode prefix (empat nomor awal dari identitas penyedia layanan telepon seluler) adalah 0844 dan empat digit terakhir merupakan angka cantik yaitu 1221. Pegawai tersebut hanya diperbolehkan menggunakan angka 2, 3, 4, 5, 7, 8, 9 untuk menyusun nomor kartu. Peluang banyak nomor kartu ke empat digitnya mempunyai angka yang sama yang dapat dibuat oleh pegawai tersebut adalah …</span></p>	multiple choices	1/343	\N	9d13cb99-739d-4d40-a8fb-7df4464e963d	9d153263-dfec-485c-907e-ce6e4aabd930	0	2024-09-24 02:45:48	2024-09-24 02:45:48
+9d154045-0d78-4413-8815-1d56a1f44c27		<p><span style="background-color:#ffffff;color:#000000;"><strong>Selama karirnya, Rossi kecenderungan menghasilkan hasil balapan yang baik saat balapan berjalan dalam cuaca yang cerah. Namun saat hujan, Rossi hanya dapat menyelesaikan balapan sebanyak 3 kali dari 20 perlombaan.</strong></span></p>	multiple choices	Rossi tidak dapat menyelesaikan perlombaan	\N	9d13cb99-6f3d-4987-a23d-a7b0a9ae468f	9d153263-dfec-485c-907e-ce6e4aabd930	0	2024-09-24 02:46:21	2024-09-24 02:46:21
+9d154088-19ff-41a3-b4e6-9abe34ed555e		<p><span style="background-color:#ffffff;color:#374151;">Suku ke-3 dari suatu barisan geometri dengan rasio negatif adalah 0,5. Jika perbandingan suku ke-4 dan suku ke-2 adalah 0,25. Jumlah empat suku pertama barisan tersebut adalah ... .</span></p>	multiple choices	1,25	\N	9d13cb99-7229-43c6-830d-97f8d7f250c7	9d153263-dfec-485c-907e-ce6e4aabd930	0	2024-09-24 02:47:05	2024-09-24 02:47:05
+9d1540ca-3011-44c9-9396-28b823215145		<p><span style="background-color:#ffffff;color:#374151;">Berapakah banyaknya dari empat pernyataan berikut yang benar berdasarkan informasi di bawah?</span></p><p><span style="background-color:#ffffff;color:#374151;">(1)29568 habis dibagi 11</span></p><p><span style="background-color:#ffffff;color:#374151;">(2)32560 habis dibagi 5 tetapi tidak habis dibagi 11</span></p><p><span style="background-color:#ffffff;color:#374151;">(3)10206 tidak habis dibagi 9</span></p><p><span style="background-color:#ffffff;color:#374151;">(4)32256 habis dibagi 7</span></p>	multiple choices	2	\N	9d13cb99-7229-43c6-830d-97f8d7f250c7	9d153263-dfec-485c-907e-ce6e4aabd930	0	2024-09-24 02:47:48	2024-09-24 02:47:48
+9d154125-29dc-4dc6-bb47-3b124bb8b0f1		<p><span style="background-color:transparent;color:#000000;">Apakah garis lurus I menyinggung parabola f(x)=x2+2x-15?</span></p><p><span style="background-color:transparent;color:#000000;">Putuskan apakah pernyataan (1) dan (2) berikut cukup untuk menjawab pertanyaan tersebut.</span></p><p><span style="background-color:transparent;color:#000000;">(1)Gradien dari I adalah 2</span></p><p><span style="background-color:transparent;color:#000000;">(2)I melewati titik (0,-15)</span></p>	multiple choices	Pernyataan (1) dan (2) cukup untuk menjawab pertanyaan, tetapi salah satu dari keduanya tidak cukup	\N	9d13cb99-7229-43c6-830d-97f8d7f250c7	9d153263-dfec-485c-907e-ce6e4aabd930	0	2024-09-24 02:48:48	2024-09-24 02:48:48
+9d154160-f4f6-4a1b-a2de-cba1cfc2bbde		<p><span style="background-color:transparent;color:#000000;">Jika g(x)=x+5 dan (g o f)(x)=2x-6, maka f(x+5)= …</span></p>	multiple choices	2x-1	\N	9d13cb99-7229-43c6-830d-97f8d7f250c7	9d153263-dfec-485c-907e-ce6e4aabd930	0	2024-09-24 02:49:27	2024-09-24 02:49:27
+9d1541bc-52d7-42db-b8b5-37c0f6576ef4		<p><span style="background-color:transparent;color:#000000;">Jika diketahui 4A=78 dan 2B=0.5, maka A/B = …&nbsp;</span></p>	essay	78	\N	9d13cb99-7229-43c6-830d-97f8d7f250c7	9d153263-dfec-485c-907e-ce6e4aabd930	0	2024-09-24 02:50:27	2024-09-24 02:50:27
+9d154214-5531-4d7b-ae14-2fa2d3dcbcb0		<p><span style="background-color:transparent;color:rgb(0,0,0);"><strong>Mengonsumsi Buah yang Benar dan Sehat</strong></span></p><p><span style="background-color:transparent;color:rgb(0,0,0);"><strong>Disarankan mengonsumsi buah 20—30 menit sebelum makan. Hal itu akan membuat penyerapan buah oleh tubuh menjadi maksimal. Buah juga akan menjadi detoks yang efektif untuk tubuh jika dikonsumsi dalam keadaan perut kosong. Sementara itu, mengonsumsi buah setelah makan akan membuat penyerapan tubuh atas fruktosa menjadi lebih lambat sehingga memicu begah, bahkan diare atau sakit perut.</strong></span></p><p><span style="background-color:transparent;color:rgb(0,0,0);"><strong>Disarankan makan buah satu jam sebelum berolahraga karena buah akan menjadi suntikan nutrisi yang baik dan meningkatkan energi tubuh tanpa membuat kekenyangan atau mual.</strong></span></p><p><span style="background-color:transparent;color:rgb(0,0,0);"><strong>Buah segar jauh lebih baik. Buah-buahan memang kaya akan serat dan berbagai vitamin. Namun, tidak demikian dengan buah kalengan, buah beku, atau buah yang telah diproses. Buah yang seperti ini umumnya memiliki kandungan gula yang sangat tinggi, bahkan dapat pula mengandung pengawet atau bahan kimia tambahan lainnya yang bisa membahayakan tubuh.</strong></span></p><p><br>&nbsp;</p><p><span style="background-color:transparent;color:rgb(0,0,0);"><strong>Berdasarkan pernyataan pada poin tiga, dapat diasumsikan bahwa…</strong></span></p>	multiple choices	Kandungan yang tidak baik untuk tubuh mungkin terdapat pada buah beku.	\N	9d13cb99-729f-427f-829e-7fb8ab452427	9d153263-dfec-485c-907e-ce6e4aabd930	0	2024-09-24 02:51:25	2024-09-24 02:51:25
+9d154264-1a4c-4e13-a92e-8f4b30c52327		<p><span style="background-color:transparent;color:rgb(0,0,0);"><strong>Selain itu, semua tulisan yang terdapat dalam buku ini mempunyai banyak manfaat yang akan kita peroleh jika kita membacanya. Akan terlihat buku ini sangat kaya cakupannya. Bahasanya mudah dimengerti dan mudah untuk dipahami. Dalam buku ini, banyak manfaat yang akan kita peroleh, seperti kompos yang bermanfaat bagi penyuburan tanah, penggemburan tanah, pengisian pot tanaman, mengurangi pencemaran lingkungan, dan menambah pendapatan.</strong></span></p><p><br>&nbsp;</p><p><span style="background-color:transparent;color:rgb(0,0,0);"><strong>Topik yang terdapat pada ulasan buku tersebut adalah…</strong></span></p>	multiple choices	Teknik bercocok tanam	\N	9d13cb99-729f-427f-829e-7fb8ab452427	9d153263-dfec-485c-907e-ce6e4aabd930	0	2024-09-24 02:52:17	2024-09-24 02:52:17
+9d1542ae-f66e-43a8-944a-576f8c41191b		<p><span style="background-color:transparent;color:rgb(0,0,0);"><strong>Selain itu, semua tulisan yang terdapat dalam buku ini mempunyai banyak manfaat yang akan kita peroleh jika kita membacanya. Akan terlihat buku ini sangat kaya cakupannya. Bahasanya mudah dimengerti dan mudah untuk dipahami. Dalam buku ini, banyak manfaat yang akan kita peroleh, seperti kompos yang bermanfaat bagi penyuburan tanah, penggemburan tanah, pengisian pot tanaman, mengurangi pencemaran lingkungan, dan menambah pendapatan.</strong></span></p><p><br><br><span style="background-color:transparent;color:rgb(0,0,0);"><strong>Makna kata kompos pada teks tersebut adalah</strong></span></p>	multiple choices	Pupuk alami yang terbuat dari bahan organik yang sudah membusuk.	\N	9d13cb99-729f-427f-829e-7fb8ab452427	9d153263-dfec-485c-907e-ce6e4aabd930	0	2024-09-24 02:53:06	2024-09-24 02:53:06
+9d154308-2220-4f6d-ab1f-18c01498626a		<p><span style="background-color:#ffffff;color:#000000;"><strong>Titik yang berada di luar daerah penyelesaian x+2y</strong></span><span style="background-color:hsl(0,0%,100%);color:rgb(189,193,198);"><strong>≤</strong></span><span style="background-color:#ffffff;color:#000000;"><strong>10 dan 0</strong></span><span style="background-color:hsl(0, 0%, 100%);color:rgb(189,193,198);"><strong>≤</strong></span><span style="background-color:#ffffff;color:#000000;"><strong>x</strong></span><span style="background-color:hsl(0,0%,100%);color:rgb(189,193,198);"><strong>≤</strong></span><span style="background-color:#ffffff;color:#000000;"><strong>8 adalah …</strong></span></p>	multiple choices	(-4,-2)	\N	9d13cb99-7229-43c6-830d-97f8d7f250c7	9d153263-dfec-485c-907e-ce6e4aabd930	0	2024-09-24 02:54:04	2024-09-24 02:54:04
+9d15430c-c397-4676-ac12-8d00835d1817		<p><span style="background-color:transparent;color:rgb(44,49,58);"><strong>(1) Perubahan sosial adalah perubahan pada masyarakat yang memengaruhi sistem sosial masyarakat, termasuk nilai-nilai, sikap, hingga pola perilaku.(2)Perubahan sosial akan selalu terjadi di masyarakat. (3)Manusia merupakan makhluk sosial yang senantiasa berkembang sekaligus berupaya untuk mencapai kehidupan yang lebih baik, sehingga dinamika perubahan sosial tidak bisa dihindari.</strong></span></p><p><span style="background-color:transparent;color:rgb(44,49,58);"><strong>(4) Menurut Idraddin dan Irwan terdapat tiga dimensi dalam perubahan sosial, yaitu struktur sosial, interaksi sosial, dan budaya. (5) Berdasarkan tiga dimensi tersebut muncullah istilah perubahan sosial-budaya yang mencakup perubahan pada tingkatan kehidupan sosial dan budaya. (6) Hal itu dapat memberikan dampak di berbagai bidang yang saling memengaruhi atau memiliki hubungan timbal balik.</strong></span></p><p><span style="background-color:transparent;color:rgb(44,49,58);"><strong>(7) Perubahan sosial-budaya menyebabkan berkembangnya inovasi teknologi karena adanya modernisasi dan kemajuan ilmu pengetahuan. (8) Adanya inovasi teknologi tersebut dapat meningkatkan efektivitas dan efisiensi kerja serta menyebabkan eskalasi tenaga Profesional. (9) Di sisi lain, perubahan sosial-budaya menyebabkan munculnya kesenjangan sosial-ekonomi karena tidak semua masyarakat memiliki kapasitas untuk meningkatkan taraf hidupnya. (10) Selain itu, perubahan sosial-budaya dapat menyebabkan disorientasi nilai dan norma budaya sehingga dapat memicu perilaku menyimpang, seperti kenakalan remaja.</strong></span></p><p><br>&nbsp;</p><p><span style="background-color:transparent;color:rgb(0,0,0);"><strong>Judul yang tepat untuk bacaan tersebut adalah…</strong></span></p>	multiple choices	Dimensi dan Dampak Perubahan Sosial-Budaya	\N	9d13cb99-729f-427f-829e-7fb8ab452427	9d153263-dfec-485c-907e-ce6e4aabd930	0	2024-09-24 02:54:07	2024-09-24 02:54:07
+9d154378-a954-442e-b074-5edbe2eeb7cc	soalunnamed (3).png_o2X.png	<p><span style="background-color:transparent;color:#000000;">Gambar di bawah ini merupakan grafik fungsi f(x)=ax2+bx+c</span><br><span style="background-color:transparent;color:#000000;">Grafik tersebut berpotongan dengan sumbu x di titik (2,0) dan berpotongan dengan sumbu y di titik (0,4). Pernyataan di bawah ini yang salah adalah …</span></p>	multiple choices	b+c=0	\N	9d13cb99-7229-43c6-830d-97f8d7f250c7	9d153263-dfec-485c-907e-ce6e4aabd930	0	2024-09-24 02:55:18	2024-09-24 02:55:18
+9d154395-2609-4b29-8525-b52f301657a9		<p><span style="background-color:transparent;color:rgb(44,49,58);"><strong>(1) Perubahan sosial adalah perubahan pada masyarakat yang memengaruhi sistem sosial masyarakat, termasuk nilai-nilai, sikap, hingga pola perilaku.(2)Perubahan sosial akan selalu terjadi di masyarakat. (3)Manusia merupakan makhluk sosial yang senantiasa berkembang sekaligus berupaya untuk mencapai kehidupan yang lebih baik, sehingga dinamika perubahan sosial tidak bisa dihindari.</strong></span></p><p><span style="background-color:transparent;color:rgb(44,49,58);"><strong>(4) Menurut Idraddin dan Irwan terdapat tiga dimensi dalam perubahan sosial, yaitu struktur sosial, interaksi sosial, dan budaya. (5) Berdasarkan tiga dimensi tersebut muncullah istilah perubahan sosial-budaya yang mencakup perubahan pada tingkatan kehidupan sosial dan budaya. (6) Hal itu dapat memberikan dampak di berbagai bidang yang saling memengaruhi atau memiliki hubungan timbal balik.</strong></span></p><p><span style="background-color:transparent;color:rgb(44,49,58);"><strong>(7) Perubahan sosial-budaya menyebabkan berkembangnya inovasi teknologi karena adanya modernisasi dan kemajuan ilmu pengetahuan. (8) Adanya inovasi teknologi tersebut dapat meningkatkan efektivitas dan efisiensi kerja serta menyebabkan eskalasi tenaga Profesional. (9) Di sisi lain, perubahan sosial-budaya menyebabkan munculnya kesenjangan sosial-ekonomi karena tidak semua masyarakat memiliki kapasitas untuk meningkatkan taraf hidupnya. (10) Selain itu, perubahan sosial-budaya dapat menyebabkan disorientasi nilai dan norma budaya sehingga dapat memicu perilaku menyimpang, seperti kenakalan remaja.</strong></span></p><p><br><br><span style="background-color:transparent;color:rgb(0,0,0);"><strong>Menurut teks, bagaimana perubahan sosial-budaya dapat memengaruhi tenaga profesional?</strong></span></p>	multiple choices	Menyebabkan eskalasi atau peningkatan tenaga profesional.	\N	9d13cb99-729f-427f-829e-7fb8ab452427	9d153263-dfec-485c-907e-ce6e4aabd930	0	2024-09-24 02:55:37	2024-09-24 02:55:37
+9d1543c6-8111-48fd-984e-a9198ab37520		<p><span style="background-color:transparent;color:#000000;">16^(x-1)=16, maka nilai dari 7^(2x-1) adalah …</span></p>	multiple choices	343	\N	9d13cb99-7229-43c6-830d-97f8d7f250c7	9d153263-dfec-485c-907e-ce6e4aabd930	0	2024-09-24 02:56:09	2024-09-24 02:56:09
+9d154405-c29c-4290-b299-d66e57b02257		<p><span style="background-color:transparent;color:#000000;">Rina mengisi ember dengan air dari pipa A dengan debit 50 ml/detik. Setelah 2 menit, Dina menyusul Rina dan mengisi embernya dengan air dari pipa B dengan debit 80 ml/detik. Setelah berapa menit volume air di ember Dina sama dengan Rina?</span></p>	multiple choices	3 menit 20 detik	\N	9d13cb99-7229-43c6-830d-97f8d7f250c7	9d153263-dfec-485c-907e-ce6e4aabd930	0	2024-09-24 02:56:51	2024-09-24 02:56:51
+9d154438-ab19-4208-9803-a8689ec92ccb		<p><span style="background-color:transparent;color:#000000;">Diketahui himpunan P = {1,3,4,5,7,8}. Tony memilih empat bilangan dari himpunan P. Peluang penjumlahan keempat bilangan tersebut adalah bilangan ganjil adalah …</span></p>	multiple choices	8/15	\N	9d13cb99-7229-43c6-830d-97f8d7f250c7	9d153263-dfec-485c-907e-ce6e4aabd930	0	2024-09-24 02:57:24	2024-09-24 02:57:24
+9d154539-b54e-4ef2-b7e7-23cd59f920f7		<p><span style="background-color:transparent;color:#000000;">Jika N bilangan bulat positif, maka berapakah sisa dari hasil bagi (N^2-N)(N+5) oleh 2?</span></p>	multiple choices	0	\N	9d13cb99-7229-43c6-830d-97f8d7f250c7	9d153263-dfec-485c-907e-ce6e4aabd930	0	2024-09-24 03:00:12	2024-09-24 03:00:12
+9d154456-d32a-44f3-929d-ee13eb3e93df		<p><span style="background-color:transparent;color:rgb(44,49,58);"><strong>(1) Perubahan sosial adalah perubahan pada masyarakat yang memengaruhi sistem sosial masyarakat, termasuk nilai-nilai, sikap, hingga pola perilaku.(2)Perubahan sosial akan selalu terjadi di masyarakat. (3)Manusia merupakan makhluk sosial yang senantiasa berkembang sekaligus berupaya untuk mencapai kehidupan yang lebih baik, sehingga dinamika perubahan sosial tidak bisa dihindari.</strong></span></p><p><span style="background-color:transparent;color:rgb(44,49,58);"><strong>(4) Menurut Idraddin dan Irwan terdapat tiga dimensi dalam perubahan sosial, yaitu struktur sosial, interaksi sosial, dan budaya. (5) Berdasarkan tiga dimensi tersebut muncullah istilah perubahan sosial-budaya yang mencakup perubahan pada tingkatan kehidupan sosial dan budaya. (6) Hal itu dapat memberikan dampak di berbagai bidang yang saling memengaruhi atau memiliki hubungan timbal balik.</strong></span></p><p><span style="background-color:transparent;color:rgb(44,49,58);"><strong>(7) Perubahan sosial-budaya menyebabkan berkembangnya inovasi teknologi karena adanya modernisasi dan kemajuan ilmu pengetahuan. (8) Adanya inovasi teknologi tersebut dapat meningkatkan efektivitas dan efisiensi kerja serta menyebabkan eskalasi tenaga Profesional. (9) Di sisi lain, perubahan sosial-budaya menyebabkan munculnya kesenjangan sosial-ekonomi karena tidak semua masyarakat memiliki kapasitas untuk meningkatkan taraf hidupnya. (10) Selain itu, perubahan sosial-budaya dapat menyebabkan disorientasi nilai dan norma budaya sehingga dapat memicu perilaku menyimpang, seperti kenakalan remaja.</strong></span></p><p><br><br><span style="background-color:transparent;color:rgb(0,0,0);"><strong>Tujuan penulis teks tersebut adalah...</strong></span></p>	multiple choices	Menginformasikan dampak positif dan negatif perubahan sosial-budaya di masyarakat.	\N	9d13cb99-729f-427f-829e-7fb8ab452427	9d153263-dfec-485c-907e-ce6e4aabd930	0	2024-09-24 02:57:44	2024-09-24 02:57:44
+9d154476-af36-48dc-9549-5e88c9200973		<p><span style="background-color:transparent;color:#000000;"><strong>Tutorial memasak nasi itu dibuat oleh Anisa.</strong></span></p><p><span style="background-color:transparent;color:#000000;"><strong>Kalimat aktif yang tepat dari kalimat pasif di atas adalah </strong></span><span style="background-color:#ffffff;color:#000000;"><strong>...</strong></span></p>	multiple choices	Anisa membuat tutorial memasak nasi.	\N	9d13cb99-7129-438a-af54-e0fb91fa2861	9d153263-dfec-485c-907e-ce6e4aabd930	0	2024-09-24 02:58:05	2024-09-24 02:58:05
+9d1544a5-0b21-40fb-80e6-33523585d421	soalScreenshot 2024-09-24 025752.png_6Ru.png	<p><span style="background-color:transparent;color:#000000;">Dari 400 total siswa, 150 anak menyukai Fisika, 220 anak menyukai Kimia, dan 90 anak tidak menyukai keduanya.</span></p><p><span style="background-color:transparent;color:#000000;">Berdasarkan informasi yang diberikan, manakah hubungan antara kuantitas P dan Q berikut yang benar?</span></p>	multiple choices	P<Q	\N	9d13cb99-7229-43c6-830d-97f8d7f250c7	9d153263-dfec-485c-907e-ce6e4aabd930	0	2024-09-24 02:58:35	2024-09-24 02:58:35
+9d1544be-007b-4559-b49e-46251cf1cc2e		<p><span style="background-color:transparent;color:rgb(44,49,58);"><strong>Bahaya Mengonsumsi Hamburger</strong></span></p><p><span style="background-color:transparent;color:rgb(44,49,58);"><strong>Hamburger merupakan salah satu makanan asal Kota Hamburg, Jerman, yang memiliki rasa yang enak, daging </strong><i><strong>juicy</strong></i><strong> yang gurih, dan berbagai macam isian yang lezat. Sayangnya, makanan yang memperoleh gelar </strong><i><strong>junk food</strong></i><strong> ini dipercaya memiliki efek buruk pada kesehatan jika dikonsumsi sering dan berlebih. Sebagian besar orang mengaitkannya dengan “penggagal diet”, “penambah berat badan”, atau “makanan berkalori tinggi”. Selain meningkatkan berat badan, hamburger juga memberikan dampak lain bagi tubuh menurut Lisa Moskovitz, ahli gizi sekaligus CEO dari New York Nutrition Group.</strong></span></p><p><span style="background-color:transparent;color:rgb(44,49,58);"><strong>Saat seseorang memakan hamburger berukuran besar, tugas yang dilakukan oleh tubuh menjadi lebih berat dari biasanya. Selain mencerna dan mengubah sisa kalori menjadi lemak, tubuh akan mengalami peningkatan gula darah 10 menit setelah hamburger itu dimakan. Kandungan natrium (garam) dan fruktosa (gula) yang tinggi dalam hamburger memicu keinginan untuk mengonsumsi makanan berlemak. Hal ini terjadi sekitar 20 menit setelah gigitan pertama sehingga setangkup hamburger seringkali terasa tak cukup. Lalu, sekitar 30 menit kemudian, ginjal bekerja ekstra menyingkirkan kelebihan natrium dalam tubuh dan jantung bekerja keras memompa darah ke pembuluh darah.</strong></span></p><p><span style="background-color:transparent;color:rgb(44,49,58);"><strong>Karena energi tubuh sudah digunakan untuk mencerna sebuah hamburger, tak heran bila seporsi hamburger, yang mengandung sekitar 540 kalori, hanya bisa membuat seseorang merasa kenyang selama 40 menit hingga 1 jam. Setelah itu, pemakan hamburger akan merasa lapar kembali dan menginginkan makanan lain yang bisa membuatnya kenyang lebih lama.</strong></span></p><p><span style="background-color:transparent;color:rgb(44,49,58);"><strong>Meskipun kecepatan metabolisme orang bervariasi, tubuh tetap membutuhkan waktu selama 2-3 hari untuk dapat mengolah dengan tuntas semua zat yang terkandung dalam seporsi hamburger berukuran besar. Oleh sebab itu, tak salah jika hamburger berada di urutan atas dalam daftar </strong><i><strong>junk food</strong></i><strong> yang tinggi kalori, kaya lemak, sulit mengenyangkan, dan berat diolah.</strong></span></p><p><br>&nbsp;</p><p><span style="background-color:transparent;color:rgb(0,0,0);"><strong>Ringkasan bacaan tersebut yang tepat adalah…</strong></span></p>	multiple choices	Hamburger adalah makanan dari Jerman yang memiliki rasa enak namun memberikan dampak negatif pada tubuh jika dikonsumsi berlebihan, seperti meningkatkan berat badan dan memicu keinginan untuk makan lebih banyak.	\N	9d13cb99-729f-427f-829e-7fb8ab452427	9d153263-dfec-485c-907e-ce6e4aabd930	0	2024-09-24 02:58:51	2024-09-24 02:58:51
+9d1544f7-2dea-4a01-8d76-4efdd6115920		<p><span style="background-color:transparent;color:#000000;"><strong>(1) Kata sandi yang terkuat adalah karakter acak. (2) Karakter acak ini terdiri atas serangkaian huruf, angka, dan simbol tanpa urutan tertentu yang cenderung tidak ditemukan dalam kamus, pemecahannya oleh komputer sulit, dan hacker sulit meretas. (3) Kelemahan karakter acak adalah kata sandi yang rumit dan cenderung sulit diingat. (4) Banyak orang yang melupakan kata sandi. (5) Kata sandi yang rumit dapat disimpan dengan aplikasi pengelola kata sandi agar aman dan mudah diakses.</strong></span></p><p><br><span style="background-color:transparent;color:#000000;"><strong>Frasa </strong><i><strong>yang cenderung tidak ditemukan dalam kamus, pemecahannya oleh komputer sulit, dan hacker sulit meretas </strong></i><strong>pada kalimat (2) akan menjadi benar bila susunannya </strong></span><span style="background-color:#ffffff;color:#000000;"><strong>....</strong></span></p>	multiple choices	yang cenderung tidak ditemukan dalam kamus, sulit dipecahkan oleh komputer, dan sulit diretas oleh hacker.	\N	9d13cb99-7129-438a-af54-e0fb91fa2861	9d153263-dfec-485c-907e-ce6e4aabd930	0	2024-09-24 02:59:29	2024-09-24 02:59:29
+9d15450a-fee5-4171-9e33-b93911c4afcc		<p><span style="background-color:transparent;color:rgb(44,49,58);"><strong>Bahaya Mengonsumsi Hamburger</strong></span></p><p><span style="background-color:transparent;color:rgb(44,49,58);"><strong>Hamburger merupakan salah satu makanan asal Kota Hamburg, Jerman, yang memiliki rasa yang enak, daging </strong><i><strong>juicy</strong></i><strong> yang gurih, dan berbagai macam isian yang lezat. Sayangnya, makanan yang memperoleh gelar </strong><i><strong>junk food</strong></i><strong> ini dipercaya memiliki efek buruk pada kesehatan jika dikonsumsi sering dan berlebih. Sebagian besar orang mengaitkannya dengan “penggagal diet”, “penambah berat badan”, atau “makanan berkalori tinggi”. Selain meningkatkan berat badan, hamburger juga memberikan dampak lain bagi tubuh menurut Lisa Moskovitz, ahli gizi sekaligus CEO dari New York Nutrition Group.</strong></span></p><p><span style="background-color:transparent;color:rgb(44,49,58);"><strong>Saat seseorang memakan hamburger berukuran besar, tugas yang dilakukan oleh tubuh menjadi lebih berat dari biasanya. Selain mencerna dan mengubah sisa kalori menjadi lemak, tubuh akan mengalami peningkatan gula darah 10 menit setelah hamburger itu dimakan. Kandungan natrium (garam) dan fruktosa (gula) yang tinggi dalam hamburger memicu keinginan untuk mengonsumsi makanan berlemak. Hal ini terjadi sekitar 20 menit setelah gigitan pertama sehingga setangkup hamburger seringkali terasa tak cukup. Lalu, sekitar 30 menit kemudian, ginjal bekerja ekstra menyingkirkan kelebihan natrium dalam tubuh dan jantung bekerja keras memompa darah ke pembuluh darah.</strong></span></p><p><span style="background-color:transparent;color:rgb(44,49,58);"><strong>Karena energi tubuh sudah digunakan untuk mencerna sebuah hamburger, tak heran bila seporsi hamburger, yang mengandung sekitar 540 kalori, hanya bisa membuat seseorang merasa kenyang selama 40 menit hingga 1 jam. Setelah itu, pemakan hamburger akan merasa lapar kembali dan menginginkan makanan lain yang bisa membuatnya kenyang lebih lama.</strong></span></p><p><span style="background-color:transparent;color:rgb(44,49,58);"><strong>Meskipun kecepatan metabolisme orang bervariasi, tubuh tetap membutuhkan waktu selama 2-3 hari untuk dapat mengolah dengan tuntas semua zat yang terkandung dalam seporsi hamburger berukuran besar. Oleh sebab itu, tak salah jika hamburger berada di urutan atas dalam daftar </strong><i><strong>junk food</strong></i><strong> yang tinggi kalori, kaya lemak, sulit mengenyangkan, dan berat diolah.</strong></span></p><p><br><br><span style="background-color:transparent;color:rgb(0,0,0);"><strong>Menurut teks, mengapa seporsi hamburger hanya bisa membuat seseorang merasa kenyang selama 40 menit hingga 1 jam?</strong></span></p>	multiple choices	Karena energi tubuh sudah digunakan untuk mencerna hamburger.	\N	9d13cb99-729f-427f-829e-7fb8ab452427	9d153263-dfec-485c-907e-ce6e4aabd930	0	2024-09-24 02:59:42	2024-09-24 02:59:42
+9d154514-a126-4523-ae39-e6f9c01b73b1		<p><span style="background-color:transparent;color:#000000;">Jerome menjual barang dengan harga x rupiah. Jika ia memperoleh untung atas penjualan barang tersebut sebesar y rupiah, maka keuntungan yang diperoleh Jerome adalah … %</span></p>	multiple choices	y/x-y * 100%	\N	9d13cb99-7229-43c6-830d-97f8d7f250c7	9d153263-dfec-485c-907e-ce6e4aabd930	0	2024-09-24 02:59:48	2024-09-24 02:59:48
+9d1545e3-ca50-4d45-8520-39ac8d4e64a4		<p><span style="background-color:transparent;color:#000000;"><strong>(1) Kata sandi yang terkuat adalah karakter acak. (2) Karakter acak ini terdiri atas serangkaian huruf, angka, dan simbol tanpa urutan tertentu yang cenderung tidak ditemukan dalam kamus, pemecahannya oleh komputer sulit, dan hacker sulit meretas. (3) Kelemahan karakter acak adalah kata sandi yang rumit dan cenderung sulit diingat. (4) Banyak orang yang melupakan kata sandi. (5) Kata sandi yang rumit dapat disimpan dengan aplikasi pengelola kata sandi agar aman dan mudah diakses.</strong></span></p><p><br><span style="background-color:transparent;color:#000000;"><strong>Kalimat yang tidak logis dalam teks tersebut adalah kalimat </strong></span><span style="background-color:#ffffff;color:#000000;"><strong>...</strong></span></p>	multiple choices	(4)	\N	9d13cb99-7129-438a-af54-e0fb91fa2861	9d153263-dfec-485c-907e-ce6e4aabd930	0	2024-09-24 03:02:04	2024-09-24 03:02:04
+9d1545fa-e09f-4a8c-81c0-6b7f19781184		<p><span style="background-color:transparent;color:rgb(44,49,58);"><strong>(1) Pada 16 November 2010, angklung diakui sebagai Warisan Budaya Dunia Kategori Tak Benda oleh UNESCO. (2) Namun, pelestarian angklung di Indonesia tentu menghadapi hambatan. (3) Perkara klasik seperti tidak adanya regenerasi, baik dari sisi seniman maupun perajin angklung, masih menjadi masalah utama. (4) Bahkan, setelah lebih dari 10 tahun ditetapkan sebagai warisan budaya dunia, angklung tak banyak memiliki peminat dalam tataran generasi muda.</strong></span></p><p><span style="background-color:transparent;color:rgb(44,49,58);"><strong>(5) Padahal, perkembangan angklung di mancanegara justru menunjukkan kecenderungan positif. (6) Angklung sedikitnya dimainkan di 131 negara, baik di sekolah maupun komunitas. (7) Sebagai contoh, di Amerika Serikat, alat musik Sunda itu dimainkan di universitas-universitas di Pennsylvania dan Hawaii. (8) Melihat hal itu, ada paradoks yang nyata: angklung diminati di negara lain, dan ditinggalkan di negara asalnya. (9) Oleh karena itu, regenerasi pemain angklung di Indonesia saat ini perlu menjadi perhatian dari semua pihak. (10) Pembuatan program pelestarian angklung juga menjadi hal yang penting. (11) Angklung mungkin harus dimasukkan ke dalam kurikulum sekolah dari jenjang dasar untuk menjaga kelestariannya.</strong></span></p><p><span style="background-color:transparent;color:rgb(0,0,0);"><strong>Pertanyaan berikut yang tidak sesuai dengan isi teks tersebut adalah…</strong></span></p>	multiple choices	Regenerasi pemain angklung di Indonesia dianggap tidak penting untuk perhatian semua pihak.	\N	9d13cb99-729f-427f-829e-7fb8ab452427	9d153263-dfec-485c-907e-ce6e4aabd930	0	2024-09-24 03:02:19	2024-09-24 03:02:19
+9d154638-e8da-4cc8-93bd-94eaa39dee2f	soalunnamed (4).png_qXR.png	<p><span style="background-color:transparent;color:#000000;">Pada gambar di atas, persegi panjang ABCD memiliki panjang 12 cm dan lebar 8 cm. Di dalam persegi panjang terdapat sebuah lingkaran yang bersinggungan dengan keempat sisi persegi panjang tersebut. Area di luar lingkaran tetapi di dalam persegi panjang diarsir dengan warna abu-abu. Titik O adalah pusat lingkaran. Luas daerah yang diarsir adalah … cm2</span></p>	multiple choices	96-16π	\N	9d13cb99-7229-43c6-830d-97f8d7f250c7	9d153263-dfec-485c-907e-ce6e4aabd930	0	2024-09-24 03:03:00	2024-09-24 03:03:00
+9d154648-90e3-4660-bbaa-6215d37dbb85		<p><span style="background-color:transparent;color:rgb(44,49,58);"><strong>(1) Pada 16 November 2010, angklung diakui sebagai Warisan Budaya Dunia Kategori Tak Benda oleh UNESCO. (2) Namun, pelestarian angklung di Indonesia tentu menghadapi hambatan. (3) Perkara klasik seperti tidak adanya regenerasi, baik dari sisi seniman maupun perajin angklung, masih menjadi masalah utama. (4) Bahkan, setelah lebih dari 10 tahun ditetapkan sebagai warisan budaya dunia, angklung tak banyak memiliki peminat dalam tataran generasi muda.</strong></span></p><p><span style="background-color:transparent;color:rgb(44,49,58);"><strong>(5) Padahal, perkembangan angklung di mancanegara justru menunjukkan kecenderungan positif. (6) Angklung sedikitnya dimainkan di 131 negara, baik di sekolah maupun komunitas. (7) Sebagai contoh, di Amerika Serikat, alat musik Sunda itu dimainkan di universitas-universitas di Pennsylvania dan Hawaii. (8) Melihat hal itu, ada paradoks yang nyata: angklung diminati di negara lain, dan ditinggalkan di negara asalnya. (9) Oleh karena itu, regenerasi pemain angklung di Indonesia saat ini perlu menjadi perhatian dari semua pihak. (10) Pembuatan program pelestarian angklung juga menjadi hal yang penting. (11) Angklung mungkin harus dimasukkan ke dalam kurikulum sekolah dari jenjang dasar untuk menjaga kelestariannya.</strong></span></p><p><br><br><span style="background-color:transparent;color:rgb(0,0,0);"><strong>Ringkasan yang paling tepat untuk teks tersebut adalah…</strong></span></p>	multiple choices	Angklung diakui oleh UNESCO sebagai Warisan Budaya Dunia, namun pelestariannya menghadapi masalah di Indonesia seperti kurangnya regenerasi. Sementara itu, angklung justru berkembang positif di luar negeri dan dimainkan di banyak negara.	\N	9d13cb99-729f-427f-829e-7fb8ab452427	9d153263-dfec-485c-907e-ce6e4aabd930	0	2024-09-24 03:03:10	2024-09-24 03:03:10
+9d154677-e57b-4ed9-9db6-e59faed2066d		<p><span style="background-color:transparent;color:#000000;">Sebuah botol terisi penuh beratnya 78 gram. Ketika botol tersebut hanya terisi setengah beratnya 40 gram. Jika botol yang telah kosong dijual ke pemulung seharga Rp.500,00 pergram, maka harga jual botol tersebut adalah …</span></p>	multiple choices	Rp.1000,00	\N	9d13cb99-7229-43c6-830d-97f8d7f250c7	9d153263-dfec-485c-907e-ce6e4aabd930	0	2024-09-24 03:03:41	2024-09-24 03:03:41
+9d1546b2-1455-4406-a950-c2dba47e4f4a		<p><span style="background-color:transparent;color:rgb(44,49,58);"><strong>(1) Pada 16 November 2010, angklung diakui sebagai Warisan Budaya Dunia Kategori Tak Benda oleh UNESCO. (2) Namun, pelestarian angklung di Indonesia tentu menghadapi hambatan. (3) Perkara klasik seperti tidak adanya regenerasi, baik dari sisi seniman maupun perajin angklung, masih menjadi masalah utama. (4) Bahkan, setelah lebih dari 10 tahun ditetapkan sebagai warisan budaya dunia, angklung tak banyak memiliki peminat dalam tataran generasi muda.</strong></span></p><p><span style="background-color:transparent;color:rgb(44,49,58);"><strong>(5) Padahal, perkembangan angklung di mancanegara justru menunjukkan kecenderungan positif. (6) Angklung sedikitnya dimainkan di 131 negara, baik di sekolah maupun komunitas. (7) Sebagai contoh, di Amerika Serikat, alat musik Sunda itu dimainkan di universitas-universitas di Pennsylvania dan Hawaii. (8) Melihat hal itu, ada paradoks yang nyata: angklung diminati di negara lain, dan ditinggalkan di negara asalnya. (9) Oleh karena itu, regenerasi pemain angklung di Indonesia saat ini perlu menjadi perhatian dari semua pihak. (10) Pembuatan program pelestarian angklung juga menjadi hal yang penting. (11) Angklung mungkin harus dimasukkan ke dalam kurikulum sekolah dari jenjang dasar untuk menjaga kelestariannya.</strong></span></p><p><br><br><span style="background-color:transparent;color:rgb(0,0,0);"><strong>Ide pokok paragraf pada teks tersebut adalah</strong></span></p>	multiple choices	Pelestarian angklung di Indonesia menghadapi hambatan utama berupa kurangnya regenerasi.	\N	9d13cb99-729f-427f-829e-7fb8ab452427	9d153263-dfec-485c-907e-ce6e4aabd930	0	2024-09-24 03:04:19	2024-09-24 03:04:19
+9d1546b9-053c-4558-ac9f-dfc3a5e88a45		<p><span style="background-color:transparent;color:#000000;">Diberikan balok ABCD.EFGH dengan AB = 2BC = 2AE = 2 cm. Panjang AH adalah …</span></p>	multiple choices	√2cm	\N	9d13cb99-7229-43c6-830d-97f8d7f250c7	9d153263-dfec-485c-907e-ce6e4aabd930	0	2024-09-24 03:04:24	2024-09-24 03:04:24
+9d15470b-6e12-47f1-a2de-3c8ccd579955		<p><span style="background-color:transparent;color:rgb(44,49,58);"><strong>(1) Pada 16 November 2010, angklung diakui sebagai Warisan Budaya Dunia Kategori Tak Benda oleh UNESCO. (2) Namun, pelestarian angklung di Indonesia tentu menghadapi hambatan. (3) Perkara klasik seperti tidak adanya regenerasi, baik dari sisi seniman maupun perajin angklung, masih menjadi masalah utama. (4) Bahkan, setelah lebih dari 10 tahun ditetapkan sebagai warisan budaya dunia, angklung tak banyak memiliki peminat dalam tataran generasi muda.</strong></span></p><p><span style="background-color:transparent;color:rgb(44,49,58);"><strong>(5) Padahal, perkembangan angklung di mancanegara justru menunjukkan kecenderungan positif. (6) Angklung sedikitnya dimainkan di 131 negara, baik di sekolah maupun komunitas. (7) Sebagai contoh, di Amerika Serikat, alat musik Sunda itu dimainkan di universitas-universitas di Pennsylvania dan Hawaii. (8) Melihat hal itu, ada paradoks yang nyata: angklung diminati di negara lain, dan ditinggalkan di negara asalnya. (9) Oleh karena itu, regenerasi pemain angklung di Indonesia saat ini perlu menjadi perhatian dari semua pihak. (10) Pembuatan program pelestarian angklung juga menjadi hal yang penting. (11) Angklung mungkin harus dimasukkan ke dalam kurikulum sekolah dari jenjang dasar untuk menjaga kelestariannya.</strong></span></p><p><br><br><span style="background-color:transparent;color:rgb(0,0,0);"><strong>Judul yang tepat untuk teks tersebut adalah…</strong></span></p>	multiple choices	Paradoks Angklung: Diminati Dunia, Diabaikan di Indonesia	\N	9d13cb99-729f-427f-829e-7fb8ab452427	9d153263-dfec-485c-907e-ce6e4aabd930	0	2024-09-24 03:05:18	2024-09-24 03:05:18
+9d154713-b43c-4902-8e1c-ecb2d3454517		<p><span style="background-color:#ffffff;color:#000000;"><strong>1) Kemajuan teknologi tidak terlepas dari kehidupan masyarakat. 2) Berbagai informasi yang terjadi di berbagai belahan dunia kini bisa langsung kita ketahui berkat kemajuan teknologi, misalnya melalui smartphone. 3) Jika dahulu kita mengenal pepatah dunia tak selebar daun kelor, sekarang pepatah itu selayaknya berganti menjadi dunia saat ini selebar daun kelor. 4) Kecepatan akses informasi di berbagai belahan dunia membuat dunia ini seakan semakin sempit. 5) Kita dapat menyaksikan apa yang terjadi di luar negeri dari Indonesia secara langsung.</strong></span></p><p><span style="background-color:#ffffff;color:#000000;"><strong>6) Perubahan yang masif pada kehidupan umat manusia dengan segala peradabannya adalah dampak kemajuan teknologi yang tidak dapat kita hindari. 7) Namun, kemajuan teknologi yang kian dahsyat ini jangan sampai menggeser jati diri kita sebagai manusia. 8) Oleh karenanya, kita harus melakukan tindakan yang bijaksana terhadap diri sendiri, keluarga, dan masyarakat luas.</strong></span></p><p><span style="background-color:#ffffff;color:#000000;"><strong>Kelemahan dari teks di atas adalah ...</strong></span></p>	multiple choices	Belum terdapat penjabaran tentang tindakan yang bijaksana dalam menyikapi kemajuan teknologi.	\N	9d13cb99-7129-438a-af54-e0fb91fa2861	9d153263-dfec-485c-907e-ce6e4aabd930	0	2024-09-24 03:05:23	2024-09-24 03:05:23
+9d154748-016c-45cd-99ab-556d7b56be3c	soalScreenshot 2024-09-24 030509.png_GOd.png	<p><span style="background-color:transparent;color:#000000;">Tabel di bawah adalah nilai fungsi linear s(H) pada beberapa nilai H. Maka representasi fungsi s(H) adalah …&nbsp;</span></p>	multiple choices	s(H)= 4x-1	\N	9d13cb99-7229-43c6-830d-97f8d7f250c7	9d153263-dfec-485c-907e-ce6e4aabd930	0	2024-09-24 03:05:57	2024-09-24 03:05:57
+9d154768-8421-44c8-bf2e-7f7d1171bed6		<p><span style="background-color:transparent;color:rgb(0,0,0);"><strong>(1) Perubahan sosial adalah perubahan pada masyarakat yang memengaruhi sistem sosial masyarakat, termasuk nilai-nilai, sikap, hingga pola perilaku. (2) Perubahan sosial akan selalu terjadi di masyarakat. (3) Manusia merupakan makhluk sosial yang senantiasa berkembang sekaligus berupaya untuk mencapai kehidupan yang lebih baik sehingga dinamika perubahan sosial tidak bisa dihindari.</strong></span></p><p><span style="background-color:transparent;color:rgb(0,0,0);"><strong>(4) Menurut Idraddin dan Irwan terdapat tiga dimensi dalam perubahan sosial, yaitu struktur sosial, interaksi sosial, dan budaya. (5) Berdasarkan tiga dimensi tersebut muncullah istilah perubahan sosial-budaya yang mencakup perubahan pada tingkatan kehidupan sosial dan budaya. (6) Hal itu dapat memberikan dampak di berbagai bidang yang saling memengaruhi atau memiliki hubungan timbal balik.</strong></span></p><p><span style="background-color:transparent;color:rgb(0,0,0);"><strong>(7) Perubahan sosial-budaya menyebabkan berkembangnya inovasi teknologi karena adanya modernisasi dan kemajuan ilmu pengetahuan. (8) Adanya inovasi teknologi tersebut dapat meningkatkan efektivitas dan efisiensi kerja serta menyebabkan eskalasi tenaga profesional. (9) Di sisi lain, perubahan sosial-budaya menyebabkan munculnya kesenjangan sosial-ekonomi karena tidak semua masyarakat memiliki kapasitas untuk meningkatkan taraf hidupnya. (10) Selain itu, perubahan sosial-budaya dapat menyebabkan disorientasi nilai dan norma budaya sehingga dapat memicu perilaku menyimpang, seperti kenakalan remaja.</strong></span></p><p><span style="background-color:transparent;color:rgb(0,0,0);"><strong>Pertanyaan yang jawabannya tidak ada pada teks adalah…</strong></span></p>	multiple choices	Bagaimana perubahan sosial-budaya memengaruhi kebijakan pemerintah di bidang pendidikan?	\N	9d13cb99-729f-427f-829e-7fb8ab452427	9d153263-dfec-485c-907e-ce6e4aabd930	0	2024-09-24 03:06:19	2024-09-24 03:06:19
+9d1547a1-5b89-4ef8-b836-cbfb0d39570a		<p><span style="background-color:#ffffff;color:#000000;">Diketahui a, b, c, d, dan e merupakan 5 suku pertama barisan geometri, maka nilai rata-rata kelima bilangan tersebut adalah …</span></p><p><span style="background-color:transparent;color:#000000;">(1)b = 6</span></p><p><span style="background-color:transparent;color:#000000;">(2)e = 48</span></p>	multiple choices	Pernyataan (1) dan (2) cukup untuk menjawab pertanyaan, tetapi salah satu dari keduanya tidak cukup.	\N	9d13cb99-7229-43c6-830d-97f8d7f250c7	9d153263-dfec-485c-907e-ce6e4aabd930	0	2024-09-24 03:06:56	2024-09-24 03:06:56
+9d154824-fff5-4af3-8a5b-3fdd9bf341d0		<p><span style="background-color:transparent;color:rgb(0,0,0);"><strong>(1) Perubahan sosial adalah perubahan pada masyarakat yang memengaruhi sistem sosial masyarakat, termasuk nilai-nilai, sikap, hingga pola perilaku. (2) Perubahan sosial akan selalu terjadi di masyarakat. (3) Manusia merupakan makhluk sosial yang senantiasa berkembang sekaligus berupaya untuk mencapai kehidupan yang lebih baik sehingga dinamika perubahan sosial tidak bisa dihindari.</strong></span></p><p><span style="background-color:transparent;color:rgb(0,0,0);"><strong>(4) Menurut Idraddin dan Irwan terdapat tiga dimensi dalam perubahan sosial, yaitu struktur sosial, interaksi sosial, dan budaya. (5) Berdasarkan tiga dimensi tersebut muncullah istilah perubahan sosial-budaya yang mencakup perubahan pada tingkatan kehidupan sosial dan budaya. (6) Hal itu dapat memberikan dampak di berbagai bidang yang saling memengaruhi atau memiliki hubungan timbal balik.</strong></span></p><p><span style="background-color:transparent;color:rgb(0,0,0);"><strong>(7) Perubahan sosial-budaya menyebabkan berkembangnya inovasi teknologi karena adanya modernisasi dan kemajuan ilmu pengetahuan. (8) Adanya inovasi teknologi tersebut dapat meningkatkan efektivitas dan efisiensi kerja serta menyebabkan eskalasi tenaga profesional. (9) Di sisi lain, perubahan sosial-budaya menyebabkan munculnya kesenjangan sosial-ekonomi karena tidak semua masyarakat memiliki kapasitas untuk meningkatkan taraf hidupnya. (10) Selain itu, perubahan sosial-budaya dapat menyebabkan disorientasi nilai dan norma budaya sehingga dapat memicu perilaku menyimpang, seperti kenakalan remaja.</strong></span></p><p><br><br><span style="background-color:transparent;color:rgb(0,0,0);"><strong>Kalimat inti yang terdapat pada kalimat (2) adalah…</strong></span></p>	multiple choices	Perubahan sosial selalu terjadi	\N	9d13cb99-729f-427f-829e-7fb8ab452427	9d153263-dfec-485c-907e-ce6e4aabd930	0	2024-09-24 03:08:22	2024-09-24 03:08:22
+9d15486f-a01e-4b7b-acfa-9022b917d44d		<p><span style="background-color:#ffffff;color:#000000;"><strong>1) Kemajuan teknologi tidak terlepas dari kehidupan masyarakat. 2) Berbagai informasi yang terjadi di berbagai belahan dunia kini bisa langsung kita ketahui berkat kemajuan teknologi, misalnya melalui smartphone. 3) Jika dahulu kita mengenal pepatah dunia tak selebar daun kelor, sekarang pepatah itu selayaknya berganti menjadi dunia saat ini selebar daun kelor. 4) Kecepatan akses informasi di berbagai belahan dunia membuat dunia ini seakan semakin sempit. 5) Kita dapat menyaksikan apa yang terjadi di luar negeri dari Indonesia secara langsung.</strong></span></p><p><span style="background-color:#ffffff;color:#000000;"><strong>6) Perubahan yang masif pada kehidupan umat manusia dengan segala peradabannya adalah dampak kemajuan teknologi yang tidak dapat kita hindari. 7) Namun, kemajuan teknologi yang kian dahsyat ini jangan sampai menggeser jati diri kita sebagai manusia. 8) Oleh karenanya, kita harus melakukan tindakan yang bijaksana terhadap diri sendiri, keluarga, dan masyarakat luas.</strong></span></p><p><br><span style="background-color:#ffffff;color:#000000;"><strong>Kata </strong><i><strong>pepatah</strong></i><strong> pada kalimat (3) dalam bacaan di atas, memiliki makna yang sama dengan kata ...</strong></span></p>	multiple choices	ungkapan	\N	9d13cb99-7129-438a-af54-e0fb91fa2861	9d153263-dfec-485c-907e-ce6e4aabd930	0	2024-09-24 03:09:11	2024-09-24 03:09:11
+9d154888-61b5-4929-98c3-ddbc438dd7c3	soalScreenshot 2024-09-24 030903.png_6Qb.png	<p><span style="background-color:transparent;color:#000000;">Jika M adalah matrik berordo 2*2 dan (lihat pada gambar) , maka nilai determinan M adalah …</span></p>	multiple choices	-5	\N	9d13cb99-7229-43c6-830d-97f8d7f250c7	9d153263-dfec-485c-907e-ce6e4aabd930	0	2024-09-24 03:09:27	2024-09-24 03:09:27
+9d1548b3-c40d-4340-a4d1-b685f08ecd7f		<p><span style="background-color:transparent;color:rgb(0,0,0);"><strong>(1) Perubahan sosial adalah perubahan pada masyarakat yang memengaruhi sistem sosial masyarakat, termasuk nilai-nilai, sikap, hingga pola perilaku. (2) Perubahan sosial akan selalu terjadi di masyarakat. (3) Manusia merupakan makhluk sosial yang senantiasa berkembang sekaligus berupaya untuk mencapai kehidupan yang lebih baik sehingga dinamika perubahan sosial tidak bisa dihindari.</strong></span></p><p><span style="background-color:transparent;color:rgb(0,0,0);"><strong>(4) Menurut Idraddin dan Irwan terdapat tiga dimensi dalam perubahan sosial, yaitu struktur sosial, interaksi sosial, dan budaya. (5) Berdasarkan tiga dimensi tersebut muncullah istilah perubahan sosial-budaya yang mencakup perubahan pada tingkatan kehidupan sosial dan budaya. (6) Hal itu dapat memberikan dampak di berbagai bidang yang saling memengaruhi atau memiliki hubungan timbal balik.</strong></span></p><p><span style="background-color:transparent;color:rgb(0,0,0);"><strong>(7) Perubahan sosial-budaya menyebabkan berkembangnya inovasi teknologi karena adanya modernisasi dan kemajuan ilmu pengetahuan. (8) Adanya inovasi teknologi tersebut dapat meningkatkan efektivitas dan efisiensi kerja serta menyebabkan eskalasi tenaga profesional. (9) Di sisi lain, perubahan sosial-budaya menyebabkan munculnya kesenjangan sosial-ekonomi karena tidak semua masyarakat memiliki kapasitas untuk meningkatkan taraf hidupnya. (10) Selain itu, perubahan sosial-budaya dapat menyebabkan disorientasi nilai dan norma budaya sehingga dapat memicu perilaku menyimpang, seperti kenakalan remaja.</strong></span></p><p><br><br><span style="background-color:transparent;color:rgb(0,0,0);"><strong>Makna kata taraf pada kalimat (9) adalah…</strong></span></p>	multiple choices	Tingkat atau level yang menunjukkan kualitas atau standar kehidupan seseorang dalam masyarakat.	\N	9d13cb99-729f-427f-829e-7fb8ab452427	9d153263-dfec-485c-907e-ce6e4aabd930	0	2024-09-24 03:09:56	2024-09-24 03:09:56
+9d1548d1-622e-4d6a-8599-d51496276f9e		<p><span style="background-color:#ffffff;color:#000000;"><strong>1) Kemajuan teknologi tidak terlepas dari kehidupan masyarakat. 2) Berbagai informasi yang terjadi di berbagai belahan dunia kini bisa langsung kita ketahui berkat kemajuan teknologi, misalnya melalui smartphone. 3) Jika dahulu kita mengenal pepatah dunia tak selebar daun kelor, sekarang pepatah itu selayaknya berganti menjadi dunia saat ini selebar daun kelor. 4) Kecepatan akses informasi di berbagai belahan dunia membuat dunia ini seakan semakin sempit. 5) Kita dapat menyaksikan apa yang terjadi di luar negeri dari Indonesia secara langsung.</strong></span></p><p><span style="background-color:#ffffff;color:#000000;"><strong>6) Perubahan yang masif pada kehidupan umat manusia dengan segala peradabannya adalah dampak kemajuan teknologi yang tidak dapat kita hindari. 7) Namun, kemajuan teknologi yang kian dahsyat ini jangan sampai menggeser jati diri kita sebagai manusia. 8) Oleh karenanya, kita harus melakukan tindakan yang bijaksana terhadap diri sendiri, keluarga, dan masyarakat luas.</strong></span></p><p><br><span style="background-color:#ffffff;color:#000000;"><strong>Kata </strong><i><strong>menyaksikan</strong></i><strong> pada bacaan di atas dapat diganti dengan kata …</strong></span></p>	multiple choices	melihat	\N	9d13cb99-7129-438a-af54-e0fb91fa2861	9d153263-dfec-485c-907e-ce6e4aabd930	0	2024-09-24 03:10:15	2024-09-24 03:10:15
+9d15562a-0b7a-40dc-ab96-8dfdcae90d05		<p><span style="background-color:transparent;color:#000000;"><strong>Sakit gigi adalah penyakit umum yang bisa dialami oleh siapa saja. Sakit gigi sangat mengganggu aktivitas sehari-hari kita karena dengan mengalami sakit gigi biasanya orang akan cenderung malas untuk makan. Penyebab sakit gigi sangat beragam seperti gigi berlubang, gigi patah, gigi tanggal, dan sakit gigi karena bakteri yang menyebabkan pembusukan gigi. Sakit gigi bisa diatasi dengan berbagai macam obat tradisional, seperti garam, bawang merah, bawang putih, es batu, dan cengkih.</strong></span></p><p><span style="background-color:transparent;color:#000000;"><strong>Cengkih merupakan tanaman tradisional yang memiliki bau yang menyengat. Namun, cengkih sering digunakan untuk penambah rasa pada berbagai bahan makanan. Selain itu cengkih menjadi bahan [....] rokok kretek. Cengkih mengandung zat eugenal yang sering digunakan dokter gigi untuk menenangkan saraf gigi.</strong></span></p><p><span style="background-color:transparent;color:#000000;"><strong>Cara yang dapat dilakukan untuk menjadikan cengkih sebagai obat pereda sakit gigi adalah dengan mengunyah cengkih secara langsung jika masih memungkinkan untuk melakukannya. Sebelum mengunyah cengkih, sebaiknya cengkih dibiarkan melunak sedikit karena terkena air liur sehingga tidak terlalu keras saat dikunyah. Minyak pada cengkih akan keluar dan mengenai bagian yang sakit lalu akan bereaksi untuk meredakan rasa sakit dan mengurangi pembengkakan.</strong></span></p><p><span style="background-color:transparent;color:#000000;"><strong>Selain mengunyah cengkih secara langsung cara lain yang bisa dilakukan adalah menggunakan bubuk cengkih dengan mengoleskan pada bagian yang sakit. Minyak yang keluar dari cengkih disebut juga minyak esensial. Minyak esensial bisa dicampur dengan sedikit minyak zaitun lalu dioleskan di bagian yang sakit.</strong></span></p><p><span style="background-color:transparent;color:#000000;"><strong>Kata yang paling tepat untuk melengkapi [....] pada paragraf 2 adalah ...</strong></span></p>	multiple choices	pembuatan	\N	9d13cb99-7129-438a-af54-e0fb91fa2861	9d153263-dfec-485c-907e-ce6e4aabd930	0	2024-09-24 03:47:34	2024-09-24 03:47:34
+9d158140-b29d-475c-ab9e-d744993208a9		<p><span style="background-color:transparent;color:#000000;">(1)Banyak masyarakat Indonesia masih awam mengenai saham sebagai instrumen investasi. (2)Saham memungkinkan individu atau badan usaha memiliki klaim atas pendapatan dan aset perusahaan, serta memberikan hak seperti dividen dan partisipasi dalam Rapat Umum Pemegang Saham (RUPS). (3)Meskipun populer, dan memberikan keuntungan menarik, literasi mengenai cara membeli dan memanfaatkan saham di pasar modal masih rendah.</span></p><p>&nbsp;</p><p><span style="background-color:transparent;color:#000000;">(4)Situasi ini menciptakan peluang bisnis dalam edukasi saham. (5)Bisnis tersebut dapat menawarkan program pelatihan, seminar, atau kursus online yang memberikan pemahaman mendalam tentang investasi saham. (6)Selain meningkatkan literasi keuangan, bisnis edukasi mengenai saham [...] mendorong partisipasi masyarakat yang lebih besar dalam pasar modal dan membuka jalan bagi mereka untuk meraih manfaat investasi jangka panjang.&nbsp;</span></p><p><br><span style="background-color:transparent;color:#000000;">Tanda [...] dalam kalimat (6) perlu diisi dengan ...</span></p>	multiple choices	juga	\N	9d13cb99-71b1-429a-8ac6-5ec545fc143c	9d153263-dfec-485c-907e-ce6e4aabd930	0	2024-09-24 05:48:03	2024-09-24 05:48:03
+9d154917-c409-4d91-8c87-260d8c79c503		<p><span style="background-color:#ffffff;color:#000000;"><strong>1) Kemajuan teknologi tidak terlepas dari kehidupan masyarakat. 2) Berbagai informasi yang terjadi di berbagai belahan dunia kini bisa langsung kita ketahui berkat kemajuan teknologi, misalnya melalui smartphone. 3) Jika dahulu kita mengenal pepatah dunia tak selebar daun kelor, sekarang pepatah itu selayaknya berganti menjadi dunia saat ini selebar daun kelor. 4) Kecepatan akses informasi di berbagai belahan dunia membuat dunia ini seakan semakin sempit. 5) Kita dapat menyaksikan apa yang terjadi di luar negeri dari Indonesia secara langsung.</strong></span></p><p><span style="background-color:#ffffff;color:#000000;"><strong>6) Perubahan yang masif pada kehidupan umat manusia dengan segala peradabannya adalah dampak kemajuan teknologi yang tidak dapat kita hindari. 7) Namun, kemajuan teknologi yang kian dahsyat ini jangan sampai menggeser jati diri kita sebagai manusia. 8) Oleh karenanya, kita harus melakukan tindakan yang bijaksana terhadap diri sendiri, keluarga, dan masyarakat luas.</strong></span></p><p><span style="background-color:#ffffff;color:#000000;"><strong>Kalimat (6) dan (7) dalam bacaan di atas mengandung hubungan ...</strong></span></p>	multiple choices	penambahan	\N	9d13cb99-7129-438a-af54-e0fb91fa2861	9d153263-dfec-485c-907e-ce6e4aabd930	0	2024-09-24 03:11:01	2024-09-24 03:11:01
+9d15493f-db88-4cda-a1d0-7f86395cc632		<p><span style="background-color:transparent;color:rgb(0,0,0);"><strong>(1) Cancel culture dapat diartikan sebagai sebuah praktik boikot massal terhadap seseorang atau suatu kelompok. (2) Pemboikotan ini bisa terjadi di dunia nyata, media sosial, atau keduanya. (3) Cancel culture dilakukan dengan cara mengumpulkan dukungan untuk memboikot seseorang atau suatu kelompok yang telah melakukan hal yang tidak pantas atau melanggar nilai dan norma yang berlaku di masyarakat, seperti mengatakan hal yang rasis atau melakukan tindakan kriminal.</strong></span></p><p><span style="background-color:transparent;color:rgb(0,0,0);"><strong>(4) Orang-orang atau kelompok yang mengalami cancel culture biasanya akan diboikot, baik dalam pekerjaannya hingga kehidupan sosialnya. (5) Pada prosesnya, mereka juga akan mendapatkan ujaran kebencian dan dimasukkan ke dalam daftar hitam (blacklist). (6) Hal ini dilakukan masyarakat sebagai bentuk penolakan keberadaan diri mereka di ruang publik. (7) Cancel culture ini sering dialami para figur publik, seperti selebritas dan politisi.</strong></span></p><p><span style="background-color:transparent;color:rgb(0,0,0);"><strong>(8) Jika ditelusuri lebih lanjut, cancel culture memiliki dampak positif dan negatif. (9) Dampak positif dari gerakan cancel culture adalah gerakan ini bisa berfungsi sebagai alat pengendalian sosial. (10) Hal ini terjadi karena gerakan ini bisa membuat masyarakat, terutama figur publik, akan berhati-hati ketika berucap dan bertindak. (11) Sementara itu, dampak negatifnya adalah menimbulkan cyber bullying terhadap seseorang dan menciptakan rasa malu, tidak percaya diri, hingga depresi pada orang yang mengalaminya. (12) Selain itu, jika terjadi pada figur publik, cancel culture ini tentunya berpotensi besar merusak kehidupan mereka sebagai figur publik.</strong></span></p><p>&nbsp;</p><p><span style="background-color:transparent;color:rgb(0,0,0);"><strong>Tanggapan berupa opini yang sesuai dengan teks adalah…</strong></span></p>	multiple choices	(10) dan (12)	\N	9d13cb99-729f-427f-829e-7fb8ab452427	9d153263-dfec-485c-907e-ce6e4aabd930	0	2024-09-24 03:11:27	2024-09-24 03:11:27
+9d154996-35f4-4d89-9e61-cb92fc91437b		<p><span style="background-color:transparent;color:#000000;">(1)Burung-burung Cendrawasih adalah anggota famili Paradisaeidae dari ordo Passeriformes. (2)Cendrawasih biasa ditemukan di Indonesia bagian Timur Papua, Papua Nugini, pulau-pulau selat Torres, dan Australia Timur. (3)Ukuran burung Cendrawasih [...] macam, dimulai dari Cendrawasih Raja yang berukuran 15 cm dengan berat 50 gram, sampai kuakalame ekor-kuning yang berukuran 110 cm, dan sagubega jambul-keriting dengan berat mencapai 430 gram.</span></p><p>&nbsp;</p><p><span style="background-color:transparent;color:#000000;">(4)Burung anggota keluarga ini dikenal dengan bulu burung jantan yang banyak jenisnya, terutama bulu yang sangat memanjang dan rumit tumbuh dari paru, sayap, atau kepalanya. (5)Biasanya bulunya berwarna cerah dengan gabungan warna mulai dari hitam, cokelat, kuning, putih, dan biru. (6)Dengan keindahan bulu tersebut, Cendrawasih jantan menarik perhatian lawannya dengan merayu sang betina supaya bersedia diajak kawin, burung jantan dapat memamerkan bulunya dengan melakukan tarian yang indah, Cendrawasih Vogelkop misalnya. (7)Untuk menarik perhatian lawan jenis, maka ia akan membentangkan sayapnya yang berwarna hitam menjadi seperti kipas. (8)Walaupun demikian, setiap spesies burung Cenderawasih memiliki tarian unik yang berbeda satu sama lain.</span></p><p>&nbsp;</p><p><span style="background-color:transparent;color:#000000;">Kata berikut yang keberadaannya tidak diperlukan dalam kalimat adalah ...</span></p><p><br>&nbsp;</p>	multiple choices	kata “maka” dalam kalimat (7)	\N	9d13cb99-71b1-429a-8ac6-5ec545fc143c	9d153263-dfec-485c-907e-ce6e4aabd930	0	2024-09-24 03:12:24	2024-09-24 03:12:24
+9d1549af-da06-4d0a-a616-c6f54031555d		<p><span style="background-color:#ffffff;color:#000000;"><strong>1) Kemajuan teknologi tidak terlepas dari kehidupan masyarakat. 2) Berbagai informasi yang terjadi di berbagai belahan dunia kini bisa langsung kita ketahui berkat kemajuan teknologi, misalnya melalui smartphone. 3) Jika dahulu kita mengenal pepatah dunia tak selebar daun kelor, sekarang pepatah itu selayaknya berganti menjadi dunia saat ini selebar daun kelor. 4) Kecepatan akses informasi di berbagai belahan dunia membuat dunia ini seakan semakin sempit. 5) Kita dapat menyaksikan apa yang terjadi di luar negeri dari Indonesia secara langsung.</strong></span></p><p><span style="background-color:#ffffff;color:#000000;"><strong>6) Perubahan yang masif pada kehidupan umat manusia dengan segala peradabannya adalah dampak kemajuan teknologi yang tidak dapat kita hindari. 7) Namun, kemajuan teknologi yang kian dahsyat ini jangan sampai menggeser jati diri kita sebagai manusia. 8) Oleh karenanya, kita harus melakukan tindakan yang bijaksana terhadap diri sendiri, keluarga, dan masyarakat luas.</strong></span></p><p><span style="background-color:#ffffff;color:#000000;"><strong>Hubungan paragraf pertama dan paragraf kedua yang paling tepat adalah ...</strong></span></p>	multiple choices	Paragraf kedua merupakan penjelasan dari paragraf pertama.	\N	9d13cb99-7129-438a-af54-e0fb91fa2861	9d153263-dfec-485c-907e-ce6e4aabd930	0	2024-09-24 03:12:41	2024-09-24 03:12:41
+9d1549e3-d6e0-4e0b-a434-74b152985def		<p><span style="background-color:transparent;color:#000000;">(1)Burung-burung Cendrawasih adalah anggota famili Paradisaeidae dari ordo Passeriformes. (2)Cendrawasih biasa ditemukan di Indonesia bagian Timur Papua, Papua Nugini, pulau-pulau selat Torres, dan Australia Timur. (3)Ukuran burung Cendrawasih [...] macam, dimulai dari Cendrawasih Raja yang berukuran 15 cm dengan berat 50 gram, sampai kuakalame ekor-kuning yang berukuran 110 cm, dan sagubega jambul-keriting dengan berat mencapai 430 gram.</span></p><p><br>&nbsp;</p><p><span style="background-color:transparent;color:#000000;">(4)Burung anggota keluarga ini dikenal dengan bulu burung jantan yang banyak jenisnya, terutama bulu yang sangat memanjang dan rumit tumbuh dari paru, sayap, atau kepalanya. (5)Biasanya bulunya berwarna cerah dengan gabungan warna mulai dari hitam, cokelat, kuning, putih, dan biru. (6)Dengan keindahan bulu tersebut, Cendrawasih jantan menarik perhatian lawannya dengan merayu sang betina supaya bersedia diajak kawin, burung jantan dapat memamerkan bulunya dengan melakukan tarian yang indah, Cendrawasih Vogelkop misalnya. (7)Untuk menarik perhatian lawan jenis, maka ia akan membentangkan sayapnya yang berwarna hitam menjadi seperti kipas. (8)Walaupun demikian, setiap spesies burung Cenderawasih memiliki tarian unik yang berbeda satu sama lain.</span></p><p>&nbsp;</p><p><span style="background-color:transparent;color:#000000;">...,ia akan membentangkan sayapnya</span></p><p><span style="background-color:transparent;color:#000000;">Kata ia pada penggalan kalimat 7 merujuk pada..</span></p><p><br><br>&nbsp;</p>	multiple choices	Cendrawasih Vogelkop	\N	9d13cb99-71b1-429a-8ac6-5ec545fc143c	9d153263-dfec-485c-907e-ce6e4aabd930	0	2024-09-24 03:13:15	2024-09-24 03:13:15
+9d154a0f-990c-47ab-a9d9-6ce528e98199		<p><span style="background-color:#ffffff;color:#000000;"><strong>(1) Kacang merah memiliki kandungan gizi yang sangat baik dan menguntungkan bagi kesehatan tubuh manusia jika diolah secara benar. (2) Kacang merah kering merupakan sumber folasin. (3) Folasin adalah zat gizi esensial yang mampu mengurangi risiko kerusakan pada pembuluh darah. (4) Kacang merah memiliki kemampuan untuk mengurangi kerusakan pembuluh darah, menurunkan kadar kolesterol dalam darah, berkurangnya konsentrasi gula darah, dan menurunkan risiko kanker usus besar. (5) Kandungan lemak dan natrium yang dimiliki kacang merah sangat rendah, nyaris bebas lemak jenuh dan kolesterol. (6) Sebaliknya, kacang merah justru merupakan sumber serat yang baik. (7) Dalam 100 gram kacang merah kering dapat menghasilkan 4 gram serat yang terdiri dari serat larut air dan serat yang tidak larut air. (8) Serat yang larut air mampu menurunkan kadar kolesterol dan kadar gula dalam darah. (9) Namun, di sisi lain, kacang merah memproduksi gas dalam usus yang membuat perut kembung. (Diadaptasi dari buku Pengaruh Makanan terhadap Kesehatan)</strong></span></p><p><span style="background-color:#ffffff;color:#000000;"><strong>Kalimat yang tidak logis dalam bacaan tersebut adalah kalimat …</strong></span></p>	multiple choices	(7)	\N	9d13cb99-7129-438a-af54-e0fb91fa2861	9d153263-dfec-485c-907e-ce6e4aabd930	0	2024-09-24 03:13:44	2024-09-24 03:13:44
+9d154a38-d23a-4e1e-be68-903e3a55774c		<p><span style="background-color:transparent;color:#000000;">(1)Burung-burung Cendrawasih adalah anggota famili Paradisaeidae dari ordo Passeriformes. (2)Cendrawasih biasa ditemukan di Indonesia bagian Timur Papua, Papua Nugini, pulau-pulau selat Torres, dan Australia Timur. (3)Ukuran burung Cendrawasih [...] macam, dimulai dari Cendrawasih Raja yang berukuran 15 cm dengan berat 50 gram, sampai kuakalame ekor-kuning yang berukuran 110 cm, dan sagubega jambul-keriting dengan berat mencapai 430 gram.</span></p><p>&nbsp;</p><p><span style="background-color:transparent;color:#000000;">(4)Burung anggota keluarga ini dikenal dengan bulu burung jantan yang banyak jenisnya, terutama bulu yang sangat memanjang dan rumit tumbuh dari paru, sayap, atau kepalanya. (5)Biasanya bulunya berwarna cerah dengan gabungan warna mulai dari hitam, cokelat, kuning, putih, dan biru. (6)Dengan keindahan bulu tersebut, Cendrawasih jantan menarik perhatian lawannya dengan merayu sang betina supaya bersedia diajak kawin, burung jantan dapat memamerkan bulunya dengan melakukan tarian yang indah, Cendrawasih Vogelkop misalnya. (7)Untuk menarik perhatian lawan jenis, maka ia akan membentangkan sayapnya yang berwarna hitam menjadi seperti kipas. (8)Walaupun demikian, setiap spesies burung Cenderawasih memiliki tarian unik yang berbeda satu sama lain.</span></p><p>&nbsp;</p><p><span style="background-color:transparent;color:#000000;">Dibawah ini merupakan padanan kata spesies pada kalimat 8, kecuali..</span></p>	multiple choices	Bagian	\N	9d13cb99-71b1-429a-8ac6-5ec545fc143c	9d153263-dfec-485c-907e-ce6e4aabd930	0	2024-09-24 03:14:11	2024-09-24 03:14:11
+9d154a80-1ed7-40fa-956f-70a3a859d91f		<p><span style="background-color:#ffffff;color:#000000;"><strong>(1) Kacang merah memiliki kandungan gizi yang sangat baik dan menguntungkan bagi kesehatan tubuh manusia jika diolah secara benar. (2) Kacang merah kering merupakan sumber folasin. (3) Folasin adalah zat gizi esensial yang mampu mengurangi risiko kerusakan pada pembuluh darah. (4) Kacang merah memiliki kemampuan untuk mengurangi kerusakan pembuluh darah, menurunkan kadar kolesterol dalam darah, berkurangnya konsentrasi gula darah, dan menurunkan risiko kanker usus besar. (5) Kandungan lemak dan natrium yang dimiliki kacang merah sangat rendah, nyaris bebas lemak jenuh dan kolesterol. (6) Sebaliknya, kacang merah justru merupakan sumber serat yang baik. (7) Dalam 100 gram kacang merah kering dapat menghasilkan 4 gram serat yang terdiri dari serat larut air dan serat yang tidak larut air. (8) Serat yang larut air mampu menurunkan kadar kolesterol dan kadar gula dalam darah. (9) Namun, di sisi lain, kacang merah memproduksi gas dalam usus yang membuat perut kembung. (Diadaptasi dari buku Pengaruh Makanan terhadap Kesehatan)</strong></span></p><p><span style="background-color:#ffffff;color:#000000;"><strong>Bentuk ke-an pada kata kesehatan dalam kalimat (1) mempunyai kesamaan makna dengan …</strong></span></p>	multiple choices	Kesejahteraan masyarakat desa itu terlihat dari megahnya rumah penduduknya	\N	9d13cb99-7129-438a-af54-e0fb91fa2861	9d153263-dfec-485c-907e-ce6e4aabd930	0	2024-09-24 03:14:57	2024-09-24 03:14:57
+9d154aeb-819d-438f-8a76-75d7bcef6dcb		<p><span style="background-color:transparent;color:rgb(0,0,0);"><strong>(1) Cancel culture dapat diartikan sebagai sebuah praktik boikot massal terhadap seseorang atau suatu kelompok. (2) Pemboikotan ini bisa terjadi di dunia nyata, media sosial, atau keduanya. (3) Cancel culture dilakukan dengan cara mengumpulkan dukungan untuk memboikot seseorang atau suatu kelompok yang telah melakukan hal yang tidak pantas atau melanggar nilai dan norma yang berlaku di masyarakat, seperti mengatakan hal yang rasis atau melakukan tindakan kriminal.</strong></span></p><p><span style="background-color:transparent;color:rgb(0,0,0);"><strong>(4) Orang-orang atau kelompok yang mengalami cancel culture biasanya akan diboikot, baik dalam pekerjaannya hingga kehidupan sosialnya. (5) Pada prosesnya, mereka juga akan mendapatkan ujaran kebencian dan dimasukkan ke dalam daftar hitam (blacklist). (6) Hal ini dilakukan masyarakat sebagai bentuk penolakan keberadaan diri mereka di ruang publik. (7) Cancel culture ini sering dialami para figur publik, seperti selebritas dan politisi.</strong></span></p><p><span style="background-color:transparent;color:rgb(0,0,0);"><strong>(8) Jika ditelusuri lebih lanjut, cancel culture memiliki dampak positif dan negatif. (9) Dampak positif dari gerakan cancel culture adalah gerakan ini bisa berfungsi sebagai alat pengendalian sosial. (10) Hal ini terjadi karena gerakan ini bisa membuat masyarakat, terutama figur publik, akan berhati-hati ketika berucap dan bertindak. (11) Sementara itu, dampak negatifnya adalah menimbulkan cyber bullying terhadap seseorang dan menciptakan rasa malu, tidak percaya diri, hingga depresi pada orang yang mengalaminya. (12) Selain itu, jika terjadi pada figur publik, cancel culture ini tentunya berpotensi besar merusak kehidupan mereka sebagai figur publik.</strong></span></p><p><br><br><span style="background-color:transparent;color:rgb(0,0,0);"><strong>Gabungkan informasi dalam teks untuk menjelaskan bagaimana cancel culture bisa menjadi pedang bermata dua dalam konteks sosial dan profesional individu..</strong></span></p>	multiple choices	Cancel culture dapat membantu menegakkan norma sosial secara efektif dan meningkatkan kepatuhan, tetapi dapat merusak hubungan profesional dan pribadi individu.	\N	9d13cb99-729f-427f-829e-7fb8ab452427	9d153263-dfec-485c-907e-ce6e4aabd930	0	2024-09-24 03:16:08	2024-09-24 03:16:08
+9d154afc-5a5e-4dbb-b3b8-0bd97bed441f		<p><span style="background-color:transparent;color:#000000;">(1)Burung-burung Cendrawasih adalah anggota famili Paradisaeidae dari ordo Passeriformes. (2)Cendrawasih biasa ditemukan di Indonesia bagian Timur Papua, Papua Nugini, pulau-pulau selat Torres, dan Australia Timur. (3)Ukuran burung Cendrawasih [...] macam, dimulai dari Cendrawasih Raja yang berukuran 15 cm dengan berat 50 gram, sampai kuakalame ekor-kuning yang berukuran 110 cm, dan sagubega jambul-keriting dengan berat mencapai 430 gram.</span></p><p><br>&nbsp;</p><p><span style="background-color:transparent;color:#000000;">(4)Burung anggota keluarga ini dikenal dengan bulu burung jantan yang banyak jenisnya, terutama bulu yang sangat memanjang dan rumit tumbuh dari paru, sayap, atau kepalanya. (5)Biasanya bulunya berwarna cerah dengan gabungan warna mulai dari hitam, cokelat, kuning, putih, dan biru. (6)Dengan keindahan bulu tersebut, Cendrawasih jantan menarik perhatian lawannya dengan merayu sang betina supaya bersedia diajak kawin, burung jantan dapat memamerkan bulunya dengan melakukan tarian yang indah, Cendrawasih Vogelkop misalnya. (7)Untuk menarik perhatian lawan jenis, maka ia akan membentangkan sayapnya yang berwarna hitam menjadi seperti kipas. (8)Walaupun demikian, setiap spesies burung Cenderawasih memiliki tarian unik yang berbeda satu sama lain.</span></p><p><br><span style="background-color:transparent;color:#000000;">Kata berikut dapat digunakan untuk menggantikan kata <i>merayu</i> dalam kalimat (6), kecuali...</span></p>	multiple choices	menyindir	\N	9d13cb99-71b1-429a-8ac6-5ec545fc143c	9d153263-dfec-485c-907e-ce6e4aabd930	0	2024-09-24 03:16:19	2024-09-24 03:16:19
+9d154b09-054c-4e6a-974e-70a656a3d8e0		<p><span style="background-color:transparent;color:#000000;">Harley Bear (August 5, 2023)</span></p><p><span style="background-color:transparent;color:#000000;"><strong>What are some of your great frugal hacks that helped you a lot?</strong></span></p><p><span style="background-color:transparent;color:#000000;">&nbsp;</span></p><p><span style="background-color:transparent;color:#000000;">Breanna Shaw (August 17, 2023)</span></p><p><span style="background-color:transparent;color:#000000;">Pack your lunch for school or work instead of eating out. Make your coffee at home to prevent stopping on the way somewhere to buy some. Anytime something needs repaired, watch a YouTube video first before calling a technician. Sometimes it can be an easy fix that you can do yourself to save money.I have more tips, but I think I have made this answer long enough.</span></p><p><span style="background-color:transparent;color:#000000;">&nbsp;</span></p><p><span style="background-color:transparent;color:#000000;">Yaseer Said (September 3, 2023)</span></p><p><span style="background-color:transparent;color:#000000;">Always ask yourself this question before buying anything: “Do I need it? What if I don’t buy this one, and save the money for any other need?”</span></p><p><span style="background-color:transparent;color:#000000;">&nbsp;</span></p><p><span style="background-color:transparent;color:#000000;">Kerry Baldwin (September 4, 2023)</span></p><p><span style="background-color:transparent;color:#000000;">You know what is pathetic? Being poor when you're old, and you will be old someday. Learn to live within your means and put your money back for retirement.</span></p><p><span style="background-color:transparent;color:#000000;">&nbsp;</span></p><p><span style="background-color:transparent;color:#000000;">Caleb Beers (October 15, 2023)</span></p><p><span style="background-color:transparent;color:#000000;">Most of the “frugal hacks” you hear will be about ways to buy things cheaply. Those are great, but I’ve found that much of frugality comes down to self-control, i.e.,not buying stuff you don’t need. Also, self-control is a lot harder than just looking for cheap stuff. For example, I want the latest smart phone, but my phone is still working very well. So, I don’t buy a new one.</span></p><p><span style="background-color:transparent;color:#000000;">&nbsp;</span></p><p><span style="background-color:transparent;color:#000000;">Daniel Tay (October 25, 2023)</span></p><p><span style="background-color:transparent;color:#000000;">Frugality means different things to different people. To me, it means not wasting something that can be reused or repurposed. I’ve taken this to a level that some people may consider extreme: I don’t buy anything.</span></p><p><span style="background-color:transparent;color:#000000;">What is the tone of the thread regarding useful frugal hacks?&nbsp;</span></p>	multiple choices	Supportive	\N	9d13cb99-7310-4549-a854-99803fddeb67	9d153263-dfec-485c-907e-ce6e4aabd930	0	2024-09-24 03:16:27	2024-09-24 03:16:27
+9d154b3b-5f48-4823-af9f-5819657fe8f9		<p><span style="background-color:transparent;color:rgb(0,0,0);"><strong>(1) Oleh karena itu, mengingat kehidupan mereka yang terkesan tidak mengalami perubahan ekonomi dari zaman dahulu kita sebagai manusia tidak boleh memberikan statement bahwa mereka orang malas sehingga kondisi ekonominya masih sama. (2) Novel ini dikemas dengan bahasa yang sederhana dan mudah dipahami karena tidak banyak menggunakan majas. (3) </strong><i><strong>Novel Orang-Orang Biasa </strong></i><strong>karya Andre Hirata ini mengisahkan rencana perampokan oleh sepuluh orang bersahabat demi mendapatkan uang untuk melanjutkan pendidikan kedokteran Aini, anak dari Dinah. (4) Tindakan tersebut memang tidak dibenarkan, tetapi hal ini menggambarkan bahwa orang tua akan bekerja keras agar anak dapat mencapai cita-cita dan tentunya dengan cara yang baik pula. (5) Selain itu, novel ini juga memperlihatkan realita bahwa dibalik kehidupan masyarakat yang dapat dibilang sederhana, sesungguhnya mereka telah melakukan kerja keras untuk mencapai kehidupan yang lebih layak dan sejahtera.</strong></span></p><p><br>&nbsp;</p><p><span style="background-color:transparent;color:rgb(0,0,0);"><strong>Susunan yang tepat agar teks tersebut menjadi padu…</strong></span></p>	multiple choices	3-4-5-2-1	\N	9d13cb99-729f-427f-829e-7fb8ab452427	9d153263-dfec-485c-907e-ce6e4aabd930	0	2024-09-24 03:17:00	2024-09-24 03:17:00
+9d154b3e-fbbd-4898-a9d3-6c3d354b9e71		<p><span style="background-color:transparent;color:#000000;">(1)Burung-burung Cendrawasih adalah anggota famili Paradisaeidae dari ordo Passeriformes. (2)Cendrawasih biasa ditemukan di Indonesia bagian Timur Papua, Papua Nugini, pulau-pulau selat Torres, dan Australia Timur. (3)Ukuran burung Cendrawasih [...] macam, dimulai dari Cendrawasih Raja yang berukuran 15 cm dengan berat 50 gram, sampai kuakalame ekor-kuning yang berukuran 110 cm, dan sagubega jambul-keriting dengan berat mencapai 430 gram.</span></p><p><br>&nbsp;</p><p><span style="background-color:transparent;color:#000000;">(4)Burung anggota keluarga ini dikenal dengan bulu burung jantan yang banyak jenisnya, terutama bulu yang sangat memanjang dan rumit tumbuh dari paru, sayap, atau kepalanya. (5)Biasanya bulunya berwarna cerah dengan gabungan warna mulai dari hitam, cokelat, kuning, putih, dan biru. (6)Dengan keindahan bulu tersebut, Cendrawasih jantan menarik perhatian lawannya dengan merayu sang betina supaya bersedia diajak kawin, burung jantan dapat memamerkan bulunya dengan melakukan tarian yang indah, Cendrawasih Vogelkop misalnya. (7)Untuk menarik perhatian lawan jenis, maka ia akan membentangkan sayapnya yang berwarna hitam menjadi seperti kipas. (8)Walaupun demikian, setiap spesies burung Cenderawasih memiliki tarian unik yang berbeda satu sama lain.</span></p><p><br><span style="background-color:transparent;color:#000000;">Konjungsi penegasan terdapat pada kalimat ...</span></p>	multiple choices	(8)	\N	9d13cb99-71b1-429a-8ac6-5ec545fc143c	9d153263-dfec-485c-907e-ce6e4aabd930	0	2024-09-24 03:17:02	2024-09-24 03:17:02
+9d154b7a-cdcf-40f6-bf6b-a16f732c7019		<p><span style="background-color:transparent;color:#000000;">(1)Burung-burung Cendrawasih adalah anggota famili Paradisaeidae dari ordo Passeriformes. (2)Cendrawasih biasa ditemukan di Indonesia bagian Timur Papua, Papua Nugini, pulau-pulau selat Torres, dan Australia Timur. (3)Ukuran burung Cendrawasih [...] macam, dimulai dari Cendrawasih Raja yang berukuran 15 cm dengan berat 50 gram, sampai kuakalame ekor-kuning yang berukuran 110 cm, dan sagubega jambul-keriting dengan berat mencapai 430 gram.</span></p><p><br>&nbsp;</p><p><span style="background-color:transparent;color:#000000;">(4)Burung anggota keluarga ini dikenal dengan bulu burung jantan yang banyak jenisnya, terutama bulu yang sangat memanjang dan rumit tumbuh dari paru, sayap, atau kepalanya. (5)Biasanya bulunya berwarna cerah dengan gabungan warna mulai dari hitam, cokelat, kuning, putih, dan biru. (6)Dengan keindahan bulu tersebut, Cendrawasih jantan menarik perhatian lawannya dengan merayu sang betina supaya bersedia diajak kawin, burung jantan dapat memamerkan bulunya dengan melakukan tarian yang indah, Cendrawasih Vogelkop misalnya. (7)Untuk menarik perhatian lawan jenis, maka ia akan membentangkan sayapnya yang berwarna hitam menjadi seperti kipas. (8)Walaupun demikian, setiap spesies burung Cenderawasih memiliki tarian unik yang berbeda satu sama lain.</span></p><p><br><span style="background-color:transparent;color:#000000;">Kata yang paling tepat untuk melengkapi kalimat 3 adalah ...</span></p>	multiple choices	berbagai	\N	9d13cb99-71b1-429a-8ac6-5ec545fc143c	9d153263-dfec-485c-907e-ce6e4aabd930	0	2024-09-24 03:17:42	2024-09-24 03:17:42
+9d154b7c-460d-4565-9ea7-7ad2b1935ae0		<p><span style="background-color:rgb(255,255,255);color:rgb(17,24,39);"><strong>(1)Air mataku mengalir deras membaca surat Nurul. Aku tak tahu harus berbuat apalagi. Hatiku ikut pilu. (2) “Sayang, apa isinya sampai kau menangis?” Tanya Aisyah sambil mengusap air mata di pipiku dengan ujung jilbabnya. Kutatap wajah istriku. (3) haruskah aku berterus terang kepadanya? Aku tak ingin membuat dirinya kacau dan cemburu. Aku harus melindungi ketenangan jiwanya. Yang jelas aku sama sekali tidak mau menghianatinya. (4) bisa jadi jika aku berterus terang, dia bisa menerima usulan Nurul, tetapi aku telah berjanji pada diriku sendiri bahwa aku tidak akan memadu istriku. (5) Aisyah adalah perempuanku yang pertama dan terakhir.</strong></span></p><p><span style="background-color:transparent;color:rgb(0,0,0);"><strong>Watak tokoh Aku yang tergambar dalam kutipan tersebut adalah…</strong></span></p>	multiple choices	Setia dan bertanggung jawab	\N	9d13cb99-729f-427f-829e-7fb8ab452427	9d153263-dfec-485c-907e-ce6e4aabd930	0	2024-09-24 03:17:43	2024-09-24 03:17:43
+9d154b96-cedf-4103-b1ab-3098e9a2103e		<p><span style="background-color:transparent;color:#000000;">Harley Bear (August 5, 2023)</span></p><p><span style="background-color:transparent;color:#000000;"><strong>What are some of your great frugal hacks that helped you a lot?</strong></span></p><p><span style="background-color:transparent;color:#000000;">&nbsp;</span></p><p><span style="background-color:transparent;color:#000000;">Breanna Shaw (August 17, 2023)</span></p><p><span style="background-color:transparent;color:#000000;">Pack your lunch for school or work instead of eating out. Make your coffee at home to prevent stopping on the way somewhere to buy some. Anytime something needs repaired, watch a YouTube video first before calling a technician. Sometimes it can be an easy fix that you can do yourself to save money.I have more tips, but I think I have made this answer long enough.</span></p><p><span style="background-color:transparent;color:#000000;">&nbsp;</span></p><p><span style="background-color:transparent;color:#000000;">Yaseer Said (September 3, 2023)</span></p><p><span style="background-color:transparent;color:#000000;">Always ask yourself this question before buying anything: “Do I need it? What if I don’t buy this one, and save the money for any other need?”</span></p><p><span style="background-color:transparent;color:#000000;">&nbsp;</span></p><p><span style="background-color:transparent;color:#000000;">Kerry Baldwin (September 4, 2023)</span></p><p><span style="background-color:transparent;color:#000000;">You know what is pathetic? Being poor when you're old, and you will be old someday. Learn to live within your means and put your money back for retirement.</span></p><p><span style="background-color:transparent;color:#000000;">&nbsp;</span></p><p><span style="background-color:transparent;color:#000000;">Caleb Beers (October 15, 2023)</span></p><p><span style="background-color:transparent;color:#000000;">Most of the “frugal hacks” you hear will be about ways to buy things cheaply. Those are great, but I’ve found that much of frugality comes down to self-control, i.e.,not buying stuff you don’t need. Also, self-control is a lot harder than just looking for cheap stuff. For example, I want the latest smart phone, but my phone is still working very well. So, I don’t buy a new one.</span></p><p><span style="background-color:transparent;color:#000000;">&nbsp;</span></p><p><span style="background-color:transparent;color:#000000;">Daniel Tay (October 25, 2023)</span></p><p><span style="background-color:transparent;color:#000000;">Frugality means different things to different people. To me, it means not wasting something that can be reused or repurposed. I’ve taken this to a level that some people may consider extreme: I don’t buy anything.</span></p><p><span style="background-color:transparent;color:#000000;">Who explicitly suggests to live frugally by not purchasing any stuff?</span></p>	multiple choices	Daniel Tay	\N	9d13cb99-7310-4549-a854-99803fddeb67	9d153263-dfec-485c-907e-ce6e4aabd930	0	2024-09-24 03:18:00	2024-09-24 03:18:00
+9d154bb6-1a28-4e67-bf0e-7f94e2ef9702		<p><span style="background-color:rgb(255,255,255);color:rgb(17,24,39);"><strong>(1)Air mataku mengalir deras membaca surat Nurul. Aku tak tahu harus berbuat apalagi. Hatiku ikut pilu. (2) “Sayang, apa isinya sampai kau menangis?” Tanya Aisyah sambil mengusap air mata di pipiku dengan ujung jilbabnya. Kutatap wajah istriku. (3) haruskah aku berterus terang kepadanya? Aku tak ingin membuat dirinya kacau dan cemburu. Aku harus melindungi ketenangan jiwanya. Yang jelas aku sama sekali tidak mau menghianatinya. (4) bisa jadi jika aku berterus terang, dia bisa menerima usulan Nurul, tetapi aku telah berjanji pada diriku sendiri bahwa aku tidak akan memadu istriku. (5) Aisyah adalah perempuanku yang pertama dan terakhir.</strong></span></p><p><br><br><span style="background-color:transparent;color:rgb(0,0,0);"><strong>Konflik pada tokoh Aku dalam kutipan tersebut adalah…</strong></span></p>	multiple choices	Tidak mampu berterus terang	\N	9d13cb99-729f-427f-829e-7fb8ab452427	9d153263-dfec-485c-907e-ce6e4aabd930	0	2024-09-24 03:18:20	2024-09-24 03:18:20
+9d154bec-7342-45f4-b178-389fcab902a3		<p><span style="background-color:transparent;color:#000000;">(1)Ketika anak mulai bisa berbicara, orang tua seringkali kesulitan menjawab pertanyaan yang diajukan anaknya. (2)Hal ini mungkin terjadi karena kelelahan mengasuh anak atau kejemuan terhadap pertanyaan yang diajukan berulang kali. (3)Tambahan pula, pada usia ini anak lebih sering [...] benda-benda di sekitarnya, terutama benda yang baru dilihatnya. (4)Akan tetapi, [...] orang tua adalah menjauhkan benda-benda yang dianggap dapat membahayakan keselamatan anak mereka. (5)Oleh karena itu, dibutuhkan penjelasan yang tepat mengenai benda yang berbahaya atau tidak agar anak tidak lagi penasaran dan mengabaikan [...] dari orang tuanya.</span></p><p><span style="background-color:transparent;color:#000000;">Kata yang tepat untuk melengkapi kalimat 4 dan 5 adalah ...</span></p>	multiple choices	reaksi, larangan	\N	9d13cb99-71b1-429a-8ac6-5ec545fc143c	9d153263-dfec-485c-907e-ce6e4aabd930	0	2024-09-24 03:18:56	2024-09-24 03:18:56
+9d154bf9-5889-4d09-8f2d-eb0c576ed27f		<p><span style="background-color:transparent;color:#000000;">Harley Bear (August 5, 2023)</span></p><p><span style="background-color:transparent;color:#000000;"><strong>What are some of your great frugal hacks that helped you a lot?</strong></span></p><p><span style="background-color:transparent;color:#000000;">&nbsp;</span></p><p><span style="background-color:transparent;color:#000000;">Breanna Shaw (August 17, 2023)</span></p><p><span style="background-color:transparent;color:#000000;">Pack your lunch for school or work instead of eating out. Make your coffee at home to prevent stopping on the way somewhere to buy some. Anytime something needs repaired, watch a YouTube video first before calling a technician. Sometimes it can be an easy fix that you can do yourself to save money.I have more tips, but I think I have made this answer long enough.</span></p><p><span style="background-color:transparent;color:#000000;">&nbsp;</span></p><p><span style="background-color:transparent;color:#000000;">Yaseer Said (September 3, 2023)</span></p><p><span style="background-color:transparent;color:#000000;">Always ask yourself this question before buying anything: “Do I need it? What if I don’t buy this one, and save the money for any other need?”</span></p><p><span style="background-color:transparent;color:#000000;">&nbsp;</span></p><p><span style="background-color:transparent;color:#000000;">Kerry Baldwin (September 4, 2023)</span></p><p><span style="background-color:transparent;color:#000000;">You know what is pathetic? Being poor when you're old, and you will be old someday. Learn to live within your means and put your money back for retirement.</span></p><p><span style="background-color:transparent;color:#000000;">&nbsp;</span></p><p><span style="background-color:transparent;color:#000000;">Caleb Beers (October 15, 2023)</span></p><p><span style="background-color:transparent;color:#000000;">Most of the “frugal hacks” you hear will be about ways to buy things cheaply. Those are great, but I’ve found that much of frugality comes down to self-control, i.e.,not buying stuff you don’t need. Also, self-control is a lot harder than just looking for cheap stuff. For example, I want the latest smart phone, but my phone is still working very well. So, I don’t buy a new one.</span></p><p><span style="background-color:transparent;color:#000000;">&nbsp;</span></p><p><span style="background-color:transparent;color:#000000;">Daniel Tay (October 25, 2023)</span></p><p><span style="background-color:transparent;color:#000000;">Frugality means different things to different people. To me, it means not wasting something that can be reused or repurposed. I’ve taken this to a level that some people may consider extreme: I don’t buy anything.</span></p><p><span style="background-color:transparent;color:#000000;">The word “frugality” in Daniel Tay’s post is closest in meaning to…</span></p>	multiple choices	thriftiness	\N	9d13cb99-7310-4549-a854-99803fddeb67	9d153263-dfec-485c-907e-ce6e4aabd930	0	2024-09-24 03:19:05	2024-09-24 03:19:05
+9d154bf9-77bb-4570-b174-5e6246a986f8		<p><span style="background-color:transparent;color:rgb(0,0,0);"><strong>Bu Mus adalah seorang guru yang pandai, karismatik, dan memiliki pandangan jauh ke depan. Beliau menyusun sendiri silabus pelajaran Budi Pekerti dan mengajarkan kepada kami sejak dini pandangan-pandangan dasar moral, demokrasi, hukum, keadilan, dan hak-hak asasi-jauh hari sebelum orang-orang sekarang meributkan soal materialisme versus pembangunan spiritual dalam pendidikan. Kami diajarkan menggali nilai luhur di dalam diri sendiri agar berperilaku baik karena kesadaran pribadi.</strong></span></p><p><span style="background-color:transparent;color:rgb(0,0,0);"><strong>Pada suatu kesempatan, karena masih kecil tentu saja, kami sering mengeluh mengapa sekolah kami tak seperti sekolah-sekolah lain. Terutama, atap sekolah yang bocor dan sangat menyusahkan saat musim hujan. Beliau tak menanggapi keluhan itu, tapi mengeluarkan sebuah buku berbahasa Belanda dan memperlihatkan sebuah gambar.</strong></span></p><p><span style="background-color:transparent;color:rgb(0,0,0);"><strong>Gambar itu adalah sebuah ruangan yang sempit, dikelilingi tembok tebal yang suram, tinggi, gelap, dan berjeruji. Kesan di dalamnya begitu pengap, angker, penuh kekerasan dan kesedihan."Inilah sel Pak Karno di sebuah penjara di Bandung, di sini Beliau menjalani hukuman dan setiap hari belajar, setiap waktu membaca buku. Beliau adalah salah satu orang tercerdas yang pernah dimiliki bangsa ini." Bu Mus tak melanjutkan ceritanya.</strong></span></p><p><span style="background-color:transparent;color:rgb(0,0,0);"><strong>Kami tersihir dalam senyap. Mulai saat itu, kami tak pernah memprotes keadaan sekolah kami. Pernah suatu ketika hujan turun sangat lebat, petir sambar-menyambar. Trapani dan Mahar memakai terindak, topi kerucut dari daun lais khas tentara Vietkong, untuk melindungi jambul mereka. Kucai, Borek, dan Sahara memakai jas hujan kuning bergambar gerigi metal besar di punggungnya dengan tulisan besar "UPT Bel" (Unit Penambangan Timah Belitong)-jas hujan PT Timah milik bapaknya. Kami sisanya hampir basah kuyup. Tapi kami sehari pun tak pernah bolos dan kami tak pernah mengeluh, tidak, sedikit pun kami tak pernah mengeluh.</strong></span></p><p><br><span style="background-color:transparent;color:rgb(0,0,0);"><strong>Dalam teks tersebut terdapat kata </strong><i><strong>silabus. </strong></i><strong>Yang tidak termasuk makna kata </strong><i><strong>silabus </strong></i><strong>adalah…</strong></span></p>	multiple choices	Daftar lengkap seluruh materi yang harus dihafalkan oleh siswa.	\N	9d13cb99-729f-427f-829e-7fb8ab452427	9d153263-dfec-485c-907e-ce6e4aabd930	0	2024-09-24 03:19:05	2024-09-24 03:19:05
+9d154c58-88ab-44ff-8b3b-0777365e0bdf		<p><span style="background-color:transparent;color:rgb(0,0,0);"><strong>Bu Mus adalah seorang guru yang pandai, karismatik, dan memiliki pandangan jauh ke depan. Beliau menyusun sendiri silabus pelajaran Budi Pekerti dan mengajarkan kepada kami sejak dini pandangan-pandangan dasar moral, demokrasi, hukum, keadilan, dan hak-hak asasi-jauh hari sebelum orang-orang sekarang meributkan soal materialisme versus pembangunan spiritual dalam pendidikan. Kami diajarkan menggali nilai luhur di dalam diri sendiri agar berperilaku baik karena kesadaran pribadi.</strong></span></p><p><span style="background-color:transparent;color:rgb(0,0,0);"><strong>Pada suatu kesempatan, karena masih kecil tentu saja, kami sering mengeluh mengapa sekolah kami tak seperti sekolah-sekolah lain. Terutama, atap sekolah yang bocor dan sangat menyusahkan saat musim hujan. Beliau tak menanggapi keluhan itu, tapi mengeluarkan sebuah buku berbahasa Belanda dan memperlihatkan sebuah gambar.</strong></span></p><p><span style="background-color:transparent;color:rgb(0,0,0);"><strong>Gambar itu adalah sebuah ruangan yang sempit, dikelilingi tembok tebal yang suram, tinggi, gelap, dan berjeruji. Kesan di dalamnya begitu pengap, angker, penuh kekerasan dan kesedihan."Inilah sel Pak Karno di sebuah penjara di Bandung, di sini Beliau menjalani hukuman dan setiap hari belajar, setiap waktu membaca buku. Beliau adalah salah satu orang tercerdas yang pernah dimiliki bangsa ini." Bu Mus tak melanjutkan ceritanya.</strong></span></p><p><span style="background-color:transparent;color:rgb(0,0,0);"><strong>Kami tersihir dalam senyap. Mulai saat itu, kami tak pernah memprotes keadaan sekolah kami. Pernah suatu ketika hujan turun sangat lebat, petir sambar-menyambar. Trapani dan Mahar memakai terindak, topi kerucut dari daun lais khas tentara Vietkong, untuk melindungi jambul mereka. Kucai, Borek, dan Sahara memakai jas hujan kuning bergambar gerigi metal besar di punggungnya dengan tulisan besar "UPT Bel" (Unit Penambangan Timah Belitong)-jas hujan PT Timah milik bapaknya. Kami sisanya hampir basah kuyup. Tapi kami sehari pun tak pernah bolos dan kami tak pernah mengeluh, tidak, sedikit pun kami tak pernah mengeluh.</strong></span></p><p><br><br><span style="background-color:transparent;color:rgb(0,0,0);"><strong>Pernyataan berikut yang sesuai dengan isi teks tersebut adalah…</strong></span></p>	multiple choices	Bu Mus memberikan pengajaran tentang moralitas, demokrasi, hukum, dan kesadaran pribadi kepada murid-muridnya sejak dini, sehingga mereka mampu menggali nilai-nilai luhur dalam diri dan tidak bergantung pada kondisi fisik sekolah.	\N	9d13cb99-729f-427f-829e-7fb8ab452427	9d153263-dfec-485c-907e-ce6e4aabd930	0	2024-09-24 03:20:07	2024-09-24 03:20:07
+9d154c5b-1b90-4b2a-b8e1-42e3d39fec30		<p><span style="background-color:transparent;color:#000000;">Harley Bear (August 5, 2023)</span></p><p><span style="background-color:transparent;color:#000000;"><strong>What are some of your great frugal hacks that helped you a lot?</strong></span></p><p><span style="background-color:transparent;color:#000000;">&nbsp;</span></p><p><span style="background-color:transparent;color:#000000;">Breanna Shaw (August 17, 2023)</span></p><p><span style="background-color:transparent;color:#000000;">Pack your lunch for school or work instead of eating out. Make your coffee at home to prevent stopping on the way somewhere to buy some. Anytime something needs repaired, watch a YouTube video first before calling a technician. Sometimes it can be an easy fix that you can do yourself to save money.I have more tips, but I think I have made this answer long enough.</span></p><p><span style="background-color:transparent;color:#000000;">&nbsp;</span></p><p><span style="background-color:transparent;color:#000000;">Yaseer Said (September 3, 2023)</span></p><p><span style="background-color:transparent;color:#000000;">Always ask yourself this question before buying anything: “Do I need it? What if I don’t buy this one, and save the money for any other need?”</span></p><p><span style="background-color:transparent;color:#000000;">&nbsp;</span></p><p><span style="background-color:transparent;color:#000000;">Kerry Baldwin (September 4, 2023)</span></p><p><span style="background-color:transparent;color:#000000;">You know what is pathetic? Being poor when you're old, and you will be old someday. Learn to live within your means and put your money back for retirement.</span></p><p><span style="background-color:transparent;color:#000000;">&nbsp;</span></p><p><span style="background-color:transparent;color:#000000;">Caleb Beers (October 15, 2023)</span></p><p><span style="background-color:transparent;color:#000000;">Most of the “frugal hacks” you hear will be about ways to buy things cheaply. Those are great, but I’ve found that much of frugality comes down to self-control, i.e.,not buying stuff you don’t need. Also, self-control is a lot harder than just looking for cheap stuff. For example, I want the latest smart phone, but my phone is still working very well. So, I don’t buy a new one.</span></p><p><span style="background-color:transparent;color:#000000;">&nbsp;</span></p><p><span style="background-color:transparent;color:#000000;">Daniel Tay (October 25, 2023)</span></p><p><span style="background-color:transparent;color:#000000;">Frugality means different things to different people. To me, it means not wasting something that can be reused or repurposed. I’ve taken this to a level that some people may consider extreme: I don’t buy anything.</span></p><p><span style="background-color:transparent;color:#000000;">Who posted the least relevant answer to Harley Bear’s question?</span></p>	multiple choices	Kerry Baldwin	\N	9d13cb99-7310-4549-a854-99803fddeb67	9d153263-dfec-485c-907e-ce6e4aabd930	0	2024-09-24 03:20:09	2024-09-24 03:20:09
+9d154ca5-3932-48dc-8a9f-e5dcbb4ce2df		<p><span style="background-color:transparent;color:rgb(0,0,0);"><strong>Kemanusiaan berada di kursi panas,” kalimat itu meluncur dari Sekretaris Jenderal Perserikatan Bangsa-Bangsa (PBB) Antonio Guterres, Kamis (27/7/2023) pagi. Informasi dari jumpa pers di markas PBB itu segera teramplifikasi ke seluruh dunia bahwa bulan Juli 2023 adalah bulan terpanas yang pernah tercatat. Data suhu global tiga pekan pertama Juli menunjukkan rata-rata suhu bumi berada 1,5 derajat celsius di atas rata-rata suhu global sejak era pra-industri akhir tahun 1700 atau awal 1800. Suhu ”mendidih” bulan Juli itu juga terkait gelombang panas di kawasan Amerika Utara, Asia, dan Eropa. Datangnya bersamaan dengan kebakaran lahan di Kanada dan Yunani.</strong></span></p><p><span style="background-color:transparent;color:rgb(0,0,0);"><strong>Pernyataan Guterres itu diperkuat para peneliti ataupun lembaga meteorologi dunia bahwa situasi saat ini bukanlah puncak suhu global. Namun, sinyal masa depan manusia dalam bahaya. Manusia penyebab semua ini (antropogenik).</strong></span></p><p><span style="background-color:transparent;color:rgb(0,0,0);"><strong>Bagi para pihak yang mengikuti perkembangan iklim global, terutama pemerintah, kondisi saat ini bukan tak terprediksi. Bahkan, sejak awal tahun 1900, dunia sudah memulai inisiatif KTT Bumi. Inisiatif itu menelurkan slogan ”Pembangunan Berkelanjutan”, yakni kebijakan pembangunan negara haruslah mempertimbangkan daya dukung lingkungan. Perkembangan selanjutnya muncul Konvensi Kerangka Kerja PBB untuk Perubahan Iklim (UNFCCC) yang beranggotakan hampir seluruh negara. Para pemimpin pemerintahan/negara berkumpul berkala membahas masa kini dan masa depan iklim, termasuk kontribusi.</strong></span></p><p><span style="background-color:transparent;color:rgb(0,0,0);"><strong>Apa yang terjadi, dunia seperti tak berdaya. Pembahasan perubahan iklim lebih berbau politik dan negosiasi ekonomi yang meminggirkan sisi manusia yang terimbas perubahan iklim dan pemanasan global. Petani, nelayan, pekerja lapangan, dan penghuni kawasan kutub dan pesisir dihantui gagal panen, abrasi, badai kian sering, es mencair, dan gelombang panas.</strong></span></p><p><span style="background-color:transparent;color:rgb(0,0,0);"><strong>Adaptasilah yang paling masuk akal dilakukan, termasuk Indonesia, ketimbang menunggu komitmen global yang tak juga jelas. Amerika Serikat membentuk lembaga khusus untuk mengawasi pekerja bangunan dan buruh tani agar terlindung dari gelombang panas. Negara kecil di tengah samudra dikabarkan menyewa lahan di negara lain sebagai antisipasi jika suatu saat perlu mengevakuasi warganya karena abrasi.</strong></span></p><p><span style="background-color:transparent;color:rgb(0,0,0);"><strong>Di Indonesia, rencana mitigasi dan adaptasi perubahan iklim sudah sejak tahun 2000-an. Kini, skema bursa karbon yang sedang dibahas pun dirancang agar bermanfaat bagi masyarakat. Aksi nyata yang terpadu harus terus dilakukan agar resiko kerugian dari perubahan iklim bisa diperkecil. Jika tidak, kita akan semakin sering melihat petani terus menjerit gagal panen, nelayan kian jauh melaut, dan bencana hidrometeorologi kian sering memakan korban.</strong></span></p><p><br>&nbsp;</p><p><span style="background-color:transparent;color:rgb(0,0,0);"><strong>Apa yang dimaksud dengan kalimat "Kemanusiaan berada di kursi panas" dalam konteks pernyataan Sekretaris Jenderal PBB Antonio Guterres?</strong></span></p>	multiple choices	Menyiratkan bahwa umat manusia sedang menghadapi ancaman besar dari pemanasan global yang tidak dapat dihindari.	\N	9d13cb99-729f-427f-829e-7fb8ab452427	9d153263-dfec-485c-907e-ce6e4aabd930	0	2024-09-24 03:20:57	2024-09-24 03:20:57
+9d1556aa-913d-4147-8efa-1d93f83e94e9		<p><span style="background-color:transparent;color:#000000;"><strong>Sakit gigi adalah penyakit umum yang bisa dialami oleh siapa saja. Sakit gigi sangat mengganggu aktivitas sehari-hari kita karena dengan mengalami sakit gigi biasanya orang akan cenderung malas untuk makan. Penyebab sakit gigi sangat beragam seperti gigi berlubang, gigi patah, gigi tanggal, dan sakit gigi karena bakteri yang menyebabkan pembusukan gigi. Sakit gigi bisa diatasi dengan berbagai macam obat tradisional, seperti garam, bawang merah, bawang putih, es batu, dan cengkih.</strong></span></p><p><span style="background-color:transparent;color:#000000;"><strong>Cengkih merupakan tanaman tradisional yang memiliki bau yang menyengat. Namun, cengkih sering digunakan untuk penambah rasa pada berbagai bahan makanan. Selain itu cengkih menjadi bahan [....] rokok kretek. Cengkih mengandung zat eugenal yang sering digunakan dokter gigi untuk menenangkan saraf gigi.</strong></span></p><p><span style="background-color:transparent;color:#000000;"><strong>Cara yang dapat dilakukan untuk menjadikan cengkih sebagai obat pereda sakit gigi adalah dengan mengunyah cengkih secara langsung jika masih memungkinkan untuk melakukannya. Sebelum mengunyah cengkih, sebaiknya cengkih dibiarkan melunak sedikit karena terkena air liur sehingga tidak terlalu keras saat dikunyah. Minyak pada cengkih akan keluar dan mengenai bagian yang sakit lalu akan bereaksi untuk meredakan rasa sakit dan mengurangi pembengkakan.</strong></span></p><p><span style="background-color:transparent;color:#000000;"><strong>Selain mengunyah cengkih secara langsung cara lain yang bisa dilakukan adalah menggunakan bubuk cengkih dengan mengoleskan pada bagian yang sakit. Minyak yang keluar dari cengkih disebut juga minyak esensial. Minyak esensial bisa dicampur dengan sedikit minyak zaitun lalu dioleskan di bagian yang sakit.</strong></span></p><p><br><span style="background-color:transparent;color:#000000;"><strong>Lawan kata </strong><i><strong>mengurangi</strong></i><strong> &nbsp;pada paragraf 3 adalah ...</strong></span></p>	multiple choices	memperbanyak	\N	9d13cb99-7129-438a-af54-e0fb91fa2861	9d153263-dfec-485c-907e-ce6e4aabd930	0	2024-09-24 03:48:58	2024-09-24 03:48:58
+9d154cce-49d6-44cf-b586-7152ff937a3b		<p><span style="background-color:transparent;color:#000000;">Harley Bear (August 5, 2023)</span></p><p><span style="background-color:transparent;color:#000000;"><strong>What are some of your great frugal hacks that helped you a lot?</strong></span></p><p><span style="background-color:transparent;color:#000000;">&nbsp;</span></p><p><span style="background-color:transparent;color:#000000;">Breanna Shaw (August 17, 2023)</span></p><p><span style="background-color:transparent;color:#000000;">Pack your lunch for school or work instead of eating out. Make your coffee at home to prevent stopping on the way somewhere to buy some. Anytime something needs repaired, watch a YouTube video first before calling a technician. Sometimes it can be an easy fix that you can do yourself to save money.I have more tips, but I think I have made this answer long enough.</span></p><p><span style="background-color:transparent;color:#000000;">&nbsp;</span></p><p><span style="background-color:transparent;color:#000000;">Yaseer Said (September 3, 2023)</span></p><p><span style="background-color:transparent;color:#000000;">Always ask yourself this question before buying anything: “Do I need it? What if I don’t buy this one, and save the money for any other need?”</span></p><p><span style="background-color:transparent;color:#000000;">&nbsp;</span></p><p><span style="background-color:transparent;color:#000000;">Kerry Baldwin (September 4, 2023)</span></p><p><span style="background-color:transparent;color:#000000;">You know what is pathetic? Being poor when you're old, and you will be old someday. Learn to live within your means and put your money back for retirement.</span></p><p><span style="background-color:transparent;color:#000000;">&nbsp;</span></p><p><span style="background-color:transparent;color:#000000;">Caleb Beers (October 15, 2023)</span></p><p><span style="background-color:transparent;color:#000000;">Most of the “frugal hacks” you hear will be about ways to buy things cheaply. Those are great, but I’ve found that much of frugality comes down to self-control, i.e.,not buying stuff you don’t need. Also, self-control is a lot harder than just looking for cheap stuff. For example, I want the latest smart phone, but my phone is still working very well. So, I don’t buy a new one.</span></p><p><span style="background-color:transparent;color:#000000;">&nbsp;</span></p><p><span style="background-color:transparent;color:#000000;">Daniel Tay (October 25, 2023)</span></p><p><span style="background-color:transparent;color:#000000;">Frugality means different things to different people. To me, it means not wasting something that can be reused or repurposed. I’ve taken this to a level that some people may consider extreme: I don’t buy anything.</span></p><p><span style="background-color:transparent;color:#000000;">Who disapproved that being frugal is being cheap by giving evidence?&nbsp;</span></p>	multiple choices	Caleb Beers	\N	9d13cb99-7310-4549-a854-99803fddeb67	9d153263-dfec-485c-907e-ce6e4aabd930	0	2024-09-24 03:21:24	2024-09-24 03:21:24
+9d154d04-7cb2-4fde-a08d-d33cf570e72b		<p><span style="background-color:transparent;color:rgb(0,0,0);"><strong>Kemanusiaan berada di kursi panas,” kalimat itu meluncur dari Sekretaris Jenderal Perserikatan Bangsa-Bangsa (PBB) Antonio Guterres, Kamis (27/7/2023) pagi. Informasi dari jumpa pers di markas PBB itu segera teramplifikasi ke seluruh dunia bahwa bulan Juli 2023 adalah bulan terpanas yang pernah tercatat. Data suhu global tiga pekan pertama Juli menunjukkan rata-rata suhu bumi berada 1,5 derajat celsius di atas rata-rata suhu global sejak era pra-industri akhir tahun 1700 atau awal 1800. Suhu ”mendidih” bulan Juli itu juga terkait gelombang panas di kawasan Amerika Utara, Asia, dan Eropa. Datangnya bersamaan dengan kebakaran lahan di Kanada dan Yunani.</strong></span></p><p><span style="background-color:transparent;color:rgb(0,0,0);"><strong>Pernyataan Guterres itu diperkuat para peneliti ataupun lembaga meteorologi dunia bahwa situasi saat ini bukanlah puncak suhu global. Namun, sinyal masa depan manusia dalam bahaya. Manusia penyebab semua ini (antropogenik).</strong></span></p><p><span style="background-color:transparent;color:rgb(0,0,0);"><strong>Bagi para pihak yang mengikuti perkembangan iklim global, terutama pemerintah, kondisi saat ini bukan tak terprediksi. Bahkan, sejak awal tahun 1900, dunia sudah memulai inisiatif KTT Bumi. Inisiatif itu menelurkan slogan ”Pembangunan Berkelanjutan”, yakni kebijakan pembangunan negara haruslah mempertimbangkan daya dukung lingkungan. Perkembangan selanjutnya muncul Konvensi Kerangka Kerja PBB untuk Perubahan Iklim (UNFCCC) yang beranggotakan hampir seluruh negara. Para pemimpin pemerintahan/negara berkumpul berkala membahas masa kini dan masa depan iklim, termasuk kontribusi.</strong></span></p><p><span style="background-color:transparent;color:rgb(0,0,0);"><strong>Apa yang terjadi, dunia seperti tak berdaya. Pembahasan perubahan iklim lebih berbau politik dan negosiasi ekonomi yang meminggirkan sisi manusia yang terimbas perubahan iklim dan pemanasan global. Petani, nelayan, pekerja lapangan, dan penghuni kawasan kutub dan pesisir dihantui gagal panen, abrasi, badai kian sering, es mencair, dan gelombang panas.</strong></span></p><p><span style="background-color:transparent;color:rgb(0,0,0);"><strong>Adaptasilah yang paling masuk akal dilakukan, termasuk Indonesia, ketimbang menunggu komitmen global yang tak juga jelas. Amerika Serikat membentuk lembaga khusus untuk mengawasi pekerja bangunan dan buruh tani agar terlindung dari gelombang panas. Negara kecil di tengah samudra dikabarkan menyewa lahan di negara lain sebagai antisipasi jika suatu saat perlu mengevakuasi warganya karena abrasi.</strong></span></p><p><span style="background-color:transparent;color:rgb(0,0,0);"><strong>Di Indonesia, rencana mitigasi dan adaptasi perubahan iklim sudah sejak tahun 2000-an. Kini, skema bursa karbon yang sedang dibahas pun dirancang agar bermanfaat bagi masyarakat. Aksi nyata yang terpadu harus terus dilakukan agar resiko kerugian dari perubahan iklim bisa diperkecil. Jika tidak, kita akan semakin sering melihat petani terus menjerit gagal panen, nelayan kian jauh melaut, dan bencana hidrometeorologi kian sering memakan korban.</strong></span></p><p><br><br><span style="background-color:transparent;color:rgb(0,0,0);"><strong>Mengapa adaptasi dianggap sebagai langkah yang paling masuk akal dilakukan, khususnya bagi Indonesia?</strong></span></p>	multiple choices	Karena menunggu komitmen global yang tidak jelas dapat menyebabkan lebih banyak kerugian bagi masyarakat yang rentan terhadap perubahan iklim.	\N	9d13cb99-729f-427f-829e-7fb8ab452427	9d153263-dfec-485c-907e-ce6e4aabd930	0	2024-09-24 03:22:00	2024-09-24 03:22:00
+9d154d68-d3a6-42a8-8261-5451a4647ed6		<p><span style="background-color:transparent;color:rgb(0,0,0);"><strong>Kemanusiaan berada di kursi panas,” kalimat itu meluncur dari Sekretaris Jenderal Perserikatan Bangsa-Bangsa (PBB) Antonio Guterres, Kamis (27/7/2023) pagi. Informasi dari jumpa pers di markas PBB itu segera teramplifikasi ke seluruh dunia bahwa bulan Juli 2023 adalah bulan terpanas yang pernah tercatat. Data suhu global tiga pekan pertama Juli menunjukkan rata-rata suhu bumi berada 1,5 derajat celsius di atas rata-rata suhu global sejak era pra-industri akhir tahun 1700 atau awal 1800. Suhu ”mendidih” bulan Juli itu juga terkait gelombang panas di kawasan Amerika Utara, Asia, dan Eropa. Datangnya bersamaan dengan kebakaran lahan di Kanada dan Yunani.</strong></span></p><p><span style="background-color:transparent;color:rgb(0,0,0);"><strong>Pernyataan Guterres itu diperkuat para peneliti ataupun lembaga meteorologi dunia bahwa situasi saat ini bukanlah puncak suhu global. Namun, sinyal masa depan manusia dalam bahaya. Manusia penyebab semua ini (antropogenik).</strong></span></p><p><span style="background-color:transparent;color:rgb(0,0,0);"><strong>Bagi para pihak yang mengikuti perkembangan iklim global, terutama pemerintah, kondisi saat ini bukan tak terprediksi. Bahkan, sejak awal tahun 1900, dunia sudah memulai inisiatif KTT Bumi. Inisiatif itu menelurkan slogan ”Pembangunan Berkelanjutan”, yakni kebijakan pembangunan negara haruslah mempertimbangkan daya dukung lingkungan. Perkembangan selanjutnya muncul Konvensi Kerangka Kerja PBB untuk Perubahan Iklim (UNFCCC) yang beranggotakan hampir seluruh negara. Para pemimpin pemerintahan/negara berkumpul berkala membahas masa kini dan masa depan iklim, termasuk kontribusi.</strong></span></p><p><span style="background-color:transparent;color:rgb(0,0,0);"><strong>Apa yang terjadi, dunia seperti tak berdaya. Pembahasan perubahan iklim lebih berbau politik dan negosiasi ekonomi yang meminggirkan sisi manusia yang terimbas perubahan iklim dan pemanasan global. Petani, nelayan, pekerja lapangan, dan penghuni kawasan kutub dan pesisir dihantui gagal panen, abrasi, badai kian sering, es mencair, dan gelombang panas.</strong></span></p><p><span style="background-color:transparent;color:rgb(0,0,0);"><strong>Adaptasilah yang paling masuk akal dilakukan, termasuk Indonesia, ketimbang menunggu komitmen global yang tak juga jelas. Amerika Serikat membentuk lembaga khusus untuk mengawasi pekerja bangunan dan buruh tani agar terlindung dari gelombang panas. Negara kecil di tengah samudra dikabarkan menyewa lahan di negara lain sebagai antisipasi jika suatu saat perlu mengevakuasi warganya karena abrasi.</strong></span></p><p><span style="background-color:transparent;color:rgb(0,0,0);"><strong>Di Indonesia, rencana mitigasi dan adaptasi perubahan iklim sudah sejak tahun 2000-an. Kini, skema bursa karbon yang sedang dibahas pun dirancang agar bermanfaat bagi masyarakat. Aksi nyata yang terpadu harus terus dilakukan agar resiko kerugian dari perubahan iklim bisa diperkecil. Jika tidak, kita akan semakin sering melihat petani terus menjerit gagal panen, nelayan kian jauh melaut, dan bencana hidrometeorologi kian sering memakan korban.</strong></span></p><p><br><br><span style="background-color:transparent;color:rgb(0,0,0);"><strong>Mengapa dikatakan bahwa dunia "seperti tak berdaya" dalam menghadapi perubahan iklim, menurut teks?</strong></span></p>	multiple choices	Karena pembahasan perubahan iklim lebih condong pada politik dan ekonomi daripada memperhatikan dampaknya pada manusia yang rentan.	\N	9d13cb99-729f-427f-829e-7fb8ab452427	9d153263-dfec-485c-907e-ce6e4aabd930	0	2024-09-24 03:23:05	2024-09-24 03:23:05
+9d154e73-b6b7-46a2-829a-70395f4cca4a		<p><span style="background-color:transparent;color:#000000;"><strong>TEXT 1</strong></span></p><p><span style="background-color:transparent;color:#000000;">An actor creates and performs a character by using cognitive empathy or Theory of Mind (ToM). It is the ability to represent others’ mental states. ToM plays a critical role in understanding and navigating social situations. Reflection into the character's mental life depends on the actor’s approach to character performance. This may be an important part of the character-creation process. This process involves the exploration of the history, motivations, beliefs, and values of the character. This exploration often goes well beyond the information contained within the script. In other words, for many actors, creating a character involves a complex application of ToM, which includes several brain regions such as the temporoparietal junction and posterior cingulate/precuneus.</span></p><p><span style="background-color:transparent;color:#000000;">The temporoparietal junction works in processing and judgments of self and others. According to some studies, overcoming self–other interference and ToM is a deeply integrated process. Findings show that simulating others has been shown to influence self-knowledge. In this simulation, trait and memory measures become similar to a simulated other after adopting their perspective. Some brain regions are deactivated when trained actors use the first-person fictional perspective of a character to answer questions. This is in contrast to a situation when actors answered questions from their own perspective. It suggests that acting may involve the suppression of self-processing.</span></p><p><span style="background-color:transparent;color:#000000;">(Adapted from </span><span style="background-color:transparent;color:#1155cc;">https://www.ncbi.nlm.nih.gov)</span></p><p><span style="background-color:transparent;color:#000000;"><strong>TEXT 2</strong></span></p><p><span style="background-color:transparent;color:#000000;">According to a recent study, when actors take on a new character, they may be able to suppress their everyday self. This implies that theatre training may have a big impact on the fundamental mechanisms of the human brain. Researchers in this study worked in collaboration with Flute Theatre. <i>They </i>created and delivered interactive productions of Shakespeare for autistic individuals and their families. They used a series of sensory drama games, known as the Hunter Heartbeat Method.</span></p><p><span style="background-color:transparent;color:#000000;">The team used wearable brain imaging technologies and physiological measurement devices. They were first introduced at UCL's Department of Biomedical Engineering. Both devices were used to evaluate the brain activity of actors as they rehearsed scenes from Shakespeare's <i>A Midsummer Night's Dream</i>.</span></p><p><span style="background-color:transparent;color:#000000;">The findings showed that when the actors heard their own name during the performance, their response was suppressed in the left anterior prefrontal cortex of the brain. This is usually associated with self-awareness. The same result was witnessed consistently in six actors who were tested when rehearsing several times over a week. Meanwhile, when the performers were not in acting conditions, they responded normally to hearing their own name.</span></p><p><span style="background-color:transparent;color:#000000;">According to the lead researcher, this is the first time that neuroscientists have been able to record brain activity in actors as they perform a role. We hope that this study will help us understand what theatre training does to the brain and to build new connections between neuroscientists and theatre professionals.</span></p><p><span style="background-color:transparent;color:#000000;">(Adapted from https://www.sciencedaily.com)</span></p><p><span style="background-color:transparent;color:#000000;">According to Text 1, cognitive empathy or ToM ….</span></p>	multiple choices	is an important skill for actors to suppress themselves to create a new character	\N	9d13cb99-7310-4549-a854-99803fddeb67	9d153263-dfec-485c-907e-ce6e4aabd930	0	2024-09-24 03:26:00	2024-09-24 03:26:00
+9d154ee7-da0f-425a-bdfd-8c89509b9d01		<p><span style="background-color:transparent;color:#000000;"><strong>TEXT 1</strong></span></p><p><span style="background-color:transparent;color:#000000;">An actor creates and performs a character by using cognitive empathy or Theory of Mind (ToM). It is the ability to represent others’ mental states. ToM plays a critical role in understanding and navigating social situations. Reflection into the character's mental life depends on the actor’s approach to character performance. This may be an important part of the character-creation process. This process involves the exploration of the history, motivations, beliefs, and values of the character. This exploration often goes well beyond the information contained within the script. In other words, for many actors, creating a character involves a complex application of ToM, which includes several brain regions such as the temporoparietal junction and posterior cingulate/precuneus.</span></p><p><span style="background-color:transparent;color:#000000;">The temporoparietal junction works in processing and judgments of self and others. According to some studies, overcoming self–other interference and ToM is a deeply integrated process. Findings show that simulating others has been shown to influence self-knowledge. In this simulation, trait and memory measures become similar to a simulated other after adopting their perspective. Some brain regions are deactivated when trained actors use the first-person fictional perspective of a character to answer questions. This is in contrast to a situation when actors answered questions from their own perspective. It suggests that acting may involve the suppression of self-processing.</span></p><p><span style="background-color:transparent;color:#000000;">(Adapted from </span><span style="background-color:transparent;color:#1155cc;">https://www.ncbi.nlm.nih.gov)</span></p><p><span style="background-color:transparent;color:#000000;"><strong>TEXT 2</strong></span></p><p><span style="background-color:transparent;color:#000000;">According to a recent study, when actors take on a new character, they may be able to suppress their everyday self. This implies that theatre training may have a big impact on the fundamental mechanisms of the human brain. Researchers in this study worked in collaboration with Flute Theatre. <i>They </i>created and delivered interactive productions of Shakespeare for autistic individuals and their families. They used a series of sensory drama games, known as the Hunter Heartbeat Method.</span></p><p><span style="background-color:transparent;color:#000000;">The team used wearable brain imaging technologies and physiological measurement devices. They were first introduced at UCL's Department of Biomedical Engineering. Both devices were used to evaluate the brain activity of actors as they rehearsed scenes from Shakespeare's <i>A Midsummer Night's Dream</i>.</span></p><p><span style="background-color:transparent;color:#000000;">The findings showed that when the actors heard their own name during the performance, their response was suppressed in the left anterior prefrontal cortex of the brain. This is usually associated with self-awareness. The same result was witnessed consistently in six actors who were tested when rehearsing several times over a week. Meanwhile, when the performers were not in acting conditions, they responded normally to hearing their own name.</span></p><p><span style="background-color:transparent;color:#000000;">According to the lead researcher, this is the first time that neuroscientists have been able to record brain activity in actors as they perform a role. We hope that this study will help us understand what theatre training does to the brain and to build new connections between neuroscientists and theatre professionals.</span></p><p><span style="background-color:transparent;color:#000000;">(Adapted from https://www.sciencedaily.com)</span></p><p><span style="background-color:transparent;color:#000000;">The italicized word “They” in Text 2 Paragraph 1 refers to ….&nbsp;</span></p>	multiple choices	researchers	\N	9d13cb99-7310-4549-a854-99803fddeb67	9d153263-dfec-485c-907e-ce6e4aabd930	0	2024-09-24 03:27:16	2024-09-24 03:27:16
+9d154f6e-99dc-4f5c-a618-bbfe89178848		<p><span style="background-color:transparent;color:#000000;"><strong>TEXT 1</strong></span></p><p><span style="background-color:transparent;color:#000000;">An actor creates and performs a character by using cognitive empathy or Theory of Mind (ToM). It is the ability to represent others’ mental states. ToM plays a critical role in understanding and navigating social situations. Reflection into the character's mental life depends on the actor’s approach to character performance. This may be an important part of the character-creation process. This process involves the exploration of the history, motivations, beliefs, and values of the character. This exploration often goes well beyond the information contained within the script. In other words, for many actors, creating a character involves a complex application of ToM, which includes several brain regions such as the temporoparietal junction and posterior cingulate/precuneus.</span></p><p><span style="background-color:transparent;color:#000000;">The temporoparietal junction works in processing and judgments of self and others. According to some studies, overcoming self–other interference and ToM is a deeply integrated process. Findings show that simulating others has been shown to influence self-knowledge. In this simulation, trait and memory measures become similar to a simulated other after adopting their perspective. Some brain regions are deactivated when trained actors use the first-person fictional perspective of a character to answer questions. This is in contrast to a situation when actors answered questions from their own perspective. It suggests that acting may involve the suppression of self-processing.</span></p><p><span style="background-color:transparent;color:#000000;">(Adapted from </span><span style="background-color:transparent;color:#1155cc;">https://www.ncbi.nlm.nih.gov)</span></p><p><span style="background-color:transparent;color:#000000;"><strong>TEXT 2</strong></span></p><p><span style="background-color:transparent;color:#000000;">According to a recent study, when actors take on a new character, they may be able to suppress their everyday self. This implies that theatre training may have a big impact on the fundamental mechanisms of the human brain. Researchers in this study worked in collaboration with Flute Theatre. <i>They </i>created and delivered interactive productions of Shakespeare for autistic individuals and their families. They used a series of sensory drama games, known as the Hunter Heartbeat Method.</span></p><p><span style="background-color:transparent;color:#000000;">The team used wearable brain imaging technologies and physiological measurement devices. They were first introduced at UCL's Department of Biomedical Engineering. Both devices were used to evaluate the brain activity of actors as they rehearsed scenes from Shakespeare's <i>A Midsummer Night's Dream</i>.</span></p><p><span style="background-color:transparent;color:#000000;">The findings showed that when the actors heard their own name during the performance, their response was suppressed in the left anterior prefrontal cortex of the brain. This is usually associated with self-awareness. The same result was witnessed consistently in six actors who were tested when rehearsing several times over a week. Meanwhile, when the performers were not in acting conditions, they responded normally to hearing their own name.</span></p><p><span style="background-color:transparent;color:#000000;">According to the lead researcher, this is the first time that neuroscientists have been able to record brain activity in actors as they perform a role. We hope that this study will help us understand what theatre training does to the brain and to build new connections between neuroscientists and theatre professionals.</span></p><p><span style="background-color:transparent;color:#000000;">(Adapted from https://www.sciencedaily.com)</span></p><p><span style="background-color:transparent;color:#000000;">Which of the following sentences from Text 2 is an opinion?</span></p>	multiple choices	We hope that this study will help us understand what theatre training does to the brain and to build new connections between neuroscientists and theatre professionals.	\N	9d13cb99-7310-4549-a854-99803fddeb67	9d153263-dfec-485c-907e-ce6e4aabd930	0	2024-09-24 03:28:45	2024-09-24 03:28:45
+9d154fcc-d07c-4a3e-98da-c3fff124b055		<p><span style="background-color:transparent;color:#000000;"><strong>TEXT 1</strong></span></p><p><span style="background-color:transparent;color:#000000;">An actor creates and performs a character by using cognitive empathy or Theory of Mind (ToM). It is the ability to represent others’ mental states. ToM plays a critical role in understanding and navigating social situations. Reflection into the character's mental life depends on the actor’s approach to character performance. This may be an important part of the character-creation process. This process involves the exploration of the history, motivations, beliefs, and values of the character. This exploration often goes well beyond the information contained within the script. In other words, for many actors, creating a character involves a complex application of ToM, which includes several brain regions such as the temporoparietal junction and posterior cingulate/precuneus.</span></p><p><span style="background-color:transparent;color:#000000;">The temporoparietal junction works in processing and judgments of self and others. According to some studies, overcoming self–other interference and ToM is a deeply integrated process. Findings show that simulating others has been shown to influence self-knowledge. In this simulation, trait and memory measures become similar to a simulated other after adopting their perspective. Some brain regions are deactivated when trained actors use the first-person fictional perspective of a character to answer questions. This is in contrast to a situation when actors answered questions from their own perspective. It suggests that acting may involve the suppression of self-processing.</span></p><p><span style="background-color:transparent;color:#000000;">(Adapted from </span><span style="background-color:transparent;color:#1155cc;">https://www.ncbi.nlm.nih.gov)</span></p><p><span style="background-color:transparent;color:#000000;"><strong>TEXT 2</strong></span></p><p><span style="background-color:transparent;color:#000000;">According to a recent study, when actors take on a new character, they may be able to suppress their everyday self. This implies that theatre training may have a big impact on the fundamental mechanisms of the human brain. Researchers in this study worked in collaboration with Flute Theatre. <i>They </i>created and delivered interactive productions of Shakespeare for autistic individuals and their families. They used a series of sensory drama games, known as the Hunter Heartbeat Method.</span></p><p><span style="background-color:transparent;color:#000000;">The team used wearable brain imaging technologies and physiological measurement devices. They were first introduced at UCL's Department of Biomedical Engineering. Both devices were used to evaluate the brain activity of actors as they rehearsed scenes from Shakespeare's <i>A Midsummer Night's Dream</i>.</span></p><p><span style="background-color:transparent;color:#000000;">The findings showed that when the actors heard their own name during the performance, their response was suppressed in the left anterior prefrontal cortex of the brain. This is usually associated with self-awareness. The same result was witnessed consistently in six actors who were tested when rehearsing several times over a week. Meanwhile, when the performers were not in acting conditions, they responded normally to hearing their own name.</span></p><p><span style="background-color:transparent;color:#000000;">According to the lead researcher, this is the first time that neuroscientists have been able to record brain activity in actors as they perform a role. We hope that this study will help us understand what theatre training does to the brain and to build new connections between neuroscientists and theatre professionals.</span></p><p><span style="background-color:transparent;color:#000000;">(Adapted from https://www.sciencedaily.com)</span></p><p><span style="background-color:transparent;color:#000000;">The results of the evaluation of actors’ brain activity when performing a character can be found in…&nbsp;</span></p>	multiple choices	Text 1 Paragraph 2 and Text 2 Paragraph 3	\N	9d13cb99-7310-4549-a854-99803fddeb67	9d153263-dfec-485c-907e-ce6e4aabd930	0	2024-09-24 03:29:46	2024-09-24 03:29:46
+9d155008-04ed-43d2-b6f8-e6103a03d700		<p><span style="background-color:#ffffff;color:#000000;"><strong>(1) Kacang merah memiliki kandungan gizi yang sangat baik dan menguntungkan bagi kesehatan tubuh manusia jika diolah secara benar. (2) Kacang merah kering merupakan sumber folasin. (3) Folasin adalah zat gizi esensial yang mampu mengurangi risiko kerusakan pada pembuluh darah. (4) Kacang merah memiliki kemampuan untuk mengurangi kerusakan pembuluh darah, menurunkan kadar kolesterol dalam darah, berkurangnya konsentrasi gula darah, dan menurunkan risiko kanker usus besar. (5) Kandungan lemak dan natrium yang dimiliki kacang merah sangat rendah, nyaris bebas lemak jenuh dan kolesterol. (6) Sebaliknya, kacang merah justru merupakan sumber serat yang baik. (7) Dalam 100 gram kacang merah kering dapat menghasilkan 4 gram serat yang terdiri dari serat larut air dan serat yang tidak larut air. (8) Serat yang larut air mampu menurunkan kadar kolesterol dan kadar gula dalam darah. (9) Namun, di sisi lain, kacang merah memproduksi gas dalam usus yang membuat perut kembung. (Diadaptasi dari buku Pengaruh Makanan terhadap Kesehatan)</strong></span></p><p><span style="background-color:#ffffff;color:#000000;"><strong>Kalimat manakah dari bacaan di atas yang termasuk opini?</strong></span></p>	multiple choices	Kacang merah memiliki kandungan gizi yang sangat baik dan menguntungkan bagi kesehatan tubuh manusia jika diolah secara benar.	\N	9d13cb99-7129-438a-af54-e0fb91fa2861	9d153263-dfec-485c-907e-ce6e4aabd930	0	2024-09-24 03:30:25	2024-09-24 03:30:25
+9d155099-b969-490b-8a1a-ac91bf491210		<p><span style="background-color:transparent;color:#000000;"><strong>TEXT 1</strong></span></p><p><span style="background-color:transparent;color:#000000;">An actor creates and performs a character by using cognitive empathy or Theory of Mind (ToM). It is the ability to represent others’ mental states. ToM plays a critical role in understanding and navigating social situations. Reflection into the character's mental life depends on the actor’s approach to character performance. This may be an important part of the character-creation process. This process involves the exploration of the history, motivations, beliefs, and values of the character. This exploration often goes well beyond the information contained within the script. In other words, for many actors, creating a character involves a complex application of ToM, which includes several brain regions such as the temporoparietal junction and posterior cingulate/precuneus.</span></p><p><span style="background-color:transparent;color:#000000;">The temporoparietal junction works in processing and judgments of self and others. According to some studies, overcoming self–other interference and ToM is a deeply integrated process. Findings show that simulating others has been shown to influence self-knowledge. In this simulation, trait and memory measures become similar to a simulated other after adopting their perspective. Some brain regions are deactivated when trained actors use the first-person fictional perspective of a character to answer questions. This is in contrast to a situation when actors answered questions from their own perspective. It suggests that acting may involve the suppression of self-processing.</span></p><p><span style="background-color:transparent;color:#000000;">(Adapted from </span><span style="background-color:transparent;color:#1155cc;">https://www.ncbi.nlm.nih.gov)</span></p><p><span style="background-color:transparent;color:#000000;"><strong>TEXT 2</strong></span></p><p><span style="background-color:transparent;color:#000000;">According to a recent study, when actors take on a new character, they may be able to suppress their everyday self. This implies that theatre training may have a big impact on the fundamental mechanisms of the human brain. Researchers in this study worked in collaboration with Flute Theatre. <i>They </i>created and delivered interactive productions of Shakespeare for autistic individuals and their families. They used a series of sensory drama games, known as the Hunter Heartbeat Method.</span></p><p><span style="background-color:transparent;color:#000000;">The team used wearable brain imaging technologies and physiological measurement devices. They were first introduced at UCL's Department of Biomedical Engineering. Both devices were used to evaluate the brain activity of actors as they rehearsed scenes from Shakespeare's <i>A Midsummer Night's Dream</i>.</span></p><p><span style="background-color:transparent;color:#000000;">The findings showed that when the actors heard their own name during the performance, their response was suppressed in the left anterior prefrontal cortex of the brain. This is usually associated with self-awareness. The same result was witnessed consistently in six actors who were tested when rehearsing several times over a week. Meanwhile, when the performers were not in acting conditions, they responded normally to hearing their own name.</span></p><p><span style="background-color:transparent;color:#000000;">According to the lead researcher, this is the first time that neuroscientists have been able to record brain activity in actors as they perform a role. We hope that this study will help us understand what theatre training does to the brain and to build new connections between neuroscientists and theatre professionals.</span></p><p><span style="background-color:transparent;color:#000000;">(Adapted from https://www.sciencedaily.com)</span></p><p><span style="background-color:transparent;color:#000000;">What is the relationship between Texts 1 and 2?</span></p>	multiple choices	Text 1 explains that in the character-creation process, an actor suppresses their self-processing, and Text 2 further elaborates the brain mechanisms.	\N	9d13cb99-7310-4549-a854-99803fddeb67	9d153263-dfec-485c-907e-ce6e4aabd930	0	2024-09-24 03:32:01	2024-09-24 03:32:01
+9d15520f-c743-491d-8cad-58fe5b90bd84		<p><span style="background-color:#ffffff;color:#000000;"><strong>(1) Kacang merah memiliki kandungan gizi yang sangat baik dan menguntungkan bagi kesehatan tubuh manusia jika diolah secara benar. (2) Kacang merah kering merupakan sumber folasin. (3) Folasin adalah zat gizi esensial yang mampu mengurangi risiko kerusakan pada pembuluh darah. (4) Kacang merah memiliki kemampuan untuk mengurangi kerusakan pembuluh darah, menurunkan kadar kolesterol dalam darah, berkurangnya konsentrasi gula darah, dan menurunkan risiko kanker usus besar. (5) Kandungan lemak dan natrium yang dimiliki kacang merah sangat rendah, nyaris bebas lemak jenuh dan kolesterol. (6) Sebaliknya, kacang merah justru merupakan sumber serat yang baik. (7) Dalam 100 gram kacang merah kering dapat menghasilkan 4 gram serat yang terdiri dari serat larut air dan serat yang tidak larut air. (8) Serat yang larut air mampu menurunkan kadar kolesterol dan kadar gula dalam darah. (9) Namun, di sisi lain, kacang merah memproduksi gas dalam usus yang membuat perut kembung. (Diadaptasi dari buku Pengaruh Makanan terhadap Kesehatan)</strong></span></p><p><span style="background-color:transparent;color:#000000;"><strong>Manakah di bawah ini yang merupakan simpulan yang tepat untuk teks di atas?</strong></span></p>	multiple choices	Kacang merah memiliki kandungan gizi yang sangat baik, termasuk folasin dan serat, yang dapat bermanfaat bagi kesehatan, tetapi juga dapat menyebabkan perut kembung.	\N	9d13cb99-7129-438a-af54-e0fb91fa2861	9d153263-dfec-485c-907e-ce6e4aabd930	0	2024-09-24 03:36:06	2024-09-24 03:36:06
+9d155253-d6f4-4c02-897d-5a162218043c		<p><span style="background-color:transparent;color:#000000;">Read the text and answer the question!(For no. 11 - 13)</span></p><p><span style="background-color:transparent;color:#000000;">Climate change refers to long-term shifts in temperature, precipitation, and other atmospheric conditions. These changes have profound effects on wildlife populations around the world. As temperatures rise, habitats change, forcing many species to migrate in search of suitable conditions. This can lead to disruptions in ecosystems and loss of biodiversity. Additionally, extreme weather events such as heatwaves, hurricanes, and droughts become more frequent and intense, further threatening wildlife. Conservation efforts are crucial to mitigate the impacts of climate change on vulnerable species.</span></p><p><span style="background-color:transparent;color:#000000;">What is the <strong>main topic</strong> of the passage?</span><br>&nbsp;</p>	multiple choices	Climate change and its impact on wildlife	\N	9d13cb99-7310-4549-a854-99803fddeb67	9d153263-dfec-485c-907e-ce6e4aabd930	0	2024-09-24 03:36:51	2024-09-24 03:36:51
+9d1552a6-93da-421c-9946-3dbf50892e9a		<p><span style="background-color:#ffffff;color:#000000;"><strong>(1) Kacang merah memiliki kandungan gizi yang sangat baik dan menguntungkan bagi kesehatan tubuh manusia jika diolah secara benar. (2) Kacang merah kering merupakan sumber folasin. (3) Folasin adalah zat gizi esensial yang mampu mengurangi risiko kerusakan pada pembuluh darah. (4) Kacang merah memiliki kemampuan untuk mengurangi kerusakan pembuluh darah, menurunkan kadar kolesterol dalam darah, berkurangnya konsentrasi gula darah, dan menurunkan risiko kanker usus besar. (5) Kandungan lemak dan natrium yang dimiliki kacang merah sangat rendah, nyaris bebas lemak jenuh dan kolesterol. (6) Sebaliknya, kacang merah justru merupakan sumber serat yang baik. (7) Dalam 100 gram kacang merah kering dapat menghasilkan 4 gram serat yang terdiri dari serat larut air dan serat yang tidak larut air. (8) Serat yang larut air mampu menurunkan kadar kolesterol dan kadar gula dalam darah. (9) Namun, di sisi lain, kacang merah memproduksi gas dalam usus yang membuat perut kembung. (Diadaptasi dari buku Pengaruh Makanan terhadap Kesehatan)</strong></span></p><p><br><span style="background-color:#ffffff;color:#000000;"><strong>Frasa </strong><i><strong>mengurangi kerusakan pembuluh darah, menurunkan kadar kolesterol dalam darah, berkurangnya konsentrasi gula darah, dan menurunkan risiko kanker usus besar</strong></i><strong> pada kalimat (4) yang benar adalah …</strong></span></p>	multiple choices	Mengurangi kerusakan pembuluh darah, menurunkan kadar kolesterol dalam darah, mengurangi konsentrasi gula darah, dan menurunkan risiko kanker usus besar.	\N	9d13cb99-7129-438a-af54-e0fb91fa2861	9d153263-dfec-485c-907e-ce6e4aabd930	0	2024-09-24 03:37:45	2024-09-24 03:37:45
+9d155305-14f5-4876-8245-b39b574ee48c		<p><span style="background-color:transparent;color:#000000;"><strong>(1) Angin kencang dan puting beliung terjadi akibat efek pemanasan dan dinamika atmosfer. (2) Hanya saja, puting beliung dipicu oleh efek pemanasan lokal di daratan. (3) Pusarannya tidak disebabkan efek koriolis, tetapi dinamika atmosfer lokal. (4) Pancaroba adalah peralihan angin dari selatan ke utara (bulan Maret-Mei) atau dari utara ke selatan (bulan September-November). (5) Pada musim pancaroba itulah, distribusi panas di wilayah Indonesia seolah terkungkung di dalam wilayah Indonesia yang memicu temperatur tingi di beberapa kota.&nbsp;</strong></span></p><p><span style="background-color:transparent;color:#000000;"><strong>(6) Pemanasan lokal di wilayah minim pepohonan, pada siang hari yang terik disertai dinamika atmosfer lokal sedemikian rupa, akan terjadi udara basah yang hangat naik cepat membentuk awan hujan yang tebal. (7) Naiknya udara basah dengan cepat dapat mencapai ketinggian beberapa kilometer yang suhunya mencapai titik beku sehingga sebagian titik-titik air berkondensasi membentuk butiran es. (8) Kejadian selanjutnya adalah turunnya angin dengan cepat disertai dengan hujan lebat dan kadang-kadang disertai juga dengan butiran-butiran es. (9) Naiknya udara dengan cepat disertai dengan pusaran angin yang bersifat lokal itulah yang dinamakan puting beliung. (10) Angin ini sangat merusak, tetapi bersifat lokal dan waktunya sangat singkat.</strong></span></p><p><span style="background-color:transparent;color:#000000;"><strong>Berdasarkan paragraf 2, manakah pernyataan yang tidak benar?</strong></span></p>	multiple choices	Pada musim hujan tidak akan tejadi angin puting beliung.	\N	9d13cb99-7129-438a-af54-e0fb91fa2861	9d153263-dfec-485c-907e-ce6e4aabd930	0	2024-09-24 03:38:47	2024-09-24 03:38:47
+9d15536d-11c6-4390-b201-df31e535a6bf		<p><span style="background-color:transparent;color:#000000;">Read the text and answer the question!</span></p><p><span style="background-color:transparent;color:#000000;">Climate change refers to long-term shifts in temperature, precipitation, and other atmospheric conditions. These changes have profound effects on wildlife populations around the world. As temperatures rise, habitats change, forcing many species to migrate in search of suitable conditions. This can lead to disruptions in ecosystems and loss of biodiversity. Additionally, extreme weather events such as heatwaves, hurricanes, and droughts become more frequent and intense, further threatening wildlife. Conservation efforts are crucial to mitigate the impacts of climate change on vulnerable species</span><br>&nbsp;</p><p><span style="background-color:transparent;color:#000000;">Summarize the main idea of the passage</span></p>	multiple choices	Climate change affects wildlife through habitat loss and extreme weather events.	\N	9d13cb99-7310-4549-a854-99803fddeb67	9d153263-dfec-485c-907e-ce6e4aabd930	0	2024-09-24 03:39:55	2024-09-24 03:39:55
+9d1553d4-71eb-4d01-9238-228eb29dc6d8		<p><span style="background-color:transparent;color:#000000;"><strong>(1) Angin kencang dan puting beliung terjadi akibat efek pemanasan dan dinamika atmosfer. (2) Hanya saja, puting beliung dipicu oleh efek pemanasan lokal di daratan. (3) Pusarannya tidak disebabkan efek koriolis, tetapi dinamika atmosfer lokal. (4) Pancaroba adalah peralihan angin dari selatan ke utara (bulan Maret-Mei) atau dari utara ke selatan (bulan September-November). (5) Pada musim pancaroba itulah, distribusi panas di wilayah Indonesia seolah terkungkung di dalam wilayah Indonesia yang memicu temperatur tingi di beberapa kota.&nbsp;</strong></span></p><p><span style="background-color:transparent;color:#000000;"><strong>(6) Pemanasan lokal di wilayah minim pepohonan, pada siang hari yang terik disertai dinamika atmosfer lokal sedemikian rupa, akan terjadi udara basah yang hangat naik cepat membentuk awan hujan yang tebal. (7) Naiknya udara basah dengan cepat dapat mencapai ketinggian beberapa kilometer yang suhunya mencapai titik beku sehingga sebagian titik-titik air berkondensasi membentuk butiran es. (8) Kejadian selanjutnya adalah turunnya angin dengan cepat disertai dengan hujan lebat dan kadang-kadang disertai juga dengan butiran-butiran es. (9) Naiknya udara dengan cepat disertai dengan pusaran angin yang bersifat lokal itulah yang dinamakan puting beliung. (10) Angin ini sangat merusak, tetapi bersifat lokal dan waktunya sangat singkat.</strong></span></p><p><span style="background-color:#ffffff;color:#000000;"><strong>Manakah gagasan pokok paragraf kedua teks di atas?</strong></span></p>	multiple choices	Proses terbentuknya puting beliung akibat pemanasan lokal dan dinamika atmosfer lokal.	\N	9d13cb99-7129-438a-af54-e0fb91fa2861	9d153263-dfec-485c-907e-ce6e4aabd930	0	2024-09-24 03:41:03	2024-09-24 03:41:03
+9d155627-f3b2-4e4f-8a3f-e5d4cf78a374		<p><span style="background-color:transparent;color:#000000;">Technology is an integral part of our daily lives today. From smartphones to laptops, we often rely on technology to perform various activities, including work, communication, entertainment, and more. However, excessive use of technology can have negative impacts on mental health.</span></p><p><span style="background-color:transparent;color:#000000;">Firstly, continuous exposure to gadget screens can lead to sleep disturbances. The blue light emitted by gadget screens can disrupt our body’s natural rhythms and inhibit the production of sleep hormones. This can result in difficulty sleeping, sleep disorders, and poor sleep quality, which in turn can have negative effects on mental health.</span></p><p><span style="background-color:transparent;color:#000000;">Additionally, excessive use of social media can also contribute to mental health issues. Various studies have shown a correlation between high social media usage and higher levels of depression, anxiety, and stress. Constant self-comparison with others on social media can also trigger feelings of inadequacy and low self-esteem.</span></p><p><span style="background-color:transparent;color:#000000;">Furthermore, dependence on technology can also diminish the quality of direct social interaction. Excessive use of digital communication can reduce time spent with others physically, diminish the quality of interpersonal relationships, and impair the ability to accurately read facial expressions and body language.</span></p><p><span style="background-color:transparent;color:#000000;">Therefore, it is important for us to pay attention to our technology usage and take steps to manage it wisely. Practices such as limiting screen time, scheduling digital breaks, and prioritizing face-to-face social interactions can help maintain our mental health in this technological era.</span></p><p><br><span style="background-color:transparent;color:#000000;">According to the text, what is NOT mentioned as a negative impact of excessive technology use on mental health?</span></p>	multiple choices	Enhanced quality of direct social interaction	\N	9d13cb99-7310-4549-a854-99803fddeb67	9d153263-dfec-485c-907e-ce6e4aabd930	0	2024-09-24 03:47:33	2024-09-24 03:47:33
+9d155432-22ce-4880-811e-1177b632529b		<p><span style="background-color:transparent;color:#000000;"><strong>(1) Angin kencang dan puting beliung terjadi akibat efek pemanasan dan dinamika atmosfer. (2) Hanya saja, puting beliung dipicu oleh efek pemanasan lokal di daratan. (3) Pusarannya tidak disebabkan efek koriolis, tetapi dinamika atmosfer lokal. (4) Pancaroba adalah peralihan angin dari selatan ke utara (bulan Maret-Mei) atau dari utara ke selatan (bulan September-November). (5) Pada musim pancaroba itulah, distribusi panas di wilayah Indonesia seolah terkungkung di dalam wilayah Indonesia yang memicu temperatur tingi di beberapa kota.&nbsp;</strong></span></p><p><span style="background-color:transparent;color:#000000;"><strong>(6) Pemanasan lokal di wilayah minim pepohonan, pada siang hari yang terik disertai dinamika atmosfer lokal sedemikian rupa, akan terjadi udara basah yang hangat naik cepat membentuk awan hujan yang tebal. (7) Naiknya udara basah dengan cepat dapat mencapai ketinggian beberapa kilometer yang suhunya mencapai titik beku sehingga sebagian titik-titik air berkondensasi membentuk butiran es. (8) Kejadian selanjutnya adalah turunnya angin dengan cepat disertai dengan hujan lebat dan kadang-kadang disertai juga dengan butiran-butiran es. (9) Naiknya udara dengan cepat disertai dengan pusaran angin yang bersifat lokal itulah yang dinamakan puting beliung. (10) Angin ini sangat merusak, tetapi bersifat lokal dan waktunya sangat singkat.</strong></span></p><p><span style="background-color:#ffffff;color:#000000;"><strong>Berikut ini kelompok kata yang berpasangan tetap berdasarkan bacaan tersebut adalah …</strong></span></p>	multiple choices	puting beliung	\N	9d13cb99-7129-438a-af54-e0fb91fa2861	9d153263-dfec-485c-907e-ce6e4aabd930	0	2024-09-24 03:42:04	2024-09-24 03:42:04
+9d155499-b6ca-495c-bdd9-49d4df37f4cf		<p><span style="background-color:transparent;color:#000000;">Technology is an integral part of our daily lives today. From smartphones to laptops, we often rely on technology to perform various activities, including work, communication, entertainment, and more. However, excessive use of technology can have negative impacts on mental health.</span></p><p><span style="background-color:transparent;color:#000000;">Firstly, continuous exposure to gadget screens can lead to sleep disturbances. The blue light emitted by gadget screens can disrupt our body’s natural rhythms and inhibit the production of sleep hormones. This can result in difficulty sleeping, sleep disorders, and poor sleep quality, which in turn can have negative effects on mental health.</span></p><p><span style="background-color:transparent;color:#000000;">Additionally, excessive use of social media can also contribute to mental health issues. Various studies have shown a correlation between high social media usage and higher levels of depression, anxiety, and stress. Constant self-comparison with others on social media can also trigger feelings of inadequacy and low self-esteem.</span></p><p><span style="background-color:transparent;color:#000000;">Furthermore, dependence on technology can also diminish the quality of direct social interaction. Excessive use of digital communication can reduce time spent with others physically, diminish the quality of interpersonal relationships, and impair the ability to accurately read facial expressions and body language.</span></p><p><span style="background-color:transparent;color:#000000;">Therefore, it is important for us to pay attention to our technology usage and take steps to manage it wisely. Practices such as limiting screen time, scheduling digital breaks, and prioritizing face-to-face social interactions can help maintain our mental health in this technological era.</span></p><p><span style="background-color:transparent;color:#000000;">What is the main topic of the text?</span></p><p><br>&nbsp;</p>	multiple choices	The negative impact of technology on mental health	\N	9d13cb99-7310-4549-a854-99803fddeb67	9d153263-dfec-485c-907e-ce6e4aabd930	0	2024-09-24 03:43:12	2024-09-24 03:43:12
+9d15550c-a6ed-40a9-9bff-f75e75bbc052		<p><span style="background-color:transparent;color:#000000;"><strong>(1) Angin kencang dan puting beliung terjadi akibat efek pemanasan dan dinamika atmosfer. (2) Hanya saja, puting beliung dipicu oleh efek pemanasan lokal di daratan. (3) Pusarannya tidak disebabkan efek koriolis, tetapi dinamika atmosfer lokal. (4) Pancaroba adalah peralihan angin dari selatan ke utara (bulan Maret-Mei) atau dari utara ke selatan (bulan September-November). (5) Pada musim pancaroba itulah, distribusi panas di wilayah Indonesia seolah terkungkung di dalam wilayah Indonesia yang memicu temperatur tingi di beberapa kota.&nbsp;</strong></span></p><p><span style="background-color:transparent;color:#000000;"><strong>(6) Pemanasan lokal di wilayah minim pepohonan, pada siang hari yang terik disertai dinamika atmosfer lokal sedemikian rupa, akan terjadi udara basah yang hangat naik cepat membentuk awan hujan yang tebal. (7) Naiknya udara basah dengan cepat dapat mencapai ketinggian beberapa kilometer yang suhunya mencapai titik beku sehingga sebagian titik-titik air berkondensasi membentuk butiran es. (8) Kejadian selanjutnya adalah turunnya angin dengan cepat disertai dengan hujan lebat dan kadang-kadang disertai juga dengan butiran-butiran es. (9) Naiknya udara dengan cepat disertai dengan pusaran angin yang bersifat lokal itulah yang dinamakan puting beliung. (10) Angin ini sangat merusak, tetapi bersifat lokal dan waktunya sangat singkat.</strong></span></p><p><span style="background-color:transparent;color:#000000;"><strong>Bentuk kata ulang dwipurwa pada bacaan tersebut adalah …</strong></span></p>	multiple choices	titik-titik	\N	9d13cb99-7129-438a-af54-e0fb91fa2861	9d153263-dfec-485c-907e-ce6e4aabd930	0	2024-09-24 03:44:27	2024-09-24 03:44:27
+9d15554c-d6db-47c8-96bb-36709dcbeda5		<p><span style="background-color:transparent;color:#000000;">Technology is an integral part of our daily lives today. From smartphones to laptops, we often rely on technology to perform various activities, including work, communication, entertainment, and more. However, excessive use of technology can have negative impacts on mental health.</span></p><p><span style="background-color:transparent;color:#000000;">Firstly, continuous exposure to gadget screens can lead to sleep disturbances. The blue light emitted by gadget screens can disrupt our body’s natural rhythms and inhibit the production of sleep hormones. This can result in difficulty sleeping, sleep disorders, and poor sleep quality, which in turn can have negative effects on mental health.</span></p><p><span style="background-color:transparent;color:#000000;">Additionally, excessive use of social media can also contribute to mental health issues. Various studies have shown a correlation between high social media usage and higher levels of depression, anxiety, and stress. Constant self-comparison with others on social media can also trigger feelings of inadequacy and low self-esteem.</span></p><p><span style="background-color:transparent;color:#000000;">Furthermore, dependence on technology can also diminish the quality of direct social interaction. Excessive use of digital communication can reduce time spent with others physically, diminish the quality of interpersonal relationships, and impair the ability to accurately read facial expressions and body language.</span></p><p><span style="background-color:transparent;color:#000000;">Therefore, it is important for us to pay attention to our technology usage and take steps to manage it wisely. Practices such as limiting screen time, scheduling digital breaks, and prioritizing face-to-face social interactions can help maintain our mental health in this technological era.</span></p><p><span style="background-color:transparent;color:#000000;">What is the purpose of the text?</span><br>&nbsp;</p>	multiple choices	To raise awareness of the importance of managing technology use	\N	9d13cb99-7310-4549-a854-99803fddeb67	9d153263-dfec-485c-907e-ce6e4aabd930	0	2024-09-24 03:45:09	2024-09-24 03:45:09
+9d1555b6-40e0-43c3-ae4c-db2525d8ca3e		<p><span style="background-color:transparent;color:#000000;"><strong>Sakit gigi adalah penyakit umum yang bisa dialami oleh siapa saja. Sakit gigi sangat mengganggu aktivitas sehari-hari kita karena dengan mengalami sakit gigi biasanya orang akan cenderung malas untuk makan. Penyebab sakit gigi sangat beragam seperti gigi berlubang, gigi patah, gigi tanggal, dan sakit gigi karena bakteri yang menyebabkan pembusukan gigi. Sakit gigi bisa diatasi dengan berbagai macam obat tradisional, seperti garam, bawang merah, bawang putih, es batu, dan cengkih.</strong></span></p><p><span style="background-color:transparent;color:#000000;"><strong>Cengkih merupakan tanaman tradisional yang memiliki bau yang menyengat. Namun, cengkih sering digunakan untuk penambah rasa pada berbagai bahan makanan. Selain itu cengkih menjadi bahan [....] rokok kretek. Cengkih mengandung zat eugenal yang sering digunakan dokter gigi untuk menenangkan saraf gigi.</strong></span></p><p><span style="background-color:transparent;color:#000000;"><strong>Cara yang dapat dilakukan untuk menjadikan cengkih sebagai obat pereda sakit gigi adalah dengan mengunyah cengkih secara langsung jika masih memungkinkan untuk melakukannya. Sebelum mengunyah cengkih, sebaiknya cengkih dibiarkan melunak sedikit karena terkena air liur sehingga tidak terlalu keras saat dikunyah. Minyak pada cengkih akan keluar dan mengenai bagian yang sakit lalu akan bereaksi untuk meredakan rasa sakit dan mengurangi pembengkakan.</strong></span></p><p><span style="background-color:transparent;color:#000000;"><strong>Selain mengunyah cengkih secara langsung cara lain yang bisa dilakukan adalah menggunakan bubuk cengkih dengan mengoleskan pada bagian yang sakit. Minyak yang keluar dari cengkih disebut juga minyak esensial. Minyak esensial bisa dicampur dengan sedikit minyak zaitun lalu dioleskan di bagian yang sakit.</strong></span></p><p><br><span style="background-color:transparent;color:#000000;"><strong>Kata </strong><i><strong>beragam</strong></i><strong> pada paragraf 1 memiliki makna yang sama dengan kata ...</strong></span></p>	multiple choices	bermacam-macam	\N	9d13cb99-7129-438a-af54-e0fb91fa2861	9d153263-dfec-485c-907e-ce6e4aabd930	0	2024-09-24 03:46:18	2024-09-24 03:46:18
+9d15575a-6553-4bcc-9cee-fdd9c617bd9c		<p><span style="background-color:transparent;color:#000000;">Long time ago, people used to wear garlic around their necks to fend off disease. Today, most Americans would mock the idea of wearing a necklace of garlic cloves to enhance their well-being. However, you might find a number of Americans willing to ingest capsules of pulverized garlic or other herbal supplements in the name of health. Complementary and alternative medicine, which includes a range of practices outside of conventional medicine such as herbs, homeopathy, massage therapy, yoga, and acupuncture, hold increasing appeal for Americans. In fact, according to one estimate, 42% of Americans have used alternative therapies. In all age groups, the use of unconventional healthcare practices has steadily increased in the last 30 years, and the trend is likely to continue, although people born before 1945 are the least likely to turn to these therapies.Why have so many patients turned to alternative therapies? Many are frustrated by the time constraints of managed care and alienated by conventional medicine’s focus on technology. Others feel that a holistic approach to healthcare better reflects their beliefs and values. Others seek therapies that relieve symptoms associated with chronic disease; symptoms that mainstream medicine cannot treat. Some alternative therapies have even crossed the line into mainstream medicine, as scientific investigation has confirmed their safety and efficacy. For example, physicians may currently prescribe acupuncture for pain management or to control the nausea associated with chemotherapy. Additionally, many U.S. medical schools teach courses in alternative therapies, and many health insurance companies offer some alternative medicine benefits.</span></p><p><span style="background-color:transparent;color:#000000;">What is the main idea of this passage?</span><br>&nbsp;</p>	multiple choices	Over the last few decades, alternative medicine has become more popular, accepted, practiced in the United States. practiced in the United States.	\N	9d13cb99-7310-4549-a854-99803fddeb67	9d153263-dfec-485c-907e-ce6e4aabd930	0	2024-09-24 03:50:54	2024-09-24 03:50:54
+9d1557a8-2a32-436f-9aee-3cbaeba08bdd		<p><span style="background-color:transparent;color:#000000;">Long time ago, people used to wear garlic around their necks to fend off disease. Today, most Americans would mock the idea of wearing a necklace of garlic cloves to enhance their well-being. However, you might find a number of Americans willing to ingest capsules of pulverized garlic or other herbal supplements in the name of health. Complementary and alternative medicine, which includes a range of practices outside of conventional medicine such as herbs, homeopathy, massage therapy, yoga, and acupuncture, hold increasing appeal for Americans. In fact, according to one estimate, 42% of Americans have used alternative therapies. In all age groups, the use of unconventional healthcare practices has steadily increased in the last 30 years, and the trend is likely to continue, although people born before 1945 are the least likely to turn to these therapies.Why have so many patients turned to alternative therapies? Many are frustrated by the time constraints of managed care and alienated by conventional medicine’s focus on technology. Others feel that a holistic approach to healthcare better reflects their beliefs and values. Others seek therapies that relieve symptoms associated with chronic disease; symptoms that mainstream medicine cannot treat. Some alternative therapies have even crossed the line into mainstream medicine, as scientific investigation has confirmed their safety and efficacy. For example, physicians may currently prescribe acupuncture for pain management or to control the nausea associated with chemotherapy. Additionally, many U.S. medical schools teach courses in alternative therapies, and many health insurance companies offer some alternative medicine benefits.</span></p><p><span style="background-color:transparent;color:#000000;">According to the passage, which practice would not be&nbsp; &nbsp; &nbsp; defined as alternative medicine?</span></p>	multiple choices	pain management	\N	9d13cb99-7310-4549-a854-99803fddeb67	9d153263-dfec-485c-907e-ce6e4aabd930	0	2024-09-24 03:51:45	2024-09-24 03:51:45
+9d1558fb-d9f0-4ad9-a964-bcd00b32ddf8		<p><span style="background-color:transparent;color:#000000;">Long time ago, people used to wear garlic around their necks to fend off disease. Today, most Americans would mock the idea of wearing a necklace of garlic cloves to enhance their well-being. However, you might find a number of Americans willing to ingest capsules of pulverized garlic or other herbal supplements in the name of health. Complementary and alternative medicine, which includes a range of practices outside of conventional medicine such as herbs, homeopathy, massage therapy, yoga, and acupuncture, hold increasing appeal for Americans. In fact, according to one estimate, 42% of Americans have used alternative therapies. In all age groups, the use of unconventional healthcare practices has steadily increased in the last 30 years, and the trend is likely to continue, although people born before 1945 are the least likely to turn to these therapies.Why have so many patients turned to alternative therapies? Many are frustrated by the time constraints of managed care and alienated by conventional medicine’s focus on technology. Others feel that a holistic approach to healthcare better reflects their beliefs and values. Others seek therapies that relieve symptoms associated with chronic disease; symptoms that mainstream medicine cannot treat. Some alternative therapies have even crossed the line into mainstream medicine, as scientific investigation has confirmed their safety and efficacy. For example, physicians may currently prescribe acupuncture for pain management or to control the nausea associated with chemotherapy. Additionally, many U.S. medical schools teach courses in alternative therapies, and many health insurance companies offer some alternative medicine benefits.</span></p><p><span style="background-color:transparent;color:#000000;">Based on the information given, what kind of person would be least likely to seek out alternative medical treatment?</span><br>&nbsp;</p>	multiple choices	A 25-year-old track star with chronic back pain.	\N	9d13cb99-7310-4549-a854-99803fddeb67	9d153263-dfec-485c-907e-ce6e4aabd930	0	2024-09-24 03:55:27	2024-09-24 03:55:27
+9d155974-efed-4c46-b41d-11c9ee9298e6		<p><span style="background-color:transparent;color:#000000;">Long time ago, people used to wear garlic around their necks to fend off disease. Today, most Americans would mock the idea of wearing a necklace of garlic cloves to enhance their well-being. However, you might find a number of Americans willing to ingest capsules of pulverized garlic or other herbal supplements in the name of health. Complementary and alternative medicine, which includes a range of practices outside of conventional medicine such as herbs, homeopathy, massage therapy, yoga, and acupuncture, hold increasing appeal for Americans. In fact, according to one estimate, 42% of Americans have used alternative therapies. In all age groups, the use of unconventional healthcare practices has steadily increased in the last 30 years, and the trend is likely to continue, although people born before 1945 are the least likely to turn to these therapies.Why have so many patients turned to alternative therapies? Many are frustrated by the time constraints of managed care and alienated by conventional medicine’s focus on technology. Others feel that a holistic approach to healthcare better reflects their beliefs and values. Others seek therapies that relieve symptoms associated with chronic disease; symptoms that mainstream medicine cannot treat. Some alternative therapies have even crossed the line into mainstream medicine, as scientific investigation has confirmed their safety and efficacy. For example, physicians may currently prescribe acupuncture for pain management or to control the nausea associated with chemotherapy. Additionally, many U.S. medical schools teach courses in alternative therapies, and many health insurance companies offer some alternative medicine benefits.</span></p><p><span style="background-color:transparent;color:#000000;">The passage indicates that alternative treatments are increasingly being used by mainstream medical professionals because ...</span><br>&nbsp;</p>	multiple choices	scientific studies are becoming available that prove their effectiveness and safety.	\N	9d13cb99-7310-4549-a854-99803fddeb67	9d153263-dfec-485c-907e-ce6e4aabd930	0	2024-09-24 03:56:47	2024-09-24 03:56:47
+9d1559b5-caf2-4d1a-843c-cb9457d89905		<p><span style="background-color:transparent;color:#000000;">Long time ago, people used to wear garlic around their necks to fend off disease. Today, most Americans would mock the idea of wearing a necklace of garlic cloves to enhance their well-being. However, you might find a number of Americans willing to ingest capsules of pulverized garlic or other herbal supplements in the name of health. Complementary and alternative medicine, which includes a range of practices outside of conventional medicine such as herbs, homeopathy, massage therapy, yoga, and acupuncture, hold increasing appeal for Americans. In fact, according to one estimate, 42% of Americans have used alternative therapies. In all age groups, the use of unconventional healthcare practices has steadily increased in the last 30 years, and the trend is likely to continue, although people born before 1945 are the least likely to turn to these therapies.Why have so many patients turned to alternative therapies? Many are frustrated by the time constraints of managed care and alienated by conventional medicine’s focus on technology. Others feel that a holistic approach to healthcare better reflects their beliefs and values. Others seek therapies that relieve symptoms associated with chronic disease; symptoms that mainstream medicine cannot treat. Some alternative therapies have even crossed the line into mainstream medicine, as scientific investigation has confirmed their safety and efficacy. For example, physicians may currently prescribe acupuncture for pain management or to control the nausea associated with chemotherapy. Additionally, many U.S. medical schools teach courses in alternative therapies, and many health insurance companies offer some alternative medicine benefits.</span></p><p><span style="background-color:transparent;color:#000000;">What does the word ‘their’ in the sentence “as scientific investigation has confirmed their safety and efficacy” refer to?</span><br>&nbsp;</p>	multiple choices	Alternative Medicine	\N	9d13cb99-7310-4549-a854-99803fddeb67	9d153263-dfec-485c-907e-ce6e4aabd930	0	2024-09-24 03:57:29	2024-09-24 03:57:29
+9d157366-de9f-4e2e-9ec1-b54aff14ac55		<p><span style="background-color:transparent;color:#000000;">(1)Ketika anak mulai bisa berbicara, orang tua seringkali kesulitan menjawab pertanyaan yang diajukan anaknya. (2)Hal ini mungkin terjadi karena kelelahan mengasuh anak atau kejemuan terhadap pertanyaan yang diajukan berulang kali. (3)Tambahan pula, pada usia ini anak lebih sering [...] benda-benda di sekitarnya, terutama benda yang baru dilihatnya. (4)Akan tetapi, [...] orang tua adalah menjauhkan benda-benda yang dianggap dapat membahayakan keselamatan anak mereka. (5)Oleh karena itu, dibutuhkan penjelasan yang tepat mengenai benda yang berbahaya atau tidak agar anak tidak lagi penasaran dan mengabaikan [...] dari orang tuanya.</span></p><p>&nbsp;</p><p><span style="background-color:transparent;color:#000000;">Sikap penulis pada bacaan tersebut adalah...</span></p>	multiple choices	Netral	\N	9d13cb99-71b1-429a-8ac6-5ec545fc143c	9d153263-dfec-485c-907e-ce6e4aabd930	0	2024-09-24 05:09:19	2024-09-24 05:09:19
+9d1573d4-1691-498a-90a6-3f3bc72f8102		<p><span style="background-color:transparent;color:#000000;">(1)Ketika anak mulai bisa berbicara, orang tua seringkali kesulitan menjawab pertanyaan yang diajukan anaknya. (2)Hal ini mungkin terjadi karena kelelahan mengasuh anak atau kejemuan terhadap pertanyaan yang diajukan berulang kali. (3)Tambahan pula, pada usia ini anak lebih sering [...] benda-benda di sekitarnya, terutama benda yang baru dilihatnya. (4)Akan tetapi, [...] orang tua adalah menjauhkan benda-benda yang dianggap dapat membahayakan keselamatan anak mereka. (5)Oleh karena itu, dibutuhkan penjelasan yang tepat mengenai benda yang berbahaya atau tidak agar anak tidak lagi penasaran dan mengabaikan [...] dari orang tuanya.</span></p><p>&nbsp;</p><p><span style="background-color:transparent;color:#000000;">Kata berimbuhan yang tepat untuk melengkapi kalimat 3 adalah ...</span></p>	multiple choices	mengeksplorasi	\N	9d13cb99-71b1-429a-8ac6-5ec545fc143c	9d153263-dfec-485c-907e-ce6e4aabd930	0	2024-09-24 05:10:31	2024-09-24 05:10:31
+9d157446-bd02-4df9-8b1d-02fde03c2778		<p><span style="background-color:transparent;color:#000000;">(1)Ketika anak mulai bisa berbicara, orang tua seringkali kesulitan menjawab pertanyaan yang diajukan anaknya. (2)Hal ini mungkin terjadi karena kelelahan mengasuh anak atau kejemuan terhadap pertanyaan yang diajukan berulang kali. (3)Tambahan pula, pada usia ini anak lebih sering [...] benda-benda di sekitarnya, terutama benda yang baru dilihatnya. (4)Akan tetapi, [...] orang tua adalah menjauhkan benda-benda yang dianggap dapat membahayakan keselamatan anak mereka. (5)Oleh karena itu, dibutuhkan penjelasan yang tepat mengenai benda yang berbahaya atau tidak agar anak tidak lagi penasaran dan mengabaikan [...] dari orang tuanya.</span></p><p>&nbsp;</p><p><span style="background-color:transparent;color:#000000;">Kata kejemuan memiliki arti ...</span></p>	multiple choices	perasaan bosan	\N	9d13cb99-71b1-429a-8ac6-5ec545fc143c	9d153263-dfec-485c-907e-ce6e4aabd930	0	2024-09-24 05:11:46	2024-09-24 05:11:46
+9d157dcd-2fa6-4f40-aa18-b69300762e16		<p><span style="background-color:transparent;color:#000000;">(1)Ketika anak mulai bisa berbicara, orang tua seringkali kesulitan menjawab pertanyaan yang diajukan anaknya. (2)Hal ini mungkin terjadi karena kelelahan mengasuh anak atau kejemuan terhadap pertanyaan yang diajukan berulang kali. (3)Tambahan pula, pada usia ini anak lebih sering [...] benda-benda di sekitarnya, terutama benda yang baru dilihatnya. (4)Akan tetapi, [...] orang tua adalah menjauhkan benda-benda yang dianggap dapat membahayakan keselamatan anak mereka. (5)Oleh karena itu, dibutuhkan penjelasan yang tepat mengenai benda yang berbahaya atau tidak agar anak tidak lagi penasaran dan mengabaikan [...] dari orang tuanya.</span></p><p>&nbsp;</p><p><span style="background-color:transparent;color:#000000;">Kalimat yang memiliki konjungsi subordinatif adalah ...</span></p>	multiple choices	(1) dan (5)	\N	9d13cb99-71b1-429a-8ac6-5ec545fc143c	9d153263-dfec-485c-907e-ce6e4aabd930	0	2024-09-24 05:38:24	2024-09-24 05:38:24
+9d157e78-1b98-4c79-99f3-5eff5bc3acf5		<p><span style="background-color:transparent;color:#000000;">(1)Mengonsumsi air putih sangat penting bagi tubuh manusia untuk mencegah dehidrasi, menjaga konsentrasi, merawat kulit, dan membantu kelancaran pencernaan. (2)Sebaliknya, minuman lain seperti<i> <strong>soft drink</strong></i> mengandung banyak gula dan kalori yang dapat meningkatkan berat badan. (3)Minuman berenergi juga sering dipilih sebagai sumber cairan, tetapi harus diperhatikan karena mengandung kafein dan banyak gula yang berlebihan. (4)Hal yang sama berlaku untuk jus buah kemasan, pastikan selalu membaca label produk sebelum dikonsumsi. (5)Air putih yang bebas dari kalori dan gula adalah pilihan paling sehat untuk menjaga kecukupan cairan tubuh dan menghilangkan rasa haus.</span></p><p>&nbsp;</p><p><span style="background-color:transparent;color:#000000;">(6)Menurut <strong>kementrian kesehatan republik Indonesia</strong>, air minum yang layak harus tidak memiliki rasa, bau, atau warna, bebas bakteri, serta tidak mengandung bahan kimia yang melebihi batas aman. (7)Pastikan juga bahwa air minum yang dikonsumsi memenuhi standar kesehatan agar terhindar dari penyakit akibat air yang terkontaminasi. (8)Untuk mendapatkan manfaat maksimal, konsumsi air putih secara rutin setiap hari dan <strong>mendukung</strong> dengan pola hidup sehat.</span></p><p>&nbsp;</p><p><span style="background-color:transparent;color:#000000;">Agar menjadi logis, kalimat 3 harus diperbaiki dengan cara...</span><br>&nbsp;</p>	multiple choices	menghilangkan kata “banyak” sebelum kata “gula”	\N	9d13cb99-71b1-429a-8ac6-5ec545fc143c	9d153263-dfec-485c-907e-ce6e4aabd930	0	2024-09-24 05:40:16	2024-09-24 05:40:16
+9d157edc-b825-421b-876c-5a689b61c403		<p><span style="background-color:transparent;color:#000000;">(1)Mengonsumsi air putih sangat penting bagi tubuh manusia untuk mencegah dehidrasi, menjaga konsentrasi, merawat kulit, dan membantu kelancaran pencernaan. (2)Sebaliknya, minuman lain seperti<i> <strong>soft drink</strong></i> mengandung banyak gula dan kalori yang dapat meningkatkan berat badan. (3)Minuman berenergi juga sering dipilih sebagai sumber cairan, tetapi harus diperhatikan karena mengandung kafein dan banyak gula yang berlebihan. (4)Hal yang sama berlaku untuk jus buah kemasan, pastikan selalu membaca label produk sebelum dikonsumsi. (5)Air putih yang bebas dari kalori dan gula adalah pilihan paling sehat untuk menjaga kecukupan cairan tubuh dan menghilangkan rasa haus.</span></p><p>&nbsp;</p><p><span style="background-color:transparent;color:#000000;">(6)Menurut <strong>kementrian kesehatan republik Indonesia</strong>, air minum yang layak harus tidak memiliki rasa, bau, atau warna, bebas bakteri, serta tidak mengandung bahan kimia yang melebihi batas aman. (7)Pastikan juga bahwa air minum yang dikonsumsi memenuhi standar kesehatan agar terhindar dari penyakit akibat air yang terkontaminasi. (8)Untuk mendapatkan manfaat maksimal, konsumsi air putih secara rutin setiap hari dan <strong>mendukung</strong> dengan pola hidup sehat.</span></p><p>&nbsp;</p><p><span style="background-color:transparent;color:#000000;">Pertimbangkan apakah frasa bercetak tebal pada kalimat 6 perlu diperbaiki atau tidak ...</span><br>&nbsp;</p>	multiple choices	Kementerian Kesehatan Republik Indonesia	\N	9d13cb99-71b1-429a-8ac6-5ec545fc143c	9d153263-dfec-485c-907e-ce6e4aabd930	0	2024-09-24 05:41:22	2024-09-24 05:41:22
+9d157f36-54b9-49d1-bcc1-2bf5836b06be		<p><span style="background-color:transparent;color:#000000;">(1)Mengonsumsi air putih sangat penting bagi tubuh manusia untuk mencegah dehidrasi, menjaga konsentrasi, merawat kulit, dan membantu kelancaran pencernaan. (2)Sebaliknya, minuman lain seperti<i> <strong>soft drink</strong></i> mengandung banyak gula dan kalori yang dapat meningkatkan berat badan. (3)Minuman berenergi juga sering dipilih sebagai sumber cairan, tetapi harus diperhatikan karena mengandung kafein dan banyak gula yang berlebihan. (4)Hal yang sama berlaku untuk jus buah kemasan, pastikan selalu membaca label produk sebelum dikonsumsi. (5)Air putih yang bebas dari kalori dan gula adalah pilihan paling sehat untuk menjaga kecukupan cairan tubuh dan menghilangkan rasa haus.</span></p><p>&nbsp;</p><p><span style="background-color:transparent;color:#000000;">(6)Menurut <strong>kementrian kesehatan republik Indonesia</strong>, air minum yang layak harus tidak memiliki rasa, bau, atau warna, bebas bakteri, serta tidak mengandung bahan kimia yang melebihi batas aman. (7)Pastikan juga bahwa air minum yang dikonsumsi memenuhi standar kesehatan agar terhindar dari penyakit akibat air yang terkontaminasi. (8)Untuk mendapatkan manfaat maksimal, konsumsi air putih secara rutin setiap hari dan <strong>mendukung</strong> dengan pola hidup sehat.</span></p><p>&nbsp;</p><p><span style="background-color:transparent;color:#000000;">Pertimbangkan apakah frasa bercetak tebal pada kalimat 8 perlu diperbaiki atau tidak ...</span><br>&nbsp;</p>	multiple choices	dukung	\N	9d13cb99-71b1-429a-8ac6-5ec545fc143c	9d153263-dfec-485c-907e-ce6e4aabd930	0	2024-09-24 05:42:21	2024-09-24 05:42:21
+9d157fc4-3cfc-49f9-abb5-5d1f70cee9b1		<p><span style="background-color:transparent;color:#000000;">(1)Mengonsumsi air putih sangat penting bagi tubuh manusia untuk mencegah dehidrasi, menjaga konsentrasi, merawat kulit, dan membantu kelancaran pencernaan. (2)Sebaliknya, minuman lain seperti<i> <strong>soft drink</strong></i> mengandung banyak gula dan kalori yang dapat meningkatkan berat badan. (3)Minuman berenergi juga sering dipilih sebagai sumber cairan, tetapi harus diperhatikan karena mengandung kafein dan banyak gula yang berlebihan. (4)Hal yang sama berlaku untuk jus buah kemasan, pastikan selalu membaca label produk sebelum dikonsumsi. (5)Air putih yang bebas dari kalori dan gula adalah pilihan paling sehat untuk menjaga kecukupan cairan tubuh dan menghilangkan rasa haus.</span></p><p><br><span style="background-color:transparent;color:#000000;">(6)Menurut <strong>kementrian kesehatan republik Indonesia</strong>, air minum yang layak harus tidak memiliki rasa, bau, atau warna, bebas bakteri, serta tidak mengandung bahan kimia yang melebihi batas aman. (7)Pastikan juga bahwa air minum yang dikonsumsi memenuhi standar kesehatan agar terhindar dari penyakit akibat air yang terkontaminasi. (8)Untuk mendapatkan manfaat maksimal, konsumsi air putih secara rutin setiap hari dan <strong>mendukung</strong> dengan pola hidup sehat.</span></p><p>&nbsp;</p><p><span style="background-color:transparent;color:#000000;">Pertimbangkan apakah frasa bercetak tebal pada kalimat 2 perlu diperbaiki atau tidak ...</span></p>	multiple choices	TIDAK PERLU DIPERBAIKI	\N	9d13cb99-71b1-429a-8ac6-5ec545fc143c	9d153263-dfec-485c-907e-ce6e4aabd930	0	2024-09-24 05:43:54	2024-09-24 05:43:54
+9d1580da-1612-4b7a-9b47-4e5c907c5c70		<p><span style="background-color:transparent;color:#000000;">(1)Banyak masyarakat Indonesia masih awam mengenai saham sebagai instrumen investasi. (2)Saham memungkinkan individu atau badan usaha memiliki klaim atas pendapatan dan aset perusahaan, serta memberikan hak seperti dividen dan partisipasi dalam Rapat Umum Pemegang Saham (RUPS). (3)Meskipun populer, dan memberikan keuntungan menarik, literasi mengenai cara membeli dan memanfaatkan saham di pasar modal masih rendah.</span><br>&nbsp;</p><p><span style="background-color:transparent;color:#000000;">(4)Situasi ini menciptakan peluang bisnis dalam edukasi saham. (5)Bisnis tersebut dapat menawarkan program pelatihan, seminar, atau kursus online yang memberikan pemahaman mendalam tentang investasi saham. (6)Selain meningkatkan literasi keuangan, bisnis edukasi mengenai saham [...] mendorong partisipasi masyarakat yang lebih besar dalam pasar modal dan membuka jalan bagi mereka untuk meraih manfaat investasi jangka panjang.&nbsp;</span></p><p><br><span style="background-color:transparent;color:#000000;">Berikut ilustrasi yang tepat untuk kata <i>edukasi</i> dalam kalimat (4), kecuali...</span></p>	multiple choices	seorang petani yang menyekolahkan anaknya hingga S-1	\N	9d13cb99-71b1-429a-8ac6-5ec545fc143c	9d153263-dfec-485c-907e-ce6e4aabd930	0	2024-09-24 05:46:56	2024-09-24 05:46:56
+9d158194-2eea-4125-a25f-40769ef21789		<p><span style="background-color:transparent;color:#000000;">(1)Banyak masyarakat Indonesia masih awam mengenai saham sebagai instrumen investasi. (2)Saham memungkinkan individu atau badan usaha memiliki klaim atas pendapatan dan aset perusahaan, serta memberikan hak seperti dividen dan partisipasi dalam Rapat Umum Pemegang Saham (RUPS). (3)Meskipun populer, dan memberikan keuntungan menarik, literasi mengenai cara membeli dan memanfaatkan saham di pasar modal masih rendah.</span></p><p>&nbsp;</p><p><span style="background-color:transparent;color:#000000;">(4)Situasi ini menciptakan peluang bisnis dalam edukasi saham. (5)Bisnis tersebut dapat menawarkan program pelatihan, seminar, atau kursus online yang memberikan pemahaman mendalam tentang investasi saham. (6)Selain meningkatkan literasi keuangan, bisnis edukasi mengenai saham [...] mendorong partisipasi masyarakat yang lebih besar dalam pasar modal dan membuka jalan bagi mereka untuk meraih manfaat investasi jangka panjang.</span></p><p><br><span style="background-color:transparent;color:#000000;">Kesalahan penggunaan tanda baca ditemukan pada kalimat...</span></p>	multiple choices	(3)	\N	9d13cb99-71b1-429a-8ac6-5ec545fc143c	9d153263-dfec-485c-907e-ce6e4aabd930	0	2024-09-24 05:48:58	2024-09-24 05:48:58
+9d1581e4-bc03-42da-9c49-2c3888fa0f2b		<p><span style="background-color:transparent;color:#000000;">(1)Banyak masyarakat Indonesia masih awam mengenai saham sebagai instrumen investasi. (2)Saham memungkinkan individu atau badan usaha memiliki klaim atas pendapatan dan aset perusahaan, serta memberikan hak seperti dividen dan partisipasi dalam Rapat Umum Pemegang Saham (RUPS). (3)Meskipun populer, dan memberikan keuntungan menarik, literasi mengenai cara membeli dan memanfaatkan saham di pasar modal masih rendah.</span></p><p><br>&nbsp;</p><p><span style="background-color:transparent;color:#000000;">(4)Situasi ini menciptakan peluang bisnis dalam edukasi saham. (5)Bisnis tersebut dapat menawarkan program pelatihan, seminar, atau kursus online yang memberikan pemahaman mendalam tentang investasi saham. (6)Selain meningkatkan literasi keuangan, bisnis edukasi mengenai saham [...] mendorong partisipasi masyarakat yang lebih besar dalam pasar modal dan membuka jalan bagi mereka untuk meraih manfaat investasi jangka panjang.&nbsp;</span></p><p><br><span style="background-color:transparent;color:#000000;">Kesimpulan yang paling tepat adalah...</span></p>	multiple choices	Peluang bisnis edukasi saham tinggi di Indonesia karena rendahnya literasi mengenai saham	\N	9d13cb99-71b1-429a-8ac6-5ec545fc143c	9d153263-dfec-485c-907e-ce6e4aabd930	0	2024-09-24 05:49:51	2024-09-24 05:49:51
+9d158232-8fa6-44aa-b6d5-0e4966bfd931		<p><span style="background-color:transparent;color:#000000;">(1)Banyak masyarakat Indonesia masih awam mengenai saham sebagai instrumen investasi. (2)Saham memungkinkan individu atau badan usaha memiliki klaim atas pendapatan dan aset perusahaan, serta memberikan hak seperti dividen dan partisipasi dalam Rapat Umum Pemegang Saham (RUPS). (3)Meskipun populer, dan memberikan keuntungan menarik, literasi mengenai cara membeli dan memanfaatkan saham di pasar modal masih rendah.</span></p><p><br>&nbsp;</p><p><span style="background-color:transparent;color:#000000;">(4)Situasi ini menciptakan peluang bisnis dalam edukasi saham. (5)Bisnis tersebut dapat menawarkan program pelatihan, seminar, atau kursus online yang memberikan pemahaman mendalam tentang investasi saham. (6)Selain meningkatkan literasi keuangan, bisnis edukasi mengenai saham [...] mendorong partisipasi masyarakat yang lebih besar dalam pasar modal dan membuka jalan bagi mereka untuk meraih manfaat investasi jangka panjang.</span></p><p><br><span style="background-color:transparent;color:#000000;">Kalimat yang mengandung kata tidak baku adalah...</span></p>	multiple choices	(5)	\N	9d13cb99-71b1-429a-8ac6-5ec545fc143c	9d153263-dfec-485c-907e-ce6e4aabd930	0	2024-09-24 05:50:42	2024-09-24 05:50:42
+\.
+
+
+--
+-- Data for Name: subtests; Type: TABLE DATA; Schema: public; Owner: nusajar_fagaihhve
+--
+
+COPY public.subtests (id, subtest_name, subtest_slug, subtest_category, duration, created_at, updated_at) FROM stdin;
+9d13cb99-6f3d-4987-a23d-a7b0a9ae468f	Kemampuan Penalaran Umum	Kemampuan-Penalaran-Umum	TES POTENSI SKOLIASTIK	30	2024-09-23 09:24:17	2024-09-23 09:24:17
+9d13cb99-7129-438a-af54-e0fb91fa2861	Pengetahuan dan Pemahaman Umum	Pengetahuan-dan-Pemahaman-Umum	TES POTENSI SKOLIASTIK	15	2024-09-23 09:24:17	2024-09-23 09:24:17
+9d13cb99-71b1-429a-8ac6-5ec545fc143c	Kemampuan Memahami Bacaan dan Menulis	kemampuan-Memahami-Bacaan-dan-Menulis	TES POTENSI SKOLIASTIK	25	2024-09-23 09:24:17	2024-09-23 09:24:17
+9d13cb99-7229-43c6-830d-97f8d7f250c7	Pengetahuan Kuantitatif	Pengetahuan-Kuantitatif	TES POTENSI SKOLIASTIK	20	2024-09-23 09:24:17	2024-09-23 09:24:17
+9d13cb99-729f-427f-829e-7fb8ab452427	Literasi Dalam Bahasa Indonesia	Literasi-Dalam-Bahasa-Indonesia	TES LITERASI	38	2024-09-23 09:24:17	2024-09-23 09:24:17
+9d13cb99-7310-4549-a854-99803fddeb67	Literasi Dalam Bahasa Inggris	Literasi-Dalam-Bahasa-inggris	TES LITERASI	30	2024-09-23 09:24:17	2024-09-23 09:24:17
+9d13cb99-739d-4d40-a8fb-7df4464e963d	Penalaran Matematika	Penalaran-Matematika	TES PENALARAN MATEMATIKA	38	2024-09-23 09:24:17	2024-09-23 09:24:17
+\.
+
+
+--
+-- Data for Name: tryout_subtests; Type: TABLE DATA; Schema: public; Owner: nusajar_fagaihhve
+--
+
+COPY public.tryout_subtests (id, tryout_id, subtest_id, link_pembahasan_text, created_at, updated_at) FROM stdin;
+9d153263-e16e-4ce8-816f-6b758e897eb2	9d153263-dfec-485c-907e-ce6e4aabd930	9d13cb99-6f3d-4987-a23d-a7b0a9ae468f	\N	2024-09-24 02:07:32	2024-09-24 02:07:32
+9d153263-e260-4ba0-aa70-7442f148cb89	9d153263-dfec-485c-907e-ce6e4aabd930	9d13cb99-7129-438a-af54-e0fb91fa2861	\N	2024-09-24 02:07:32	2024-09-24 02:07:32
+9d153263-e2e1-4c70-b13e-e4ad1d037ec8	9d153263-dfec-485c-907e-ce6e4aabd930	9d13cb99-71b1-429a-8ac6-5ec545fc143c	\N	2024-09-24 02:07:32	2024-09-24 02:07:32
+9d153263-e355-4960-b649-3b491d4b557a	9d153263-dfec-485c-907e-ce6e4aabd930	9d13cb99-7229-43c6-830d-97f8d7f250c7	\N	2024-09-24 02:07:32	2024-09-24 02:07:32
+9d153263-e3d1-439f-b5f1-81518c9dee03	9d153263-dfec-485c-907e-ce6e4aabd930	9d13cb99-729f-427f-829e-7fb8ab452427	\N	2024-09-24 02:07:32	2024-09-24 02:07:32
+9d153263-e44a-4cc4-93e2-eebd0d7959e7	9d153263-dfec-485c-907e-ce6e4aabd930	9d13cb99-7310-4549-a854-99803fddeb67	\N	2024-09-24 02:07:32	2024-09-24 02:07:32
+9d153263-e4be-482c-af0e-17fcfb643246	9d153263-dfec-485c-907e-ce6e4aabd930	9d13cb99-739d-4d40-a8fb-7df4464e963d	\N	2024-09-24 02:07:32	2024-09-24 02:07:32
+\.
+
+
+--
+-- Data for Name: tryouts; Type: TABLE DATA; Schema: public; Owner: nusajar_fagaihhve
+--
+
+COPY public.tryouts (id, tryout_name, tryout_slug, tryout_image, tryout_poster, kode, status, created_at, updated_at) FROM stdin;
+9d153263-dfec-485c-907e-ce6e4aabd930	LANGKAH AWAL MENUJU UTBK 2025	LANGKAH-AWAL-MENUJU-UTBK-2025	LANGKAH AWAL MENUJU UTBK 2025_IrQ.jpg	LANGKAH AWAL MENUJU UTBK 2025_TNd.jpg	TONUSA	development	2024-09-24 02:07:32	2024-09-24 02:07:32
+\.
+
+
+--
+-- Data for Name: user_answers; Type: TABLE DATA; Schema: public; Owner: nusajar_fagaihhve
+--
+
+COPY public.user_answers (id, user_id, subtest_question_id, subtest_question_answer_id, essay_answer, created_at, updated_at) FROM stdin;
+\.
+
+
+--
+-- Data for Name: user_results; Type: TABLE DATA; Schema: public; Owner: nusajar_fagaihhve
+--
+
+COPY public.user_results (id, user_id, tryout_id, subtest_id, score, created_at, updated_at) FROM stdin;
+\.
+
+
+--
+-- Data for Name: user_surveys; Type: TABLE DATA; Schema: public; Owner: nusajar_fagaihhve
+--
+
+COPY public.user_surveys (id, user_id, tryout_id, message, rating, created_at, updated_at) FROM stdin;
+\.
+
+
+--
+-- Data for Name: user_tryout_subtests; Type: TABLE DATA; Schema: public; Owner: nusajar_fagaihhve
+--
+
+COPY public.user_tryout_subtests (id, tryout_id, subtest_id, user_id, status, created_at, updated_at) FROM stdin;
+\.
+
+
+--
+-- Data for Name: user_universities; Type: TABLE DATA; Schema: public; Owner: nusajar_fagaihhve
+--
+
+COPY public.user_universities (id, user_id, university_name, university_major, created_at, updated_at) FROM stdin;
+\.
+
+
+--
+-- Data for Name: users; Type: TABLE DATA; Schema: public; Owner: nusajar_fagaihhve
+--
+
+COPY public.users (id, name, email, email_verified_at, password, phone, school, profile_photo, role, ip_address, user_agent, is_logged_in, remember_token, created_at, updated_at, deleted_at) FROM stdin;
+9	mentor2	mentor2@gmail.com	\N	$2y$12$iGCr5TKxGS/wjhACREZ.L.ZCXtWa6fuZ6aCY49KJjpYW/nyzVYSE6	\N	\N	\N	mentor	\N	\N	f	oiezhQE6KIMd7yVmB4rwS9rfy8OfB3pbsh7qd6NoH0aPjts8MtOsb0afnVNp	\N	2024-09-24 05:54:53	\N
+11	mentor4	mentor4@gmail.com	\N	$2y$12$u.KuqdwEtaOz2gkTYK2EpuluVx/FCSVygyvrA7acsozTygMG2U9Be	\N	\N	\N	mentor	\N	\N	f	RfLSAKbHqZVU0B7lptUSnTqClP0ftzhxGGMaB7I6S3k09UKLFDQXFqrTuaPN	\N	2024-09-24 08:25:37	\N
+10	mentor3	mentor3@gmail.com	\N	$2y$12$hbqMbb9647TdNPbroQMBwOcSWKL3t7YNWo0jNJ.NLDI40EqY2BvqW	\N	\N	\N	mentor	\N	\N	f	1i1SeeJMVi6dRsdTJfppkGNJ9KBtlwgNGBuuFWBVCAEvcbUpRgsaraFO7w7p	\N	2024-09-24 04:05:46	\N
+13	mentor6	mentor6@gmail.com	\N	$2y$12$YGHXIiObzYTiR.SZXBeuHemV0eP3Bn7xLtsbr278OUi9fIJUnCAFK	\N	\N	\N	mentor	\N	\N	f	\N	\N	2024-09-24 04:10:37	\N
+4	Arva Ganteng	student3@gmail.com	\N	$2y$12$sFB3MsCnZ/bUU8gpFod81uSgsRbJtZDDfoE0hwS9iQxUI.q0hXMCC	\N	\N	\N	student	\N	\N	f	\N	\N	2024-09-24 04:20:13	\N
+14	mentor7	mentor7@gmail.com	\N	$2y$12$P6hupHaGy3vK/z97VQr7OOKL1uQfMTNFNw8bIKSVZ/gvrKUFILKYK	\N	\N	\N	mentor	\N	\N	f	04p1AvxwgJlXzcbhkbr3aQFvkvFCplhYwAZm4SoGMWSGDUguUOsp6KVYCVRE	\N	2024-09-23 11:46:23	\N
+3	student2	student2@gmail.com	\N	$2y$12$gkFVTRub2FOHZcJh2eb21.JjNhGMb433mSRXw31.pE7ebtey2kKvW	\N	\N	\N	student	\N	\N	f	\N	\N	2024-09-23 12:17:12	\N
+5	student4	student4@gmail.com	\N	$2y$12$jyex6E7dsnXrUtJk2uCKd.hrUIic.byl01dkjsPJbgPACG8YWm/Cu	\N	\N	\N	student	\N	\N	f	\N	\N	\N	\N
+7	student6	student6@gmail.com	\N	$2y$12$3FQJZ9jY/xfGOPDLAh6YxOozPqZAua2U7OvHhmmk3oviEC6TunKCO	\N	\N	\N	student	\N	\N	f	\N	\N	\N	\N
+8	student7	student7@gmail.com	\N	$2y$12$3GH5VR9WZi/44YGA.Suiaupyc/EnZmx15LUccAgoRRcm2Xt06OQni	\N	\N	\N	student	\N	\N	f	\N	\N	\N	\N
+1	student	student@gmail.com	\N	$2y$12$tU3HwKGc7spT6jVriIvmvu9UbNoTjLsWR/QcZnZ0Um4fFEwy6uUpm	\N	\N	\N	student	\N	\N	f	\N	2024-09-23 09:24:12	2024-09-23 17:22:27	\N
+6	student5	student5@gmail.com	\N	$2y$12$fmFnWFSbi6g9rbxhJrHS5./nBOJjXoiVJIq2T1q9cC1mvozt7ZShC	\N	\N	\N	student	\N	\N	f	\N	\N	2024-09-23 17:22:53	\N
+17	mentor10	mentor10@gmail.com	\N	$2y$12$phpzRAMy3tK3SRyEjQ1jUOjE74OOAHbUQFNPOZ485RvnTFjEdpu9.	\N	\N	\N	mentor	\N	\N	f	Y1bexE1o03gYth05JMJP61FUovkAWgaUPxpF0T5jrkHAGpSTJ0QCwKK1XjHz	\N	2024-09-24 02:49:47	\N
+2	mentor	mentor@gmail.com	\N	$2y$12$EWvZwS2.omLkl5NLq.d.yOe2hx4jeOAn6TaXkQSyd2MFFZZ3haQbW	\N	\N	\N	mentor	\N	\N	f	\N	2024-09-23 09:24:12	2024-09-24 02:58:43	\N
+15	mentor8	mentor8@gmail.com	\N	$2y$12$uEa9ndl0j99MHM0Ex3lbr.jqVx/toR4kVMZehUeL83WCWcPttMvjK	\N	\N	\N	mentor	\N	\N	f	\N	\N	2024-09-24 03:31:05	\N
+12	mentor5	mentor5@gmail.com	\N	$2y$12$k7WwQkU40zFTwat9olIxyuT9ikE47UaXixVN2xmD92HfSFdbhx3oC	\N	\N	\N	mentor	\N	\N	f	\N	\N	2024-09-24 04:10:16	\N
+16	mentor9	mentor9@gmail.com	\N	$2y$12$iWQjpAX/9UsRWiPo8TuKX.PiYYWhlRn2o9pyF9nu2mokYnCwYHIP.	\N	\N	\N	mentor	\N	\N	f	ASVyj484nWFi3fxupxFKMBJPyd7xdrOfioUW5TSZ5yCnqpP4F83mGfLMOxc5	\N	2024-09-23 11:55:05	\N
+\.
+
+
+--
+-- Name: migrations_id_seq; Type: SEQUENCE SET; Schema: public; Owner: nusajar_fagaihhve
+--
+
+SELECT pg_catalog.setval('public.migrations_id_seq', 14, true);
+
+
+--
+-- Name: personal_access_tokens_id_seq; Type: SEQUENCE SET; Schema: public; Owner: nusajar_fagaihhve
+--
+
+SELECT pg_catalog.setval('public.personal_access_tokens_id_seq', 1, false);
+
+
+--
+-- Name: share_tryouts_id_seq; Type: SEQUENCE SET; Schema: public; Owner: nusajar_fagaihhve
+--
+
+SELECT pg_catalog.setval('public.share_tryouts_id_seq', 5, true);
+
+
+--
+-- Name: user_results_id_seq; Type: SEQUENCE SET; Schema: public; Owner: nusajar_fagaihhve
+--
+
+SELECT pg_catalog.setval('public.user_results_id_seq', 7, true);
+
+
+--
+-- Name: users_id_seq; Type: SEQUENCE SET; Schema: public; Owner: nusajar_fagaihhve
+--
+
+SELECT pg_catalog.setval('public.users_id_seq', 20, true);
+
+
+--
+-- Name: cache_locks cache_locks_pkey; Type: CONSTRAINT; Schema: public; Owner: nusajar_fagaihhve
+--
+
+ALTER TABLE ONLY public.cache_locks
+    ADD CONSTRAINT cache_locks_pkey PRIMARY KEY (key);
+
+
+--
+-- Name: cache cache_pkey; Type: CONSTRAINT; Schema: public; Owner: nusajar_fagaihhve
+--
+
+ALTER TABLE ONLY public.cache
+    ADD CONSTRAINT cache_pkey PRIMARY KEY (key);
+
+
+--
+-- Name: migrations migrations_pkey; Type: CONSTRAINT; Schema: public; Owner: nusajar_fagaihhve
+--
+
+ALTER TABLE ONLY public.migrations
+    ADD CONSTRAINT migrations_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: password_reset_tokens password_reset_tokens_pkey; Type: CONSTRAINT; Schema: public; Owner: nusajar_fagaihhve
+--
+
+ALTER TABLE ONLY public.password_reset_tokens
+    ADD CONSTRAINT password_reset_tokens_pkey PRIMARY KEY (email);
+
+
+--
+-- Name: personal_access_tokens personal_access_tokens_pkey; Type: CONSTRAINT; Schema: public; Owner: nusajar_fagaihhve
+--
+
+ALTER TABLE ONLY public.personal_access_tokens
+    ADD CONSTRAINT personal_access_tokens_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: personal_access_tokens personal_access_tokens_token_unique; Type: CONSTRAINT; Schema: public; Owner: nusajar_fagaihhve
+--
+
+ALTER TABLE ONLY public.personal_access_tokens
+    ADD CONSTRAINT personal_access_tokens_token_unique UNIQUE (token);
+
+
+--
+-- Name: sessions sessions_pkey; Type: CONSTRAINT; Schema: public; Owner: nusajar_fagaihhve
+--
+
+ALTER TABLE ONLY public.sessions
+    ADD CONSTRAINT sessions_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: share_tryouts share_tryouts_pkey; Type: CONSTRAINT; Schema: public; Owner: nusajar_fagaihhve
+--
+
+ALTER TABLE ONLY public.share_tryouts
+    ADD CONSTRAINT share_tryouts_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: subtest_question_answers subtest_question_answers_pkey; Type: CONSTRAINT; Schema: public; Owner: nusajar_fagaihhve
+--
+
+ALTER TABLE ONLY public.subtest_question_answers
+    ADD CONSTRAINT subtest_question_answers_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: subtest_questions subtest_questions_pkey; Type: CONSTRAINT; Schema: public; Owner: nusajar_fagaihhve
+--
+
+ALTER TABLE ONLY public.subtest_questions
+    ADD CONSTRAINT subtest_questions_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: subtests subtests_pkey; Type: CONSTRAINT; Schema: public; Owner: nusajar_fagaihhve
+--
+
+ALTER TABLE ONLY public.subtests
+    ADD CONSTRAINT subtests_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: tryout_subtests tryout_subtests_pkey; Type: CONSTRAINT; Schema: public; Owner: nusajar_fagaihhve
+--
+
+ALTER TABLE ONLY public.tryout_subtests
+    ADD CONSTRAINT tryout_subtests_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: tryouts tryouts_pkey; Type: CONSTRAINT; Schema: public; Owner: nusajar_fagaihhve
+--
+
+ALTER TABLE ONLY public.tryouts
+    ADD CONSTRAINT tryouts_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: user_answers user_answers_pkey; Type: CONSTRAINT; Schema: public; Owner: nusajar_fagaihhve
+--
+
+ALTER TABLE ONLY public.user_answers
+    ADD CONSTRAINT user_answers_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: user_results user_results_pkey; Type: CONSTRAINT; Schema: public; Owner: nusajar_fagaihhve
+--
+
+ALTER TABLE ONLY public.user_results
+    ADD CONSTRAINT user_results_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: user_surveys user_surveys_pkey; Type: CONSTRAINT; Schema: public; Owner: nusajar_fagaihhve
+--
+
+ALTER TABLE ONLY public.user_surveys
+    ADD CONSTRAINT user_surveys_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: user_tryout_subtests user_tryout_subtests_pkey; Type: CONSTRAINT; Schema: public; Owner: nusajar_fagaihhve
+--
+
+ALTER TABLE ONLY public.user_tryout_subtests
+    ADD CONSTRAINT user_tryout_subtests_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: user_universities user_universities_pkey; Type: CONSTRAINT; Schema: public; Owner: nusajar_fagaihhve
+--
+
+ALTER TABLE ONLY public.user_universities
+    ADD CONSTRAINT user_universities_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: users users_email_unique; Type: CONSTRAINT; Schema: public; Owner: nusajar_fagaihhve
+--
+
+ALTER TABLE ONLY public.users
+    ADD CONSTRAINT users_email_unique UNIQUE (email);
+
+
+--
+-- Name: users users_pkey; Type: CONSTRAINT; Schema: public; Owner: nusajar_fagaihhve
+--
+
+ALTER TABLE ONLY public.users
+    ADD CONSTRAINT users_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: personal_access_tokens_tokenable_type_tokenable_id_index; Type: INDEX; Schema: public; Owner: nusajar_fagaihhve
+--
+
+CREATE INDEX personal_access_tokens_tokenable_type_tokenable_id_index ON public.personal_access_tokens USING btree (tokenable_type, tokenable_id);
+
+
+--
+-- Name: sessions_last_activity_index; Type: INDEX; Schema: public; Owner: nusajar_fagaihhve
+--
+
+CREATE INDEX sessions_last_activity_index ON public.sessions USING btree (last_activity);
+
+
+--
+-- Name: sessions_user_id_index; Type: INDEX; Schema: public; Owner: nusajar_fagaihhve
+--
+
+CREATE INDEX sessions_user_id_index ON public.sessions USING btree (user_id);
+
+
+--
+-- Name: share_tryouts share_tryouts_tryout_id_foreign; Type: FK CONSTRAINT; Schema: public; Owner: nusajar_fagaihhve
+--
+
+ALTER TABLE ONLY public.share_tryouts
+    ADD CONSTRAINT share_tryouts_tryout_id_foreign FOREIGN KEY (tryout_id) REFERENCES public.tryouts(id) ON DELETE CASCADE;
+
+
+--
+-- Name: share_tryouts share_tryouts_user_id_foreign; Type: FK CONSTRAINT; Schema: public; Owner: nusajar_fagaihhve
+--
+
+ALTER TABLE ONLY public.share_tryouts
+    ADD CONSTRAINT share_tryouts_user_id_foreign FOREIGN KEY (user_id) REFERENCES public.users(id) ON DELETE CASCADE;
+
+
+--
+-- Name: subtest_question_answers subtest_question_answers_subtest_question_id_foreign; Type: FK CONSTRAINT; Schema: public; Owner: nusajar_fagaihhve
+--
+
+ALTER TABLE ONLY public.subtest_question_answers
+    ADD CONSTRAINT subtest_question_answers_subtest_question_id_foreign FOREIGN KEY (subtest_question_id) REFERENCES public.subtest_questions(id) ON UPDATE CASCADE ON DELETE CASCADE;
+
+
+--
+-- Name: subtest_questions subtest_questions_subtest_id_foreign; Type: FK CONSTRAINT; Schema: public; Owner: nusajar_fagaihhve
+--
+
+ALTER TABLE ONLY public.subtest_questions
+    ADD CONSTRAINT subtest_questions_subtest_id_foreign FOREIGN KEY (subtest_id) REFERENCES public.subtests(id);
+
+
+--
+-- Name: subtest_questions subtest_questions_tryout_id_foreign; Type: FK CONSTRAINT; Schema: public; Owner: nusajar_fagaihhve
+--
+
+ALTER TABLE ONLY public.subtest_questions
+    ADD CONSTRAINT subtest_questions_tryout_id_foreign FOREIGN KEY (tryout_id) REFERENCES public.tryouts(id) ON DELETE CASCADE;
+
+
+--
+-- Name: tryout_subtests tryout_subtests_subtest_id_foreign; Type: FK CONSTRAINT; Schema: public; Owner: nusajar_fagaihhve
+--
+
+ALTER TABLE ONLY public.tryout_subtests
+    ADD CONSTRAINT tryout_subtests_subtest_id_foreign FOREIGN KEY (subtest_id) REFERENCES public.subtests(id) ON UPDATE CASCADE ON DELETE CASCADE;
+
+
+--
+-- Name: tryout_subtests tryout_subtests_tryout_id_foreign; Type: FK CONSTRAINT; Schema: public; Owner: nusajar_fagaihhve
+--
+
+ALTER TABLE ONLY public.tryout_subtests
+    ADD CONSTRAINT tryout_subtests_tryout_id_foreign FOREIGN KEY (tryout_id) REFERENCES public.tryouts(id) ON UPDATE CASCADE ON DELETE CASCADE;
+
+
+--
+-- Name: user_answers user_answers_subtest_question_answer_id_foreign; Type: FK CONSTRAINT; Schema: public; Owner: nusajar_fagaihhve
+--
+
+ALTER TABLE ONLY public.user_answers
+    ADD CONSTRAINT user_answers_subtest_question_answer_id_foreign FOREIGN KEY (subtest_question_answer_id) REFERENCES public.subtest_question_answers(id) ON DELETE CASCADE;
+
+
+--
+-- Name: user_answers user_answers_subtest_question_id_foreign; Type: FK CONSTRAINT; Schema: public; Owner: nusajar_fagaihhve
+--
+
+ALTER TABLE ONLY public.user_answers
+    ADD CONSTRAINT user_answers_subtest_question_id_foreign FOREIGN KEY (subtest_question_id) REFERENCES public.subtest_questions(id) ON DELETE CASCADE;
+
+
+--
+-- Name: user_answers user_answers_user_id_foreign; Type: FK CONSTRAINT; Schema: public; Owner: nusajar_fagaihhve
+--
+
+ALTER TABLE ONLY public.user_answers
+    ADD CONSTRAINT user_answers_user_id_foreign FOREIGN KEY (user_id) REFERENCES public.users(id) ON DELETE CASCADE;
+
+
+--
+-- Name: user_results user_results_subtest_id_foreign; Type: FK CONSTRAINT; Schema: public; Owner: nusajar_fagaihhve
+--
+
+ALTER TABLE ONLY public.user_results
+    ADD CONSTRAINT user_results_subtest_id_foreign FOREIGN KEY (subtest_id) REFERENCES public.subtests(id) ON DELETE CASCADE;
+
+
+--
+-- Name: user_results user_results_tryout_id_foreign; Type: FK CONSTRAINT; Schema: public; Owner: nusajar_fagaihhve
+--
+
+ALTER TABLE ONLY public.user_results
+    ADD CONSTRAINT user_results_tryout_id_foreign FOREIGN KEY (tryout_id) REFERENCES public.tryouts(id) ON DELETE CASCADE;
+
+
+--
+-- Name: user_results user_results_user_id_foreign; Type: FK CONSTRAINT; Schema: public; Owner: nusajar_fagaihhve
+--
+
+ALTER TABLE ONLY public.user_results
+    ADD CONSTRAINT user_results_user_id_foreign FOREIGN KEY (user_id) REFERENCES public.users(id) ON DELETE CASCADE;
+
+
+--
+-- Name: user_surveys user_surveys_tryout_id_foreign; Type: FK CONSTRAINT; Schema: public; Owner: nusajar_fagaihhve
+--
+
+ALTER TABLE ONLY public.user_surveys
+    ADD CONSTRAINT user_surveys_tryout_id_foreign FOREIGN KEY (tryout_id) REFERENCES public.tryouts(id) ON UPDATE CASCADE ON DELETE CASCADE;
+
+
+--
+-- Name: user_surveys user_surveys_user_id_foreign; Type: FK CONSTRAINT; Schema: public; Owner: nusajar_fagaihhve
+--
+
+ALTER TABLE ONLY public.user_surveys
+    ADD CONSTRAINT user_surveys_user_id_foreign FOREIGN KEY (user_id) REFERENCES public.users(id) ON UPDATE CASCADE ON DELETE CASCADE;
+
+
+--
+-- Name: user_tryout_subtests user_tryout_subtests_subtest_id_foreign; Type: FK CONSTRAINT; Schema: public; Owner: nusajar_fagaihhve
+--
+
+ALTER TABLE ONLY public.user_tryout_subtests
+    ADD CONSTRAINT user_tryout_subtests_subtest_id_foreign FOREIGN KEY (subtest_id) REFERENCES public.subtests(id) ON UPDATE CASCADE ON DELETE CASCADE;
+
+
+--
+-- Name: user_tryout_subtests user_tryout_subtests_tryout_id_foreign; Type: FK CONSTRAINT; Schema: public; Owner: nusajar_fagaihhve
+--
+
+ALTER TABLE ONLY public.user_tryout_subtests
+    ADD CONSTRAINT user_tryout_subtests_tryout_id_foreign FOREIGN KEY (tryout_id) REFERENCES public.tryouts(id) ON UPDATE CASCADE ON DELETE CASCADE;
+
+
+--
+-- Name: user_tryout_subtests user_tryout_subtests_user_id_foreign; Type: FK CONSTRAINT; Schema: public; Owner: nusajar_fagaihhve
+--
+
+ALTER TABLE ONLY public.user_tryout_subtests
+    ADD CONSTRAINT user_tryout_subtests_user_id_foreign FOREIGN KEY (user_id) REFERENCES public.users(id) ON UPDATE CASCADE ON DELETE CASCADE;
+
+
+--
+-- Name: user_universities user_universities_user_id_foreign; Type: FK CONSTRAINT; Schema: public; Owner: nusajar_fagaihhve
+--
+
+ALTER TABLE ONLY public.user_universities
+    ADD CONSTRAINT user_universities_user_id_foreign FOREIGN KEY (user_id) REFERENCES public.users(id) ON UPDATE CASCADE ON DELETE CASCADE;
+
+
+--
+-- PostgreSQL database dump complete
+--
+
